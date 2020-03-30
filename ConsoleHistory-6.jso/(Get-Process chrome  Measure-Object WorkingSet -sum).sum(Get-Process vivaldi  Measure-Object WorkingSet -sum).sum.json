@@ -1,0 +1,1 @@
+{"script":"(Get-Process chrome | Measure-Object WorkingSet -sum).sum(Get-Process vivaldi | Measure-Object WorkingSet -sum).sum"}
