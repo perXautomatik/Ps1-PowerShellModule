@@ -1,0 +1,1 @@
+{"script":"Get-Process | group-object | format-table name"}

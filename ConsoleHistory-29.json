@@ -1,0 +1,1 @@
+{"script":"Get-Process | sort name -unique"}
