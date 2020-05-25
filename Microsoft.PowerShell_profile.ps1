@@ -24,10 +24,10 @@ Set-Theme Paradox
 
 #-------------------------------  Set Hot-keys BEGIN  -------------------------------
 # 设置 Tab 键补全
-Set-PSReadlineKeyHandler -Key Tab -Function Complete
+# Set-PSReadlineKeyHandler -Key Tab -Function Complete
 
 # 设置 Ctrl+d 为菜单补全和 Intellisense
-# Set-PSReadLineKeyHandler -Key "Ctrl+d" -Function MenuComplete
+Set-PSReadLineKeyHandler -Key "Tab" -Function MenuComplete
 
 # 设置 Ctrl+d 为退出 PowerShell
 Set-PSReadlineKeyHandler -Key "Ctrl+d" -Function ViExit
@@ -73,7 +73,7 @@ function Update-Packages {
 
 
 
-#-------------------------------   Set Alias Begin    -------------------------------
+#-------------------------------   Set Alias BEGIN    -------------------------------
 # 1. 编译函数 make
 function MakeThings {
 	nmake.exe $args -nologo
@@ -91,3 +91,32 @@ function ListDirectory {
 Set-Alias -Name ls -Value ListDirectory
 Set-Alias -Name ll -Value Get-ChildItem
 #-------------------------------    Set Alias END     -------------------------------
+
+
+
+
+
+#-------------------------------     Set SSH BEGIN    -------------------------------
+<# 连接部分远程主机：
+ * <1> -> [Newton-rPC-1] ONE core 1GB Mem Aliyun ECS
+ * <2> -> [Newton-rPC-2] TWO core 4GB Mem Aliyun ECS
+ * <3> -> [nipcdl-t630]  NIPC T-630 Deep Learning Server
+#>
+function rpc ($Remote_IP){
+	if ($Remote_IP -eq 1) {
+		ssh 114.55.255.208
+	}
+	elseif ($Remote_IP -eq 2) {
+		ssh 182.92.212.56
+	}
+	elseif ($Remote_IP -eq 3) {
+		ssh liup@p.dothings.top -p 21322
+	}
+	else {
+		Write-Host("Error: Host IP 错误")
+	}
+}
+#-------------------------------     Set SSH END      -------------------------------
+
+
+[System.Console]::OutputEncoding=[System.Text.Encoding]::GetEncoding(65001)
