@@ -26,7 +26,7 @@ Set-Theme Paradox
 # 设置 Tab 键补全
 # Set-PSReadlineKeyHandler -Key Tab -Function Complete
 
-# 设置 Ctrl+d 为菜单补全和 Intellisense
+# 设置 Ctrl+tab 为菜单补全和 Intellisense
 Set-PSReadLineKeyHandler -Key "Tab" -Function MenuComplete
 
 # 设置 Ctrl+d 为退出 PowerShell
@@ -36,10 +36,10 @@ Set-PSReadlineKeyHandler -Key "Ctrl+d" -Function ViExit
 Set-PSReadLineKeyHandler -Key "Ctrl+z" -Function Undo
 
 # 设置向上键为后向搜索历史记录
-Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Key "UpArrow" -Function HistorySearchBackward
 
 # 设置向下键为前向搜索历史纪录
-Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+Set-PSReadLineKeyHandler -Key "DownArrow" -Function HistorySearchForward
 #-------------------------------  Set Hot-keys END    -------------------------------
 
 
@@ -66,6 +66,15 @@ function Update-Packages {
 	Write-Host "Step 2: 更新 TeX Live" $CurrentYear -ForegroundColor Magenta -BackgroundColor Cyan
 	tlmgr update --self
 	tlmgr update --all
+
+	# update Choco
+	choco outdated
+	#choco upgrade
+}
+
+# sudo
+function sudo {
+	Start-Process @args -verb runas
 }
 #-------------------------------    Functions END     -------------------------------
 
@@ -78,7 +87,7 @@ function Update-Packages {
 function MakeThings {
 	nmake.exe $args -nologo
 }
-Set-Alias -Name make -Value MakeThings
+Set-Alias -Name nnmake -Value MakeThings
 
 # 2. 更新系统 os-update
 Set-Alias -Name os-update -Value Update-Packages
@@ -119,4 +128,5 @@ function rpc ($Remote_IP){
 #-------------------------------     Set SSH END      -------------------------------
 
 
-[System.Console]::OutputEncoding=[System.Text.Encoding]::GetEncoding(65001)
+# [System.Console]::OutputEncoding=[System.Text.Encoding]::GetEncoding(65001)
+# $OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
