@@ -69,6 +69,9 @@ function Update-Packages {
 	Write-Host "Step 2: 更新 TeX Live" $CurrentYear -ForegroundColor Magenta -BackgroundColor Cyan
 	tlmgr update --self
 	tlmgr update --all
+
+	# update Chocolotey
+	choco outdated
 }
 #-------------------------------    Functions END     -------------------------------
 
