@@ -29,7 +29,7 @@ Set-Theme Paradox
 # 设置预测文本来源为历史记录
 Set-PSReadLineOption -PredictionSource History
 
-# 设置 Ctrl+d 为菜单补全和 Intellisense
+# 设置 Tab 为菜单补全和 Intellisense
 Set-PSReadLineKeyHandler -Key "Tab" -Function MenuComplete
 
 # 设置 Ctrl+d 为退出 PowerShell
