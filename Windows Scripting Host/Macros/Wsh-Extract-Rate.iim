@@ -1,0 +1,6 @@
+﻿TAB T=1     
+TAB CLOSEALLOTHERS   
+URL GOTO=http://demo.imacros.net/Automate/ExtractDemo
+'Get the values
+TAG POS=39 TYPE=TD ATTR=TXT:* EXTRACT=TXT
+TAG POS=40 TYPE=TD ATTR=TXT:* EXTRACT=TXT

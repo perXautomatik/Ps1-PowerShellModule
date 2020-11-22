@@ -1,0 +1,6 @@
+﻿TAB T=1     
+TAB CLOSEALLOTHERS   
+URL GOTO=http://demo.imacros.net/Automate/AutoDataEntry     
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:demo ATTR=NAME:fname CONTENT={{mynumber}}
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:demo ATTR=NAME:lname CONTENT={{mytext}}
+TAG POS=1 TYPE=BUTTON:SUBMIT FORM=ID:demo ATTR=TXT:SUBMIT

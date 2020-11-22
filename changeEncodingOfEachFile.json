@@ -1,1 +1,0 @@
-﻿{"script":"ls *.mb | ForEach-Object{ sc $_ -encoding utf8 -value(gc $_)}"}
