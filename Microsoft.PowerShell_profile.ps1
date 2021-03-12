@@ -19,6 +19,7 @@ Import-Module PSReadLine
 
 # 设置 PowerShell 主题
 Set-Theme Paradox
+# Set-PoshPrompt -Theme Paradox
 #------------------------------- Import Modules END   -------------------------------
 
 
