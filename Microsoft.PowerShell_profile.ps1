@@ -3,6 +3,7 @@
  * Author: 刘 鹏
  * Email: littleNewton6@outlook.com
  * Date: 2020, May. 1
+ * Update: 2021, Mar. 14
  * Copyright: No copyright. You can use this code for anything with no warranty.
 #>
 
@@ -18,8 +19,7 @@ Import-Module oh-my-posh
 Import-Module PSReadLine
 
 # 设置 PowerShell 主题
-Set-Theme Paradox
-# Set-PoshPrompt -Theme Paradox
+Set-PoshPrompt paradox
 #------------------------------- Import Modules END   -------------------------------
 
 
@@ -111,10 +111,10 @@ Set-Alias -Name ll -Value Get-ChildItem
 #>
 function rpc ($Remote_IP){
 	if ($Remote_IP -eq 1) {
-		ssh 114.55.255.208
+		ssh newton@124.16.70.16 -p 23132
 	}
 	elseif ($Remote_IP -eq 2) {
-		ssh 182.92.212.56
+		ssh liup@124.16.70.16 -p 23132
 	}
 	elseif ($Remote_IP -eq 3) {
 		ssh liup@p.dothings.top -p 21322
