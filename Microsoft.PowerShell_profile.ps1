@@ -111,13 +111,13 @@ Set-Alias -Name ll -Value Get-ChildItem
 #>
 function rpc ($Remote_IP){
 	if ($Remote_IP -eq 1) {
-		ssh newton@124.16.70.16 -p 23132
+		ssh newton@xxx -p 23132
 	}
 	elseif ($Remote_IP -eq 2) {
-		ssh liup@124.16.70.16 -p 23132
+		ssh liup@xxx -p 23132
 	}
 	elseif ($Remote_IP -eq 3) {
-		ssh liup@p.dothings.top -p 21322
+		ssh xxx@xxx -p 21322
 	}
 	else {
 		Write-Host("Error: Host IP 错误")
