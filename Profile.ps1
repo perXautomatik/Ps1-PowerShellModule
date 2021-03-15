@@ -1,6 +1,6 @@
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-# $0: %UserProfile%\Documents\PowerShell\Profile.ps1 # for PS-Core
+# $0: %UserProfile%\Documents\PowerShell\Profile.ps1
 # src: https://gist.github.com/apfelchips/62a71500a0f044477698da71634ab87b
 
 $Profile.CurrentUserCurrentHost = $PSCommandPath # this file is my Profile
