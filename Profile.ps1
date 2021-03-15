@@ -1,7 +1,5 @@
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-
-# $0: %UserProfile%\Documents\PowerShell\Profile.ps1
-# src: https://gist.github.com/apfelchips/62a71500a0f044477698da71634ab87b
+# Invoke-WebRequest -Uri "https://gist.githubusercontent.com/apfelchips/62a71500a0f044477698da71634ab87b/raw/Profile.ps1" -OutFile "${env:UserProfile}\Documents\PowerShell\Profile.ps1"
 
 $Profile.CurrentUserCurrentHost = $PSCommandPath # this file is my Profile
 
@@ -212,7 +210,7 @@ function Reload-Profile {
     . $Profile.CurrentUserCurrentHost
 }
 
-function Update-Profile {
+function Download-Latest-Profile {
     Invoke-WebRequest -Uri "https://gist.githubusercontent.com/apfelchips/62a71500a0f044477698da71634ab87b/raw/Profile.ps1" -OutFile "${env:UserProfile}\Documents\PowerShell\Profile.ps1"
 }
 
