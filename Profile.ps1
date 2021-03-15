@@ -126,6 +126,10 @@ function git-root {
     }
 }
 
+function git-bash {
+    . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "../bin/bash.exe") $args
+}
+
 function Select-Value { # src: https://geekeefy.wordpress.com/2017/06/26/selecting-objects-by-value-in-powershell/
     [Cmdletbinding()]
     param(
