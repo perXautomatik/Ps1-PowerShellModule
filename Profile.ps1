@@ -224,6 +224,7 @@ function Reload-Profile {
 
 function Download-Latest-Profile {
     Invoke-WebRequest -Uri "https://gist.githubusercontent.com/apfelchips/62a71500a0f044477698da71634ab87b/raw/Profile.ps1" -OutFile "${env:UserProfile}\Documents\PowerShell\Profile.ps1"
+    Reload-Profile
 }
 
 If ($IsWindows) {
