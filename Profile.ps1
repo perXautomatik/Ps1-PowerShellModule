@@ -129,7 +129,11 @@ if ( Get-Command git) {
     }
 
     function git-bash {
-        . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") $args
+        if !($args){
+            . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") -l
+        } else {
+            . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") $args
+        }
     }
 }
 
