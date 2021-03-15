@@ -212,6 +212,10 @@ function Reload-Profile {
     . $Profile.CurrentUserCurrentHost
 }
 
+function Update-Profile {
+    Invoke-WebRequest -Uri "https://gist.githubusercontent.com/apfelchips/62a71500a0f044477698da71634ab87b/raw/Profile.ps1" -OutFile "${env:%UserProfile%}\Documents\PowerShell\Profile.ps1"
+}
+
 If ($IsWindows) {
     function subl {
         start-process "${Env:ProgramFiles}\Sublime Text 3\subl.exe" -ArgumentList $args -WindowStyle Hidden # hide subl shim script
