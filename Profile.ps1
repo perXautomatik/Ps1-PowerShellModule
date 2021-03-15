@@ -119,15 +119,18 @@ function cf {
 function .. { Set-Location ".." }
 function .... { Set-Location (Join-Path -Path ".." -ChildPath "..") }
 
-function git-root {
-    $gitrootdir = (git rev-parse --show-toplevel)
-    if ($gitrootdir) {
-        Set-Location $gitrootdir
-    }
-}
+if ( Get-Command git) {
 
-function git-bash {
-    . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "../bin/bash.exe") $args
+    function git-root {
+        $gitrootdir = (git rev-parse --show-toplevel)
+        if ($gitrootdir) {
+            Set-Location $gitrootdir
+        }
+    }
+
+    function git-bash {
+        . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") $args
+    }
 }
 
 function Select-Value { # src: https://geekeefy.wordpress.com/2017/06/26/selecting-objects-by-value-in-powershell/
