@@ -228,6 +228,11 @@ function Download-Latest-Profile {
 }
 
 If ($IsWindows) {
+    function isAdmin {
+        $user = [Security.Principal.WindowsIdentity]::GetCurrent();
+        (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator);
+    }
+    
     function subl {
         start-process "${Env:ProgramFiles}\Sublime Text 3\subl.exe" -ArgumentList $args -WindowStyle Hidden # hide subl shim script
     }
