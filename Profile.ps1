@@ -1,8 +1,9 @@
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 # src: https://gist.github.com/apfelchips/62a71500a0f044477698da71634ab87b
 # Invoke-WebRequest -Uri "https://git.io/JYZTu" -OutFile "${env:UserProfile}\Documents\PowerShell\Profile.ps1"
+# Invoke-WebRequest -Uri "https://git.io/JYZTu" -OutFile "~/.config/powershell/profile.ps1"
 
-$Profile.CurrentUserCurrentHost = $PSCommandPath # this file is my Profile
+# $Profile.CurrentUserCurrentHost = $PSCommandPath # this file is my Profile
 
 Set-Alias open       Invoke-Item -Option AllScope
 Set-Alias g          git -Option AllScope
