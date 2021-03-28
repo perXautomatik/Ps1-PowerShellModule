@@ -1,6 +1,6 @@
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-# src: https://git.io/JmFZ3
-# Invoke-WebRequest -Uri "https://gist.githubusercontent.com/apfelchips/62a71500a0f044477698da71634ab87b/raw/Profile.ps1" -OutFile "${env:UserProfile}\Documents\PowerShell\Profile.ps1"
+# src: https://gist.github.com/apfelchips/62a71500a0f044477698da71634ab87b
+# Invoke-WebRequest -Uri "https://git.io/JYZTu" -OutFile "${env:UserProfile}\Documents\PowerShell\Profile.ps1"
 
 $Profile.CurrentUserCurrentHost = $PSCommandPath # this file is my Profile
 
