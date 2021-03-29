@@ -144,7 +144,7 @@ function cf {
 function .. { Set-Location ".." }
 function .... { Set-Location (Join-Path -Path ".." -ChildPath "..") }
 
-if $(Test-CommandExists 'git'){
+if ( $(Test-CommandExists 'git') ) {
     function git-root {
         $gitrootdir = (git rev-parse --show-toplevel)
         if ($gitrootdir) {
@@ -368,7 +368,7 @@ if (($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -N
     Import-Module posh-git
 }
 
-if $(Test-CommandExists 'thefuck'){
+if ( $(Test-CommandExists 'thefuck') ){
     function fuck {
         $PYTHONIOENCODING_BKP=$env:PYTHONIOENCODING
         $env:PYTHONIOENCODING="utf-8"
