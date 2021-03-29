@@ -3,7 +3,7 @@
 # Invoke-WebRequest -Uri "https://git.io/JYZTu" -OutFile "${env:UserProfile}\Documents\PowerShell\Profile.ps1"
 # Invoke-WebRequest -Uri "https://git.io/JYZTu" -OutFile "~/.config/powershell/profile.ps1"
 
-# $Profile.CurrentUserCurrentHost = $PSCommandPath # this file is my Profile
+$MyProfile = $PSCommandPath # this file is MyProfile
 
 Set-Alias open       Invoke-Item -Option AllScope
 Set-Alias g          git -Option AllScope
@@ -220,11 +220,11 @@ if (Test-Path("${env:ChocolateyInstall}\helpers\chocolateyProfile.psm1")) {
 }
 
 function Reload-Profile {
-    . $Profile.CurrentUserCurrentHost
+    . $MyProfile
 }
 
 function Download-Latest-Profile {
-    Invoke-WebRequest -Uri "https://gist.githubusercontent.com/apfelchips/62a71500a0f044477698da71634ab87b/raw/Profile.ps1" -OutFile "$PSCommandPath"
+    Invoke-WebRequest -Uri "https://gist.githubusercontent.com/apfelchips/62a71500a0f044477698da71634ab87b/raw/Profile.ps1" -OutFile "$MyProfile"
     Reload-Profile
 }
 
