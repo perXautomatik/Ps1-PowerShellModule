@@ -233,7 +233,7 @@ If ($IsWindows) {
         $user = [Security.Principal.WindowsIdentity]::GetCurrent();
         (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator);
     }
-    
+
     function subl {
         start-process "${Env:ProgramFiles}\Sublime Text 3\subl.exe" -ArgumentList $args -WindowStyle Hidden # hide subl shim script
     }
@@ -262,6 +262,7 @@ function Get-HostExecutable {
     return $ConsoleHostExecutable
 }
 
+
 # function sudo() # use chocolatey sudo instead
 # {
 #     if ($args.Length -eq 0)
@@ -282,6 +283,22 @@ function Get-HostExecutable {
 function Test-Administrator {
     $user = [Security.Principal.WindowsIdentity]::GetCurrent();
     (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+}
+
+# src: https://devblogs.microsoft.com/scripting/use-a-powershell-function-to-see-if-a-command-exists/
+function Test-CommandExists {
+    Param ($command)
+    $oldPreference = $ErrorActionPreference
+    $ErrorActionPreference = ‘stop’
+    try {
+        if( Get-Command $command ){
+            return $true
+        }
+    }
+    Catch {
+        return $false
+    }
+    Finally {$ErrorActionPreference=$oldPreference}
 }
 
 function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
@@ -329,8 +346,6 @@ if (($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -N
 
     # Set-PSReadLineOption -EditMode Emac
     Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
-    #Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
-    #$FZF_COMPLETION_TRIGGER='...'
 
     Set-PSReadLineOption -HistorySearchCursorMovesToEnd
     Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
@@ -338,14 +353,18 @@ if (($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -N
     Set-PSReadlineKeyHandler -Chord 'Shift+Tab' -Function Complete
 
     Set-PSReadLineOption -predictionsource history
-    Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
+    if ($null -ne (Get-Module PSFzf)) {
+        #Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
+        #$FZF_COMPLETION_TRIGGER='...'
+        Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
+    }
 }
 
 if (($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name posh-git))) {
     Import-Module posh-git
 }
 
-if (Get-Command 'thefuck') {
+if (Test-CommandExists 'thefuck') {
     function fuck {
         $PYTHONIOENCODING_BKP=$env:PYTHONIOENCODING
         $env:PYTHONIOENCODING="utf-8"
