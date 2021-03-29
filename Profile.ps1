@@ -43,6 +43,30 @@ if ( $isWindows ){
     $PATH = $(ConvertFrom-StringData -Delimiter ":" ${env:PATH})
 }
 
+# src: http://serverfault.com/questions/95431
+if ($isWindows){
+    function Test-Administrator {
+        $user = [Security.Principal.WindowsIdentity]::GetCurrent();
+        (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+    }
+}
+
+# src: https://devblogs.microsoft.com/scripting/use-a-powershell-function-to-see-if-a-command-exists/
+function Test-CommandExists {
+    Param ($command)
+    $oldPreference = $ErrorActionPreference
+    $ErrorActionPreference = ‘stop’
+    try {
+        if ( Get-Command $command ){
+            return $true
+        }
+    }
+    Catch {
+        return $false
+    }
+    Finally {$ErrorActionPreference=$oldPreference}
+}
+
 function Clean-Object {
     process {
         $_.PSObject.Properties.Remove('PSComputerName')
@@ -120,7 +144,7 @@ function cf {
 function .. { Set-Location ".." }
 function .... { Set-Location (Join-Path -Path ".." -ChildPath "..") }
 
-if ($(Test-CommandExists 'git')){
+if $(Test-CommandExists 'git'){
     function git-root {
         $gitrootdir = (git rev-parse --show-toplevel)
         if ($gitrootdir) {
@@ -280,29 +304,6 @@ function Get-HostExecutable {
 #     }
 # }
 
-# src: http://serverfault.com/questions/95431
-if ($isWindows){
-    function Test-Administrator {
-        $user = [Security.Principal.WindowsIdentity]::GetCurrent();
-        (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
-    }
-}
-
-# src: https://devblogs.microsoft.com/scripting/use-a-powershell-function-to-see-if-a-command-exists/
-function Test-CommandExists {
-    Param ($command)
-    $oldPreference = $ErrorActionPreference
-    $ErrorActionPreference = ‘stop’
-    try {
-        if ( Get-Command $command ){
-            return $true
-        }
-    }
-    Catch {
-        return $false
-    }
-    Finally {$ErrorActionPreference=$oldPreference}
-}
 
 function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
   [CmdletBinding(ConfirmImpact='High', SupportsShouldProcess)]
@@ -367,7 +368,7 @@ if (($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -N
     Import-Module posh-git
 }
 
-if ($(Test-CommandExists 'thefuck')) {
+if $(Test-CommandExists 'thefuck'){
     function fuck {
         $PYTHONIOENCODING_BKP=$env:PYTHONIOENCODING
         $env:PYTHONIOENCODING="utf-8"
