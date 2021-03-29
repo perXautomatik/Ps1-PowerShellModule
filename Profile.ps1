@@ -36,13 +36,6 @@ Set-Alias ren        Rename-Item -Option AllScope
 Set-Alias set        Set-Variable -Option AllScope
 Set-Alias type       Get-Content -Option AllScope
 
-
-if ( $isWindows ){
-    $PATH = $(ConvertFrom-StringData -Delimiter ";" ${env:PATH})
-} else {
-    $PATH = $(ConvertFrom-StringData -Delimiter ":" ${env:PATH})
-}
-
 # src: http://serverfault.com/questions/95431
 if ($isWindows){
     function Test-Administrator {
@@ -56,15 +49,9 @@ function Test-CommandExists {
     Param ($command)
     $oldPreference = $ErrorActionPreference
     $ErrorActionPreference = ‘stop’
-    try {
-        if ( Get-Command $command ){
-            return $true
-        }
-    }
-    Catch {
-        return $false
-    }
-    Finally {$ErrorActionPreference=$oldPreference}
+    try {if ( Get-Command $command ){return $true}}
+    catch {return $false}
+    finally {$ErrorActionPreference=$oldPreference}
 }
 
 function Clean-Object {
