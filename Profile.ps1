@@ -1,9 +1,6 @@
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 # src: https://gist.github.com/apfelchips/62a71500a0f044477698da71634ab87b
-# Invoke-WebRequest -Uri "https://git.io/JYZTu" -OutFile "${env:UserProfile}\Documents\PowerShell\Profile.ps1"
-# Invoke-WebRequest -Uri "https://git.io/JYZTu" -OutFile "~/.config/powershell/profile.ps1"
-
-$MyProfile = $PSCommandPath # this file is MyProfile
+# Invoke-WebRequest -Uri "https://git.io/JYZTu" -OutFile "$PROFILE.CurrentUserAllHosts"
 
 Set-Alias open       Invoke-Item -Option AllScope
 Set-Alias g          git -Option AllScope
@@ -220,7 +217,7 @@ if (Test-Path("${env:ChocolateyInstall}\helpers\chocolateyProfile.psm1")) {
 }
 
 function Reload-Profile {
-    . $MyProfile
+    . $PROFILE.CurrentUserAllHosts
 }
 
 function Download-Latest-Profile {
