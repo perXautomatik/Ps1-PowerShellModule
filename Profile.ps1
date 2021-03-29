@@ -128,7 +128,7 @@ if ( Test-CommandExists 'git') {
             Set-Location $gitrootdir
         }
     }
-    
+
     if ( $isWindows ){
         function git-bash {
             if ($args.Count -eq 0){
@@ -282,9 +282,11 @@ function Get-HostExecutable {
 # }
 
 # src: http://serverfault.com/questions/95431
-function Test-Administrator {
-    $user = [Security.Principal.WindowsIdentity]::GetCurrent();
-    (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+if ($isWindows){
+    function Test-Administrator {
+        $user = [Security.Principal.WindowsIdentity]::GetCurrent();
+        (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+    }
 }
 
 # src: https://devblogs.microsoft.com/scripting/use-a-powershell-function-to-see-if-a-command-exists/
@@ -293,7 +295,7 @@ function Test-CommandExists {
     $oldPreference = $ErrorActionPreference
     $ErrorActionPreference = ‘stop’
     try {
-        if( Get-Command $command ){
+        if ( Get-Command $command ){
             return $true
         }
     }
