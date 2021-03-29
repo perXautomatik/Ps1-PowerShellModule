@@ -37,8 +37,11 @@ Set-Alias set        Set-Variable -Option AllScope
 Set-Alias type       Get-Content -Option AllScope
 
 
-# $PATH = $(ConvertFrom-String -Delimiter ";" ${env:PATH}) |
-
+if ( $isWindows ){
+    $PATH = $(ConvertFrom-String -Delimiter ";" ${env:PATH})
+} else {
+    $PATH = $(ConvertFrom-String -Delimiter ":" ${env:PATH})
+}
 
 function Clean-Object {
     process {
