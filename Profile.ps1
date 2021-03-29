@@ -117,7 +117,7 @@ function cf {
 function .. { Set-Location ".." }
 function .... { Set-Location (Join-Path -Path ".." -ChildPath "..") }
 
-if ( Get-Command git) {
+if ( Test-CommandExists 'git') {
 
     function git-root {
         $gitrootdir = (git rev-parse --show-toplevel)
@@ -125,12 +125,14 @@ if ( Get-Command git) {
             Set-Location $gitrootdir
         }
     }
-
-    function git-bash {
-        if ($args.Count -eq 0){
-            . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") -l
-        } else {
-            . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") $args
+    
+    if ( $isWindows ){
+        function git-bash {
+            if ($args.Count -eq 0){
+                . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") -l
+            } else {
+                . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") $args
+            }
         }
     }
 }
