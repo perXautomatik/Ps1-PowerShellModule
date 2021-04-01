@@ -1,6 +1,6 @@
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 # src: https://gist.github.com/apfelchips/62a71500a0f044477698da71634ab87b
-# New-Item $( Split-Path "$($PROFILE.CurrentUserAllHosts)" ) -ItemType Directory -ea 0; Invoke-WebRequest -Uri "https://git.io/JYZTu" -OutFile "$($PROFILE.CurrentUserAllHosts)"
+# New-Item $( Split-Path "$($PROFILE.CurrentUserCurrentHost)" ) -ItemType Directory -ea 0; Invoke-WebRequest -Uri "https://git.io/JYZTu" -OutFile "$($PROFILE.CurrentUserCurrentHosts)"
 
 # bash-like
 Set-Alias cat        Get-Content -Option AllScope
