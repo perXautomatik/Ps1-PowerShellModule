@@ -84,11 +84,6 @@ function Get-Environment {  # Get-Variable to show all Powershell Variables acce
     }
 }
 
-function prompt
-{
-    $(Get-Location) + "> "
-}
-
 # function Set-EnvironmentAndPSVariable{
 #     if (([Environment]::GetEnvironmentVariable($args[0]))){
 #         Set-Variable -Name "$args[0]" -Value ([Environment]::GetEnvironmentVariable("$args[0]"))
