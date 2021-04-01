@@ -98,7 +98,7 @@ function Get-Environment {  # Get-Variable to show all Powershell Variables acce
 #     }
 # }
 
-# defin these environment variables if not set already and also provide them as PSVariables
+# define these environment variables if not set already and also provide them as PSVariables
 if (-not $env:XDG_CONFIG_HOME) { $env:XDG_CONFIG_HOME = Join-Path -Path "$HOME" -ChildPath ".config" }; $XDG_CONFIG_HOME = $env:XDG_CONFIG_HOME
 if (-not $env:XDG_DATA_HOME) { $env:XDG_DATA_HOME = Join-Path -Path "$HOME" -ChildPath ".local/share" }; $XDG_DATA_HOME = $env:XDG_DATA_HOME
 if (-not $env:XDG_CACHE_HOME) { $env:XDG_CACHE_HOME = Join-Path -Path "$HOME" -ChildPath ".cache" }; $XDG_CACHE_HOME = $env:XDG_CACHE_HOME
@@ -133,7 +133,7 @@ function .. { Set-Location ".." }
 function .... { Set-Location (Join-Path -Path ".." -ChildPath "..") }
 
 if ( $(Test-CommandExists 'git') ) {
-    Set-Alias g          git -Option AllScope
+    Set-Alias g    git -Option AllScope
 
     function git-root {
         $gitrootdir = (git rev-parse --show-toplevel)
@@ -231,7 +231,7 @@ if ( $env:ChocolateyInstall ){
     }
 }
 
-if (Test-Path("${env:ChocolateyInstall}\helpers\chocolateyProfile.psm1")) {
+if ( Test-Path("${env:ChocolateyInstall}\helpers\chocolateyProfile.psm1") ) {
     Import-Module "${env:ChocolateyInstall}\helpers\chocolateyProfile.psm1"
 }
 
@@ -248,7 +248,7 @@ function Download-Latest-Profile {
     Reload-Profile
 }
 
-If ($IsWindows) {
+If ( $IsWindows ) {
     function isAdmin {
         $user = [Security.Principal.WindowsIdentity]::GetCurrent();
         (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator);
@@ -327,7 +327,7 @@ function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
 }
 
 function Install-PowershellGet {
-    start-process (Get-HostExecutable) -ArgumentList "-Command Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause" -verb runAs
+    start-process "$(Get-HostExecutable)" -ArgumentList "-Command Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause" -verb runAs
 }
 
 function Install-MyModules {
@@ -380,7 +380,7 @@ if ( $(Test-CommandExists 'thefuck') ){
         [Console]::ResetColor()
         $env:PYTHONIOENCODING=$PYTHONIOENCODING_BKP
     }
-    Set-Alias f fuck -Option AllScope
+    Set-Alias f    fuck -Option AllScope
 }
 
 # hacks for old powerhsell versions
