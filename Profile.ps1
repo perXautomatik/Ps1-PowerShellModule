@@ -239,7 +239,7 @@ function Reload-Profile {
 }
 
 function Download-Latest-Profile {
-    if ( $(Get-Content "$($PROFILE.CurrentUserAllHosts)" | Select-String "62a71500a0f044477698da71634ab87b") != "" ) {
+    if ( $(Get-Content "$($PROFILE.CurrentUserAllHosts)" | Select-String "62a71500a0f044477698da71634ab87b") -ne "" ) {
         Move-Item -Path "$($PROFILE.CurrentUserAllHosts)" -Destination "$($PROFILE.CurrentUserAllHosts).bak"
     }
     New-Item $( Split-Path $($PROFILE.CurrentUserAllHosts) ) -ItemType Directory -ea 0
