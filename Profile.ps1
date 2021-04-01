@@ -10,6 +10,7 @@ Set-Alias cp         Copy-Item -Option AllScope
 Set-Alias history    Get-History -Option AllScope
 Set-Alias kill       Stop-Process -Option AllScope
 Set-Alias lp         Out-Printer -Option AllScope
+Set-Alias ls         Get-Childitem -Option AllScope
 Set-Alias ll         Get-Childitem -Option AllScope
 Set-Alias mv         Move-Item -Option AllScope
 Set-Alias ps         Get-Process -Option AllScope
@@ -239,10 +240,10 @@ function Reload-Profile {
 }
 
 function Download-Latest-Profile {
+    New-Item $( Split-Path $($PROFILE.CurrentUserCurrentHost) ) -ItemType Directory -ea 0
     if ( $(Get-Content "$($PROFILE.CurrentUserCurrentHost)" | Select-String "62a71500a0f044477698da71634ab87b") -ne "" ) {
         Move-Item -Path "$($PROFILE.CurrentUserCurrentHost)" -Destination "$($PROFILE.CurrentUserCurrentHost).bak"
     }
-    New-Item $( Split-Path $($PROFILE.CurrentUserCurrentHost) ) -ItemType Directory -ea 0
     Invoke-WebRequest -Uri "https://gist.githubusercontent.com/apfelchips/62a71500a0f044477698da71634ab87b/raw/Profile.ps1" -OutFile "$($PROFILE.CurrentUserCurrentHost)"
     Reload-Profile
 }
@@ -352,14 +353,14 @@ if (($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -N
     Set-PSReadlineKeyHandler -Chord 'Shift+Tab' -Function Complete
 
     Set-PSReadLineOption -predictionsource history
-    if ($null -ne (Get-Module PSFzf)) {
+    if ( $(Get-Module PSFzf) -ne $null ) {
         #Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
         #$FZF_COMPLETION_TRIGGER='...'
         Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
     }
 }
 
-if (($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name posh-git))) {
+if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name posh-git)) ) {
     Import-Module posh-git
 }
 
@@ -383,7 +384,7 @@ if ( $(Test-CommandExists 'thefuck') ){
 }
 
 # hacks for old powerhsell versions
-if ($PSVersionTable.PSVERSION.Major -lt 7) {
+if ( "$PSVersionTable.PSVERSION.Major" -lt 7 ) {
     $PSDefaultParameterValues['Out-File:Encoding'] = 'utf8' # Fix Encoding for PS 5.1 -> 6.0 https://stackoverflow.com/a/40098904
 
     function Get-ExitBoolean($command) { # fixed: https://github.com/PowerShell/PowerShell/pull/9849
@@ -391,7 +392,7 @@ if ($PSVersionTable.PSVERSION.Major -lt 7) {
     }
     Set-Alias geb   Get-ExitBoolean
 
-    function Use-Default # $var = d $Value : "DefaultValue"  eg ternary # fixed: https://toastit.dev/2019/09/25/ternary-operator-powershell-7/
+    function Use-Default # $var = d $Value : "DefaultValue" eg. ternary # fixed: https://toastit.dev/2019/09/25/ternary-operator-powershell-7/
     {
         for ($i = 1; $i -lt $args.Count; $i++){
             if ($args[$i] -eq ":"){
