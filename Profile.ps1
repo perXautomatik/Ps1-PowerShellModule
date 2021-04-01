@@ -239,11 +239,11 @@ function Reload-Profile {
 }
 
 function Download-Latest-Profile {
-    if ( $(Get-Content "$($PROFILE.CurrentUserAllHosts)" | Select-String "62a71500a0f044477698da71634ab87b") -ne "" ) {
-        Move-Item -Path "$($PROFILE.CurrentUserAllHosts)" -Destination "$($PROFILE.CurrentUserAllHosts).bak"
+    if ( $(Get-Content "$($PROFILE.CurrentUserCurrentHost)" | Select-String "62a71500a0f044477698da71634ab87b") -ne "" ) {
+        Move-Item -Path "$($PROFILE.CurrentUserCurrentHost)" -Destination "$($PROFILE.CurrentUserCurrentHost).bak"
     }
-    New-Item $( Split-Path $($PROFILE.CurrentUserAllHosts) ) -ItemType Directory -ea 0
-    Invoke-WebRequest -Uri "https://gist.githubusercontent.com/apfelchips/62a71500a0f044477698da71634ab87b/raw/Profile.ps1" -OutFile "$($PROFILE.CurrentUserAllHosts)"
+    New-Item $( Split-Path $($PROFILE.CurrentUserCurrentHost) ) -ItemType Directory -ea 0
+    Invoke-WebRequest -Uri "https://gist.githubusercontent.com/apfelchips/62a71500a0f044477698da71634ab87b/raw/Profile.ps1" -OutFile "$($PROFILE.CurrentUserCurrentHost)"
     Reload-Profile
 }
 
