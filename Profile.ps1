@@ -235,11 +235,11 @@ if (Test-Path("${env:ChocolateyInstall}\helpers\chocolateyProfile.psm1")) {
 }
 
 function Reload-Profile {
-    . $PROFILE.CurrentUserAllHosts
+    . $PROFILE.CurrentUserCurrentHost
 }
 
 function Download-Latest-Profile {
-    if ( ! $(Get-Content "$($PROFILE.CurrentUserAllHosts)" | Select-String "62a71500a0f044477698da71634ab87b") ) {
+    if ( $(Get-Content "$($PROFILE.CurrentUserAllHosts)" | Select-String "62a71500a0f044477698da71634ab87b") != "" ) {
         Move-Item -Path "$($PROFILE.CurrentUserAllHosts)" -Destination "$($PROFILE.CurrentUserAllHosts).bak"
     }
     New-Item $( Split-Path $($PROFILE.CurrentUserAllHosts) ) -ItemType Directory -ea 0
