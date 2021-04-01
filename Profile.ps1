@@ -72,10 +72,6 @@ function Remove-CustomAliases { # https://stackoverflow.com/a/2816523
     Get-Alias | Where-Object { ! $_.Options -match "ReadOnly" } | % { Remove-Item alias:$_ }
 }
 
-function ls {
-    Get-Childitem
-}
-
 function Get-Environment {  # Get-Variable to show all Powershell Variables accessible via $
     if($args.Count -eq 0){
         Get-Childitem env:
@@ -86,6 +82,11 @@ function Get-Environment {  # Get-Variable to show all Powershell Variables acce
     else {
         Start-Process (Get-Command $args[0]).Source -ArgumentList $args[1..($args.Count-1)]
     }
+}
+
+function Prompt
+{
+    $(Get-Location) + "> "
 }
 
 # function Set-EnvironmentAndPSVariable{
@@ -299,7 +300,6 @@ if ( ! $(Test-CommandExists 'sudo') ){
          }
     }
 }
-
 
 function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
   [CmdletBinding(ConfirmImpact='High', SupportsShouldProcess)]
