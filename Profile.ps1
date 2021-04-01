@@ -133,7 +133,7 @@ function .... { Set-Location (Join-Path -Path ".." -ChildPath "..") }
 
 if ( $(Test-CommandExists 'git') ) {
     Set-Alias g          git -Option AllScope
-    
+
     function git-root {
         $gitrootdir = (git rev-parse --show-toplevel)
         if ($gitrootdir) {
@@ -214,7 +214,7 @@ function pause($message="Press any key to continue . . . ") {
     }
     Write-Host
 }
-if $env:ChocolateyInstall {
+if ( $env:ChocolateyInstall ){
     function Install-Chocolatey {
         if (Get-Command choco -errorAction SilentlyContinue)
         {
@@ -278,7 +278,7 @@ function Get-HostExecutable {
     return $ConsoleHostExecutable
 }
 
-if ( ! $(Test-CommandExists 'sudo') )
+if ( ! $(Test-CommandExists 'sudo') ){
     function sudo() # use chocolatey sudo instead
     {
          if ($args.Length -eq 0)
