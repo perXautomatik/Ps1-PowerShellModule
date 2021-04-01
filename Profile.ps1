@@ -1,9 +1,6 @@
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 # src: https://gist.github.com/apfelchips/62a71500a0f044477698da71634ab87b
-# Invoke-WebRequest -Uri "https://git.io/JYZTu" -OutFile "$PROFILE.CurrentUserAllHosts"
-
-Set-Alias open       Invoke-Item -Option AllScope
-Set-Alias g          git -Option AllScope
+# New-Item $( Split-Path "$($PROFILE.CurrentUserAllHosts)" ) -ItemType Directory -ea 0; Invoke-WebRequest -Uri "https://git.io/JYZTu" -OutFile "$(PROFILE.CurrentUserAllHosts)"
 
 # bash-like
 Set-Alias cat        Get-Content -Option AllScope
@@ -19,6 +16,9 @@ Set-Alias ps         Get-Process -Option AllScope
 Set-Alias pwd        Get-Location -Option AllScope
 Set-Alias which      Get-Command -Option AllScope
 Set-Alias env        Get-Environment -Option AllScope
+
+Set-Alias open       Invoke-Item -Option AllScope
+Set-Alias basename   Split-Path -Option AllScope
 
 # cmd-like
 Set-Alias rm         Remove-Item -Option AllScope
@@ -132,6 +132,8 @@ function .. { Set-Location ".." }
 function .... { Set-Location (Join-Path -Path ".." -ChildPath "..") }
 
 if ( $(Test-CommandExists 'git') ) {
+    Set-Alias g          git -Option AllScope
+    
     function git-root {
         $gitrootdir = (git rev-parse --show-toplevel)
         if ($gitrootdir) {
@@ -212,19 +214,20 @@ function pause($message="Press any key to continue . . . ") {
     }
     Write-Host
 }
-
-function Install-Chocolatey {
-    if (Get-Command choco -errorAction SilentlyContinue)
-    {
-        write-output "chocolatey already installed!";
+if $env:ChocolateyInstall {
+    function Install-Chocolatey {
+        if (Get-Command choco -errorAction SilentlyContinue)
+        {
+            write-output "chocolatey already installed!";
+        }
+        else {
+            start-process (Get-HostExecutable) -ArgumentList "-Command Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1') -Verb RunAs"
+        }
     }
-    else {
-        start-process (Get-HostExecutable) -ArgumentList "-Command Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'); pause"
+} else {
+    function choco {
+        start-process (Get-HostExecutable) -ArgumentList "-Command choco.exe ${args}; pause" -Verb runAs
     }
-}
-
-function choco {
-    start-process (Get-HostExecutable) -ArgumentList "-Command choco.exe ${args}; pause"-Verb runAs
 }
 
 if (Test-Path("${env:ChocolateyInstall}\helpers\chocolateyProfile.psm1")) {
@@ -236,7 +239,8 @@ function Reload-Profile {
 }
 
 function Download-Latest-Profile {
-    Invoke-WebRequest -Uri "https://gist.githubusercontent.com/apfelchips/62a71500a0f044477698da71634ab87b/raw/Profile.ps1" -OutFile "$PROFILE.CurrentUserAllHosts"
+    New-Item $( Split-Path $($PROFILE.CurrentUserAllHosts) ) -ItemType Directory -ea 0
+    Invoke-WebRequest -Uri "https://gist.githubusercontent.com/apfelchips/62a71500a0f044477698da71634ab87b/raw/Profile.ps1" -OutFile "$($PROFILE.CurrentUserAllHosts))"
     Reload-Profile
 }
 
@@ -274,22 +278,23 @@ function Get-HostExecutable {
     return $ConsoleHostExecutable
 }
 
-
-# function sudo() # use chocolatey sudo instead
-# {
-#     if ($args.Length -eq 0)
-#     {
-#         start-process (get-hostexecutable) -verb "runAs"
-#     }
-#     if ($args.Length -eq 1)
-#     {
-#         start-process $args[0] -verb "runAs"
-#     }
-#     if ($args.Length -gt 1)
-#     {
-#         start-process $args[0] -ArgumentList $args[1..$args.Length] -verb "runAs"
-#     }
-# }
+if ( ! $(Test-CommandExists 'sudo') )
+    function sudo() # use chocolatey sudo instead
+    {
+         if ($args.Length -eq 0)
+         {
+             start-process (get-hostexecutable) -verb "runAs"
+         }
+         if ($args.Length -eq 1)
+         {
+             start-process $args[0] -verb "runAs"
+         }
+         if ($args.Length -gt 1)
+         {
+             start-process $args[0] -ArgumentList $args[1..$args.Length] -verb "runAs"
+         }
+    }
+}
 
 
 function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
