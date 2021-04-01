@@ -84,7 +84,7 @@ function Get-Environment {  # Get-Variable to show all Powershell Variables acce
     }
 }
 
-function Prompt
+function prompt
 {
     $(Get-Location) + "> "
 }
