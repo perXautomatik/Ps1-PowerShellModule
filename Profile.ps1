@@ -26,6 +26,7 @@ Set-Alias rm         Remove-Item -Option AllScope
 Set-Alias rmdir      Remove-Item -Option AllScope
 Set-Alias echo       Write-Output -Option AllScope
 Set-Alias cls        Clear-Host -Option AllScope
+
 Set-Alias chdir      Set-Location -Option AllScope
 Set-Alias copy       Copy-Item -Option AllScope
 Set-Alias del        Remove-Item -Option AllScope
@@ -36,14 +37,6 @@ Set-Alias rd         Remove-Item -Option AllScope
 Set-Alias ren        Rename-Item -Option AllScope
 Set-Alias set        Set-Variable -Option AllScope
 Set-Alias type       Get-Content -Option AllScope
-
-# src: http://serverfault.com/questions/95431
-if ($isWindows){
-    function Test-Administrator {
-        $user = [Security.Principal.WindowsIdentity]::GetCurrent();
-        (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
-    }
-}
 
 # src: https://devblogs.microsoft.com/scripting/use-a-powershell-function-to-see-if-a-command-exists/
 function Test-CommandExists {
@@ -73,10 +66,10 @@ function Remove-CustomAliases { # https://stackoverflow.com/a/2816523
 }
 
 function Get-Environment {  # Get-Variable to show all Powershell Variables accessible via $
-    if($args.Count -eq 0){
+    if( $args.Count -eq 0 ){
         Get-Childitem env:
     }
-    elseif($args.Count -eq 1) {
+    elseif( $args.Count -eq 1 ) {
         Start-Process (Get-Command $args[0]).Source
     }
     else {
@@ -117,7 +110,7 @@ function cddev { Set-Location "$DEVEL_DIR" }
 function cdports { Set-Location "$PORTS_DIR" }
 
 function cf {
-    if ($null -ne (Get-Module PSFzf)) {
+    if ( $(Get-Module PSFzf) -ne $null ) {
         Get-ChildItem . -Recurse -Attributes Directory | Invoke-Fzf | Set-Location
     }
     else {
@@ -140,7 +133,7 @@ if ( $(Test-CommandExists 'git') ) {
 
     if ( $isWindows ){
         function git-bash {
-            if ($args.Count -eq 0){
+            if ( $args.Count -eq 0 ){
                 . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") -l
             } else {
                 . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") $args
@@ -237,7 +230,7 @@ function Reload-Profile {
 
 function Download-Latest-Profile {
     New-Item $( Split-Path $($PROFILE.CurrentUserCurrentHost) ) -ItemType Directory -ea 0
-    if ( $(Get-Content "$($PROFILE.CurrentUserCurrentHost)" | Select-String "62a71500a0f044477698da71634ab87b" | Out-String) -eq "" ) {
+    if ( $(Get-Content "$($PROFILE.CurrentUserCurrentHost)" | Select-String "62a71500a0f044477698da71634ab87b" | Out-String) -ne "" ) {
         Move-Item -Path "$($PROFILE.CurrentUserCurrentHost)" -Destination "$($PROFILE.CurrentUserCurrentHost).bak"
     }
     Invoke-WebRequest -Uri "https://gist.githubusercontent.com/apfelchips/62a71500a0f044477698da71634ab87b/raw/Profile.ps1" -OutFile "$($PROFILE.CurrentUserCurrentHost)"
@@ -245,6 +238,7 @@ function Download-Latest-Profile {
 }
 
 If ( $IsWindows ) {
+    # src: http://serverfault.com/questions/95431
     function isAdmin {
         $user = [Security.Principal.WindowsIdentity]::GetCurrent();
         (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator);
@@ -269,7 +263,7 @@ If ( $IsWindows ) {
 }
 
 function Get-HostExecutable {
-    if ($PSVersionTable.PSEdition = "Core") {
+    if ( $PSVersionTable.PSEdition = "Core" ) {
         $ConsoleHostExecutable = (get-command pwsh).Source
     }
     else {
@@ -281,15 +275,15 @@ function Get-HostExecutable {
 if ( ! $(Test-CommandExists 'sudo') ){
     function sudo() # use chocolatey sudo instead
     {
-         if ($args.Length -eq 0)
+         if ( $args.Length -eq 0 )
          {
              start-process (get-hostexecutable) -verb "runAs"
          }
-         if ($args.Length -eq 1)
+         if ( $args.Length -eq 1 )
          {
              start-process $args[0] -verb "runAs"
          }
-         if ($args.Length -gt 1)
+         if ( $args.Length -gt 1 )
          {
              start-process $args[0] -ArgumentList $args[1..$args.Length] -verb "runAs"
          }
@@ -299,13 +293,13 @@ if ( ! $(Test-CommandExists 'sudo') ){
 function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
   [CmdletBinding(ConfirmImpact='High', SupportsShouldProcess)]
   param()
-  $havePSReadline = ($null -ne (Get-Module -EA SilentlyContinue PSReadline))
-  $target = if ($havePSReadline) { "entire command history, including from previous sessions" } else { "command history" }
-  if (-not $pscmdlet.ShouldProcess($target)){ return }
-  if ($havePSReadline) {
+  $havePSReadline = ( $(Get-Module -EA SilentlyContinue PSReadline) -ne $null )
+  $target = if ( $havePSReadline ) { "entire command history, including from previous sessions" } else { "command history" }
+  if ( -not $pscmdlet.ShouldProcess($target) ){ return }
+  if ( $havePSReadline ) {
         Clear-Host
         # Remove PSReadline's saved-history file.
-        if (Test-Path (Get-PSReadlineOption).HistorySavePath) {
+        if ( Test-Path (Get-PSReadlineOption).HistorySavePath ) {
             # Abort, if the file for some reason cannot be removed.
             Remove-Item -EA Stop (Get-PSReadlineOption).HistorySavePath
             # To be safe, we recreate the file (empty).
@@ -335,7 +329,7 @@ function Install-MyModules {
 #     Import-Module PowershellGet
 # }
 
-if (($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name PSReadLine))) {
+if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name PSReadLine)) ) {
     # example: https://github.com/PowerShell/PSReadLine/blob/master/PSReadLine/SamplePSReadLineProfile.ps1
     Import-Module PSReadLine
 
