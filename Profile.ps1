@@ -131,7 +131,7 @@ if ( $(Test-CommandExists 'git') ) {
         }
     }
 
-    if ( $IsWindows -or ($PSVersionTable.PSEdition -eq "Desktop"){
+    if ( $IsWindows -or ($PSVersionTable.PSEdition -eq "Desktop") ){
         function git-bash {
             if ( $args.Count -eq 0 ){
                 . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") -l
