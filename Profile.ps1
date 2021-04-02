@@ -131,7 +131,7 @@ if ( $(Test-CommandExists 'git') ) {
         }
     }
 
-    if ( $isWindows ){
+    if ( $IsWindows -or ($PSVersionTable.PSEdition -eq "Desktop"){
         function git-bash {
             if ( $args.Count -eq 0 ){
                 . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") -l
@@ -155,7 +155,7 @@ function Select-Value { # src: https://geekeefy.wordpress.com/2017/06/26/selecti
             # Create Property a set which includes the 'DefaultPropertySet' and Property for the respective 'Value' matched
             $DefaultPropertySet = $PSItem.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
             $TypeName = ($PSItem.PSTypenames)[0]
-            Get-TypeData $TypeName |Remove-TypeData
+            Get-TypeData $TypeName | Remove-TypeData
             Update-TypeData -TypeName $TypeName -DefaultDisplayPropertySet ($DefaultPropertySet+$Property |Select-Object -Unique)
 
             $PSItem | Where-Object {$_.properties.Value -like "$Value"}
@@ -199,11 +199,12 @@ function md {
 function pause($message="Press any key to continue . . . ") {
     Write-Host -NoNewline $message
     $i=16,17,18,20,91,92,93,144,145,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183
-    while ($k.VirtualKeyCode -Eq $Null -Or $i -Contains $k.VirtualKeyCode){
+    while ($k.VirtualKeyCode -eq $null -or $i -Contains $k.VirtualKeyCode){
         $k = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     }
     Write-Host
 }
+
 if ( "$env:ChocolateyInstall" -eq "" ){
     function Install-Chocolatey {
         if (Get-Command choco -errorAction SilentlyContinue)
@@ -237,7 +238,7 @@ function Download-Latest-Profile {
     Reload-Profile
 }
 
-If ( $IsWindows ) {
+if ( $IsWindows -or ($PSVersionTable.PSEdition -eq "Desktop") ) {
     # src: http://serverfault.com/questions/95431
     function isAdmin {
         $user = [Security.Principal.WindowsIdentity]::GetCurrent();
@@ -263,7 +264,7 @@ If ( $IsWindows ) {
 }
 
 function Get-HostExecutable {
-    if ( $PSVersionTable.PSEdition = "Core" ) {
+    if ( $PSVersionTable.PSEdition -eq "Core" ) {
         $ConsoleHostExecutable = (get-command pwsh).Source
     }
     else {
@@ -272,8 +273,9 @@ function Get-HostExecutable {
     return $ConsoleHostExecutable
 }
 
+# don't override chocolatey sudo or unix sudo
 if ( ! $(Test-CommandExists 'sudo') ){
-    function sudo() # use chocolatey sudo instead
+    function sudo() 
     {
          if ( $args.Length -eq 0 )
          {
@@ -315,14 +317,15 @@ function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
     }
 }
 
-function Install-PowershellGet {
-    start-process "$(Get-HostExecutable)" -ArgumentList "-Command Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause" -verb runAs
-}
-
 function Install-MyModules {
     Install-Module PSReadLine -Scope CurrentUser -Repository 'PSGallery' -AllowPrerelease -Force
     Install-Module posh-git -Scope CurrentUser -Repository 'PSGallery' -AllowPrerelease -Force
     Install-Module PSFzf -Scope CurrentUser -Repository 'PSGallery' -Force
+}
+
+
+function Install-PowershellGet {
+    start-process "$(Get-HostExecutable)" -ArgumentList "-Command Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause"
 }
 
 # if (($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name PowershellGet))) {
