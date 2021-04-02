@@ -276,7 +276,7 @@ function Get-HostExecutable {
 }
 
 # don't override chocolatey sudo or unix sudo
-if ( ! $(Test-CommandExists 'sudo') ){
+if ( -not $(Test-CommandExists 'sudo') ){
     function sudo()
     {
          if ( $args.Length -eq 0 )
@@ -358,6 +358,7 @@ if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -
     Import-Module posh-git
 }
 
+# already expanded to save time https://github.com/nvbn/thefuck/wiki/Shell-aliases#powershell
 if ( $(Test-CommandExists 'thefuck') ){
     function fuck {
         $PYTHONIOENCODING_BKP=$env:PYTHONIOENCODING
