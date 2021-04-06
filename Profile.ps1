@@ -327,7 +327,7 @@ function Install-MyModules {
 
 
 function Install-PowershellGet {
-    start-process "$(Get-HostExecutable)" -ArgumentList "-Command Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause"
+    start-process "$(Get-HostExecutable)" -ArgumentList "-noProfile -Command Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause"
 }
 
 # if (($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name PowershellGet))) {
