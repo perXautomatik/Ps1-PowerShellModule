@@ -1,9 +1,10 @@
 <#
+ * Search Key: powershell
  * FileName: Microsoft.PowerShell_profile.ps1
  * Author: 刘 鹏
  * Email: littleNewton6@outlook.com
- * Date: 2020, May. 1
- * Update: 2021, Mar. 14
+ * Create Date: 2020, May. 1
+ * Update Date: 2021, Apr. 7
  * Copyright: No copyright. You can use this code for anything with no warranty.
 #>
 
@@ -54,7 +55,7 @@ Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 # Python 直接执行
 $env:PATHEXT += ";.py"
 
-# 更新 pip 的方法
+# 更新系统组件
 function Update-Packages {
 	# update pip
 	Write-Host "Step 1: 更新 pip" -ForegroundColor Magenta -BackgroundColor Cyan
@@ -72,6 +73,7 @@ function Update-Packages {
 	tlmgr update --all
 
 	# update Chocolotey
+	Write-Host "Step 3: 更新 Chocolatey" -ForegroundColor Magenta -BackgroundColor Cyan
 	choco outdated
 }
 #-------------------------------    Functions END     -------------------------------
@@ -97,30 +99,10 @@ function ListDirectory {
 }
 Set-Alias -Name ls -Value ListDirectory
 Set-Alias -Name ll -Value Get-ChildItem
-#-------------------------------    Set Alias END     -------------------------------
 
-
-
-
-
-#-------------------------------     Set SSH BEGIN    -------------------------------
-<# 连接部分远程主机：
- * <1> -> [Newton-rPC-1] ONE core 1GB Mem Aliyun ECS
- * <2> -> [Newton-rPC-2] TWO core 4GB Mem Aliyun ECS
- * <3> -> [nipcdl-t630]  NIPC T-630 Deep Learning Server
-#>
-function rpc ($Remote_IP){
-	if ($Remote_IP -eq 1) {
-		ssh newton@xxx -p 23132
-	}
-	elseif ($Remote_IP -eq 2) {
-		ssh liup@xxx -p 23132
-	}
-	elseif ($Remote_IP -eq 3) {
-		ssh xxx@xxx -p 21322
-	}
-	else {
-		Write-Host("Error: Host IP 错误")
-	}
+# 4. 打开当前工作目录
+function OpenCurrentFolder {
+	Invoke-Item .
 }
-#-------------------------------     Set SSH END      -------------------------------
+Set-Alias -Name open -Value OpenCurrentFolder
+#-------------------------------    Set Alias END     -------------------------------
