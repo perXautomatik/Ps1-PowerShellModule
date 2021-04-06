@@ -207,7 +207,7 @@ function pause($message="Press any key to continue . . . ") {
     Write-Host
 }
 
-if ( "$env:ChocolateyInstall" -eq "" ){
+if ( "${env:ChocolateyInstall}" -eq "" ) {
     function Install-Chocolatey {
         if (Get-Command choco -errorAction SilentlyContinue)
         {
