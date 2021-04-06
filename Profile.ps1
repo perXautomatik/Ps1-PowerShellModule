@@ -44,7 +44,7 @@ Set-Alias type       Get-Content -Option AllScope
 function Test-CommandExists {
     Param ($command)
     $oldPreference = $ErrorActionPreference
-    $ErrorActionPreference = ‘stop’
+    $ErrorActionPreference = 'stop'
     try {if ( Get-Command $command ){return $true}}
     catch {return $false}
     finally {$ErrorActionPreference=$oldPreference}
