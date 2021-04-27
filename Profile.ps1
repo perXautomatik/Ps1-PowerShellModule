@@ -70,11 +70,9 @@ function Remove-CustomAliases { # https://stackoverflow.com/a/2816523
 function Get-Environment {  # Get-Variable to show all Powershell Variables accessible via $
     if( $args.Count -eq 0 ){
         Get-Childitem env:
-    }
-    elseif( $args.Count -eq 1 ) {
+    } elseif( $args.Count -eq 1 ) {
         Start-Process (Get-Command $args[0]).Source
-    }
-    else {
+    } else {
         Start-Process (Get-Command $args[0]).Source -ArgumentList $args[1..($args.Count-1)]
     }
 }
@@ -83,8 +81,7 @@ function Get-Environment {  # Get-Variable to show all Powershell Variables acce
 # function Set-EnvironmentAndPSVariable{
 #     if (([Environment]::GetEnvironmentVariable($args[0]))){
 #         Set-Variable -Name "$args[0]" -Value ([Environment]::GetEnvironmentVariable("$args[0]"))
-#     }
-#     else {
+#     } else {
 #         [Environment]::SetEnvironmentVariable($args[0], $args[1], 'User')
 #         Set-Variable -Name $args[0] -Value $args[1]
 #     }
@@ -115,8 +112,7 @@ function cdports { Set-Location "$PORTS_DIR" }
 function cf {
     if ( $(Get-Module PSFzf) -ne $null ) {
         Get-ChildItem . -Recurse -Attributes Directory | Invoke-Fzf | Set-Location
-    }
-    else {
+    } else {
         Write-Host "please install PSFzf"
     }
 }
@@ -167,7 +163,7 @@ function Select-Value { # src: https://geekeefy.wordpress.com/2017/06/26/selecti
 }
 
 Remove-Item alias:ls
-function ls { # ls -al is musclememory by now so ignore all args for this alias
+function ls { # ls -al is musclememory by now so ignore all args for this "alias"
     Get-Childitem
 }
 
@@ -219,8 +215,7 @@ if ( "${env:ChocolateyInstall}" -eq "" ) {
         if (Get-Command choco -errorAction SilentlyContinue)
         {
             write-output "chocolatey already installed!";
-        }
-        else {
+        } else {
             start-process (Get-HostExecutable) -ArgumentList "-Command Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1') -Verb RunAs"
         }
     }
@@ -265,8 +260,7 @@ if ( $IsWindows -or ($PSVersionTable.PSEdition -eq "Desktop") ) {
             $newestExe = Get-Item "${env:ProgramFiles(x86)}\Atlassian\SourceTree\SourceTree.exe" | select -Last 1
             # Write-Host "Opening $gitrootdir with $newestExe"
             start-process -filepath $newestExe -ArgumentList "-f `"$gitrootdir`" log"
-        }
-        else {
+        } else {
             Write-Host "git directory not found"
         }
     }
@@ -275,8 +269,7 @@ if ( $IsWindows -or ($PSVersionTable.PSEdition -eq "Desktop") ) {
 function Get-HostExecutable {
     if ( $PSVersionTable.PSEdition -eq "Core" ) {
         $ConsoleHostExecutable = (get-command pwsh).Source
-    }
-    else {
+    } else {
         $ConsoleHostExecutable = (get-command powershell).Source
     }
     return $ConsoleHostExecutable
@@ -319,8 +312,7 @@ function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
         # Clear PowerShell's own history
         Clear-History
         [Microsoft.PowerShell.PSConsoleReadLine]::ClearHistory()
-    }
-    else { # Without PSReadline, we only have a *session* history.
+    } else { # Without PSReadline, we only have a *session* history.
         Clear-Host
         Clear-History
     }
@@ -332,14 +324,6 @@ function Install-MyModules {
     Install-Module PSFzf -Scope CurrentUser -Repository 'PSGallery' -Force
 }
 
-
-function Install-PowershellGet {
-    start-process "$(Get-HostExecutable)" -ArgumentList "-noProfile -Command Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause"
-}
-
-# if (($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name PowershellGet))) {
-#     Import-Module PowershellGet
-# }
 
 if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name PSReadLine)) ) {
     # example: https://github.com/PowerShell/PSReadLine/blob/master/PSReadLine/SamplePSReadLineProfile.ps1
@@ -370,13 +354,12 @@ if ( $(Test-CommandExists 'thefuck') ){
     function fuck {
         $PYTHONIOENCODING_BKP=$env:PYTHONIOENCODING
         $env:PYTHONIOENCODING="utf-8"
-        $history = (Get-History -Count 1).CommandLine;
+        $history = (Get-History -Count 1).CommandLine
 
         if (-not [string]::IsNullOrWhiteSpace($history)) {
-            $fuck = $(thefuck $args $history);
+            $fuck = $(thefuck $args $history)
             if (-not [string]::IsNullOrWhiteSpace($fuck)) {
-                if ($fuck.StartsWith("echo")) { $fuck = $fuck.Substring(5); }
-                else { iex "$fuck"; }
+                if ($fuck.StartsWith("echo")) { $fuck = $fuck.Substring(5) } else { iex "$fuck" }
             }
         }
         [Console]::ResetColor()
@@ -387,6 +370,13 @@ if ( $(Test-CommandExists 'thefuck') ){
 
 # hacks for old powerhsell versions
 if ( "$PSVersionTable.PSVERSION.Major" -lt 7 ) {
+
+    # https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget
+    function Install-PowershellGet {
+        Install-PackageProvider -Name NuGet -Force
+        start-process "$(Get-HostExecutable)" -ArgumentList "-noProfile -Command Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause" -RunAs
+    }
+
     $PSDefaultParameterValues['Out-File:Encoding'] = 'utf8' # Fix Encoding for PS 5.1 -> 6.0 https://stackoverflow.com/a/40098904
 
     function Get-ExitBoolean($command) { # fixed: https://github.com/PowerShell/PowerShell/pull/9849
@@ -406,8 +396,7 @@ if ( "$PSVersionTable.PSVERSION.Major" -lt 7 ) {
         }
         if ($args[$coord - 1] -eq ""){
             $toReturn = $args[$coord + 1]
-        }
-        else {
+        } else {
             $toReturn = $args[$coord -1]
         }
         return $toReturn
