@@ -12,7 +12,7 @@ Set-Alias cp         Copy-Item -Option AllScope
 Set-Alias history    Get-History -Option AllScope
 Set-Alias kill       Stop-Process -Option AllScope
 Set-Alias lp         Out-Printer -Option AllScope
-Set-Alias ls         Get-Childitem -Option AllScope
+#Set-Alias ls         Get-Childitem -Option AllScope
 Set-Alias ll         Get-Childitem -Option AllScope
 Set-Alias mv         Move-Item -Option AllScope
 Set-Alias ps         Get-Process -Option AllScope
@@ -79,6 +79,7 @@ function Get-Environment {  # Get-Variable to show all Powershell Variables acce
     }
 }
 
+# TODO:
 # function Set-EnvironmentAndPSVariable{
 #     if (([Environment]::GetEnvironmentVariable($args[0]))){
 #         Set-Variable -Name "$args[0]" -Value ([Environment]::GetEnvironmentVariable("$args[0]"))
@@ -165,12 +166,18 @@ function Select-Value { # src: https://geekeefy.wordpress.com/2017/06/26/selecti
     }
 }
 
+Remove-Item alias:ls
+function ls { # ls -al is musclememory by now so ignore all args for this alias
+    Get-Childitem
+}
+
 # https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions?view=powershell-7#piping-objects-to-functions
+
 function all {
     process { $_ | Select-Object * }
 }
 
-function list {
+function list { # fl is there by default
     process { $_ | Format-List * }
 }
 
