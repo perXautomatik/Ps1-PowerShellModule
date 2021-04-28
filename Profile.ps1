@@ -375,7 +375,7 @@ if ( $(Test-CommandExists 'thefuck') ){
 # hacks for old powerhsell versions
 if ( $PSVersionTable.PSVersion.Major -lt 7 ) {
     # https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget
-    function Install-PowershellGet {
+    function Install-PowerShellGet {
         Install-PackageProvider -Name NuGet -Force
         start-process "$(Get-HostExecutable)" -ArgumentList "-noProfile -Command Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause" -RunAs
     }
