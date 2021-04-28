@@ -377,7 +377,7 @@ if ( $PSVersionTable.PSVersion.Major -lt 7 ) {
     # https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget
     function Install-PowerShellGet {
         Install-PackageProvider -Name NuGet -Force
-        start-process "$(Get-HostExecutable)" -ArgumentList "-noProfile -Command Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause" -verb RunAs
+        start-process "$(Get-HostExecutable)" -ArgumentList "-noProfile -Command Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause" -verb "RunAs"
     }
 
     $PSDefaultParameterValues['Out-File:Encoding'] = 'utf8' # Fix Encoding for PS 5.1 -> 6.0 https://stackoverflow.com/a/40098904
