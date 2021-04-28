@@ -216,12 +216,12 @@ if ( "${env:ChocolateyInstall}" -eq "" ) {
         {
             write-output "chocolatey already installed!";
         } else {
-            start-process (Get-HostExecutable) -ArgumentList "-Command Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1') -Verb RunAs"
+            start-process (Get-HostExecutable) -ArgumentList "-Command Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1') -verb RunAs"
         }
     }
 } else {
     function choco {
-        start-process (Get-HostExecutable) -ArgumentList "-Command choco.exe ${args}; pause" -Verb runAs
+        start-process (Get-HostExecutable) -ArgumentList "-Command choco.exe ${args}; pause" -verb runAs
     }
 }
 
@@ -377,7 +377,7 @@ if ( $PSVersionTable.PSVersion.Major -lt 7 ) {
     # https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget
     function Install-PowerShellGet {
         Install-PackageProvider -Name NuGet -Force
-        start-process "$(Get-HostExecutable)" -ArgumentList "-noProfile -Command Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause" -RunAs
+        start-process "$(Get-HostExecutable)" -ArgumentList "-noProfile -Command Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause" -verb RunAs
     }
 
     $PSDefaultParameterValues['Out-File:Encoding'] = 'utf8' # Fix Encoding for PS 5.1 -> 6.0 https://stackoverflow.com/a/40098904
