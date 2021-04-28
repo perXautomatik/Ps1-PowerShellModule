@@ -339,7 +339,6 @@ if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -
 
     if ( $(Get-Module PSReadline).Version -ge 2.2 ){
         Set-PSReadLineOption -predictionsource history -ea SilentlyContinue
-        echo "asfdasdsadf"
     }
 
     if ( $(Get-Module PSFzf) -ne $null ) {
