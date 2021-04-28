@@ -336,8 +336,10 @@ if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -
     Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
     Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
     Set-PSReadlineKeyHandler -Chord 'Shift+Tab' -Function Complete
-    if ( $(Get-Module PSReadline).Version.Major -ge 2 ){
-        Set-PSReadLineOption -predictionsource history
+
+    if ( $(Get-Module PSReadline).Version -ge 2.2 ){
+        Set-PSReadLineOption -predictionsource history -ea SilentlyContinue
+        echo "asfdasdsadf"
     }
 
     if ( $(Get-Module PSFzf) -ne $null ) {
@@ -371,8 +373,8 @@ if ( $(Test-CommandExists 'thefuck') ){
 }
 
 # hacks for old powerhsell versions
-if ( "$PSVersionTable.PSVERSION.Major" -lt 7 ) {
-
+if ( $PSVersionTable.PSVersion.Major -lt 7 ) {
+    echo "asdfsad"
     # https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget
     function Install-PowershellGet {
         Install-PackageProvider -Name NuGet -Force
@@ -406,12 +408,10 @@ if ( "$PSVersionTable.PSVERSION.Major" -lt 7 ) {
     Set-Alias d    Use-Default
 }
 
-Write-Host "`$PSVersion: $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor).$($PSVersionTable.PSVersion.Patch)"
-
-if ( $PSVersionTable.PSEdition -ne $null ){
-    Write-Host "`$PSEdition: $($PSVersionTable.PSEdition)"
-} else {
-    Write-Host "`$PSEdition: Desktop"
+if ( $PSVersionTable.PSEdition -eq $null ){
+    $PSVersionTable.PSEdition = "Desktop"
 }
 
+Write-Host "`$PSVersion: $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor).$($PSVersionTable.PSVersion.Patch)"
+Write-Host "`$PSEdition: $($PSVersionTable.PSEdition)"
 Write-Host "`$Profile:   $PSCommandPath"
