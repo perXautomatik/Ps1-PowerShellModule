@@ -162,7 +162,7 @@ function Select-Value { # src: https://geekeefy.wordpress.com/2017/06/26/selecti
     }
 }
 
-Remove-Item alias:ls
+Remove-Item alias:ls -ea SilentlyContinue
 function ls { # ls -al is musclememory by now so ignore all args for this "alias"
     Get-Childitem
 }
@@ -297,7 +297,7 @@ if ( -not $(Test-CommandExists 'sudo') ){
 function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
   [CmdletBinding(ConfirmImpact='High', SupportsShouldProcess)]
   param()
-  $havePSReadline = ( $(Get-Module -EA SilentlyContinue PSReadline) -ne $null )
+  $havePSReadline = ( $(Get-Module -ea SilentlyContinue PSReadline) -ne $null )
   $target = if ( $havePSReadline ) { "entire command history, including from previous sessions" } else { "command history" }
   if ( -not $pscmdlet.ShouldProcess($target) ){ return }
   if ( $havePSReadline ) {
@@ -305,7 +305,7 @@ function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
         # Remove PSReadline's saved-history file.
         if ( Test-Path (Get-PSReadlineOption).HistorySavePath ) {
             # Abort, if the file for some reason cannot be removed.
-            Remove-Item -EA Stop (Get-PSReadlineOption).HistorySavePath
+            Remove-Item -ea Stop (Get-PSReadlineOption).HistorySavePath
             # To be safe, we recreate the file (empty).
             $null = New-Item -Type File -Path (Get-PSReadlineOption).HistorySavePath
         }
