@@ -336,8 +336,10 @@ if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -
     Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
     Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
     Set-PSReadlineKeyHandler -Chord 'Shift+Tab' -Function Complete
+    if ( $(Get-Module PSReadline).Version.Major -ge 2 ){
+        Set-PSReadLineOption -predictionsource history
+    }
 
-    Set-PSReadLineOption -predictionsource history
     if ( $(Get-Module PSFzf) -ne $null ) {
         #Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
         #$FZF_COMPLETION_TRIGGER='...'
@@ -405,5 +407,11 @@ if ( "$PSVersionTable.PSVERSION.Major" -lt 7 ) {
 }
 
 Write-Host "`$PSVersion: $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor).$($PSVersionTable.PSVersion.Patch)"
-Write-Host "`$PSEdition: $($PSVersionTable.PSEdition | Out-String -NoNewline)"
+
+if ( $PSVersionTable.PSEdition -ne $null ){
+    Write-Host "`$PSEdition: $($PSVersionTable.PSEdition)"
+} else {
+    Write-Host "`$PSEdition: Desktop"
+}
+
 Write-Host "`$Profile:   $PSCommandPath"
