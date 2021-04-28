@@ -374,7 +374,6 @@ if ( $(Test-CommandExists 'thefuck') ){
 
 # hacks for old powerhsell versions
 if ( $PSVersionTable.PSVersion.Major -lt 7 ) {
-    echo "asdfsad"
     # https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget
     function Install-PowershellGet {
         Install-PackageProvider -Name NuGet -Force
