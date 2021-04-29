@@ -413,7 +413,7 @@ function Install-MyModules {
     Install-Module -Name PSReadLine -Scope CurrentUser -Repository 'PSGallery' -AllowPrerelease -Force
     Install-Module -Name posh-git -Scope CurrentUser -Repository 'PSGallery' -AllowPrerelease -Force
     Install-Module -Name PSFzf -Scope CurrentUser -Repository 'PSGallery' -Force
-    Install-Module -Name PSProfiler -Scope CurrentUser -Repository 'PSGallery' -Force
+    Install-Module -Name PSProfiler -Scope CurrentUser -Repository 'PSGallery' -Force # --> Measure-Script
 }
 
 if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name PSReadLine)) ) {
