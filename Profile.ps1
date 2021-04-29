@@ -45,11 +45,35 @@ Set-Alias type       Get-Content -Option AllScope
 # src: https://devblogs.microsoft.com/scripting/use-a-powershell-function-to-see-if-a-command-exists/
 function Test-CommandExists {
     Param ($command)
-    $oldPreference = $ErrorActionPreference
+    $oldErrorActionPreference = $ErrorActionPreference
     $ErrorActionPreference = 'stop'
-    try {if ( Get-Command $command ){return $true}}
+    try { Get-Command $command; return $true }
     catch {return $false}
-    finally {$ErrorActionPreference=$oldPreference}
+    finally { $ErrorActionPreference=$oldErrorActionPreference }
+}
+
+function Get-ModulesAvailable {
+    if ( $args -eq $null ){
+        Get-Module -ListAvailable
+    } else {
+        Get-Module -ListAvailable $args
+    }
+}
+
+function Get-ModulesAvailable {
+    if ( $args -eq $null ){
+        Get-Module -All
+    } else {
+        Get-Module -All $args
+    }
+}
+
+function TryImport-Module {
+    $oldErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = 'stop'
+    try { Import-Module $args}
+    catch { }
+    finally { $ErrorActionPreference=$oldErrorActionPreference }
 }
 
 function Clean-Object {
@@ -214,7 +238,7 @@ function pause($message="Press any key to continue . . . ") {
 
 if ( "${env:ChocolateyInstall}" -eq "" ) {
     function Install-Chocolatey {
-        if (Get-Command choco -errorAction SilentlyContinue)
+        if (Get-Command choco -ErrorAction SilentlyContinue)
         {
             write-output "chocolatey already installed!";
         } else {
@@ -227,9 +251,7 @@ if ( "${env:ChocolateyInstall}" -eq "" ) {
     }
 }
 
-if ( Test-Path("${env:ChocolateyInstall}\helpers\chocolateyProfile.psm1") ) {
-    Import-Module "${env:ChocolateyInstall}\helpers\chocolateyProfile.psm1" -ea SilentlyContinue
-}
+TryImport-Module "${env:ChocolateyInstall}\helpers\chocolateyProfile.psm1"
 
 function Reload-Profile {
     . $PROFILE.CurrentUserCurrentHost
@@ -299,7 +321,7 @@ if ( -not $(Test-CommandExists 'sudo') ){
 function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
   [CmdletBinding(ConfirmImpact='High', SupportsShouldProcess)]
   param()
-  $havePSReadline = ( $(Get-Module -ea SilentlyContinue PSReadline) -ne $null )
+  $havePSReadline = ( $(Get-Module PSReadline -ea SilentlyContinue) -ne $null )
   $target = if ( $havePSReadline ) { "entire command history, including from previous sessions" } else { "command history" }
   if ( -not $pscmdlet.ShouldProcess($target) ){ return }
   if ( $havePSReadline ) {
@@ -330,7 +352,7 @@ function Install-MyModules {
 
 if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name PSReadLine)) ) {
     # example: https://github.com/PowerShell/PSReadLine/blob/master/PSReadLine/SamplePSReadLineProfile.ps1
-    Import-Module PSReadLine -ea SilentlyContinue
+    TryImport-Module PSReadLine
 
     # Set-PSReadLineOption -EditMode Emac
     Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
@@ -352,7 +374,7 @@ if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -
 }
 
 if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name posh-git)) ) {
-    Import-Module posh-git -ea SilentlyContinue
+        TryImport-Module posh-git
 }
 
 # already expanded to save time https://github.com/nvbn/thefuck/wiki/Shell-aliases#powershell
