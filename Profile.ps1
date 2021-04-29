@@ -95,7 +95,7 @@ function Remove-CustomAliases { # https://stackoverflow.com/a/2816523
 }
 
 function Get-Environment {  # Get-Variable to show all Powershell Variables accessible via $
-    if( $args.Count -eq 0 ) {
+    if ( $args.Count -eq 0 ) {
         Get-Childitem env:
     } elseif( $args.Count -eq 1 ) {
         Start-Process (Get-Command $args[0]).Source
@@ -177,7 +177,7 @@ function Select-Value { # src: https://geekeefy.wordpress.com/2017/06/26/selecti
     process {
         # Identify the PropertyName for respective matching Value, in order to populate it Default Properties
         $Property = ($PSItem.properties.Where({$_.Value -Like "$Value"})).Name
-        If($Property) {
+        If ( $Property ) {
             # Create Property a set which includes the 'DefaultPropertySet' and Property for the respective 'Value' matched
             $DefaultPropertySet = $PSItem.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
             $TypeName = ($PSItem.PSTypenames)[0]
