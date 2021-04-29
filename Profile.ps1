@@ -2,7 +2,8 @@
 # src: https://gist.github.com/apfelchips/62a71500a0f044477698da71634ab87b
 # New-Item $(Split-Path "$($PROFILE.CurrentUserCurrentHost)") -ItemType Directory -ea 0; Invoke-WebRequest -Uri "https://git.io/JYZTu" -OutFile "$($PROFILE.CurrentUserCurrentHost)"
 
-# Ref: https://devblogs.microsoft.com/powershell/optimizing-your-profile/#measure-script
+# ref: https://devblogs.microsoft.com/powershell/optimizing-your-profile/#measure-script
+# ref: Powershell $? https://stackoverflow.com/a/55362991
 
 Clear-Host # remove advertisements
 
@@ -236,22 +237,75 @@ function pause($message="Press any key to continue . . . ") {
     Write-Host
 }
 
-if ( "${env:ChocolateyInstall}" -eq "" ) {
-    function Install-Chocolatey {
-        if (Get-Command choco -ErrorAction SilentlyContinue)
-        {
-            write-output "chocolatey already installed!";
-        } else {
-            start-process (Get-HostExecutable) -ArgumentList "-Command Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1') -verb RunAs"
+# native touch implementation
+# src: https://ss64.com/ps/syntax-touch.html
+function Set-FileTime {
+    param(
+        [string[]]$paths,
+        [bool]$only_modification = $false,
+        [bool]$only_access = $false
+    )
+
+    begin {
+        function updateFileSystemInfo([System.IO.FileSystemInfo]$fsInfo) {
+            $datetime = Get-Date
+            if ( $only_access ) {
+                $fsInfo.LastAccessTime = $datetime
+            } elseif ( $only_modification ) {
+                $fsInfo.LastWriteTime = $datetime
+            } else {
+                $fsInfo.CreationTime = $datetime
+                $fsInfo.LastWriteTime = $datetime
+                $fsInfo.LastAccessTime = $datetime
+            }
+        }
+
+        function touchExistingFile($arg) {
+            if ( $arg -is [System.IO.FileSystemInfo] ) {
+                    updateFileSystemInfo($arg)
+                } else {
+                $resolvedPaths = Resolve-Path $arg
+                foreach ($rpath in $resolvedPaths) {
+                    if ( Test-Path -type Container $rpath ) {
+                        $fsInfo = New-Object System.IO.DirectoryInfo($rpath)
+                    } else {
+                        $fsInfo = New-Object System.IO.FileInfo($rpath)
+                    }
+                    updateFileSystemInfo($fsInfo)
+                }
+            }
+        }
+
+        function touchNewFile([string]$path) {
+            #$null > $path
+            Set-Content -Path $path -value $null;
         }
     }
-} else {
-    function choco {
-        start-process (Get-HostExecutable) -ArgumentList "-Command choco.exe ${args}; pause" -verb runAs
+
+    process {
+        if ( $_ ) {
+            if ( Test-Path $_ ) {
+                touchExistingFile($_)
+            } else {
+                touchNewFile($_)
+            }
+        }
+    }
+
+    end {
+        if ( $paths ) {
+            foreach ( $path in $paths ) {
+                if ( Test-Path $path ) {
+                    touchExistingFile($path)
+                } else {
+                    touchNewFile($path)
+                }
+            }
+        }
     }
 }
 
-TryImport-Module "${env:ChocolateyInstall}\helpers\chocolateyProfile.psm1"
+New-Alias touch Set-FileTime
 
 function Reload-Profile {
     . $PROFILE.CurrentUserCurrentHost
@@ -288,6 +342,21 @@ if ( $IsWindows -or ($PSVersionTable.PSEdition -eq "Desktop") ) {
             Write-Host "git directory not found"
         }
     }
+    if ( "${env:ChocolateyInstall}" -eq "" ) {
+        function Install-Chocolatey {
+            if (Get-Command choco -ErrorAction SilentlyContinue) {
+                write-output "chocolatey already installed!";
+            } else {
+                start-process (Get-HostExecutable) -ArgumentList "-Command Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1') -verb RunAs"
+            }
+        }
+    } else {
+        function choco {
+            start-process (Get-HostExecutable) -ArgumentList "-Command choco.exe ${args}; pause" -verb runAs
+        }
+    }
+
+    TryImport-Module "${env:ChocolateyInstall}\helpers\chocolateyProfile.psm1"
 }
 
 function Get-HostExecutable {
@@ -301,20 +370,14 @@ function Get-HostExecutable {
 
 # don't override chocolatey sudo or unix sudo
 if ( -not $(Test-CommandExists 'sudo') ){
-    function sudo()
-    {
-         if ( $args.Length -eq 0 )
-         {
-             start-process (get-hostexecutable) -verb "runAs"
-         }
-         if ( $args.Length -eq 1 )
-         {
-             start-process $args[0] -verb "runAs"
-         }
-         if ( $args.Length -gt 1 )
-         {
-             start-process $args[0] -ArgumentList $args[1..$args.Length] -verb "runAs"
-         }
+    function sudo() {
+        if ( $args.Length -eq 0 ) {
+            start-process $(Get-HostExecutable) -verb "runAs"
+        } elseif ( $args.Length -eq 1 ) {
+            start-process $args[0] -verb "runAs"
+        } else {
+            start-process $args[0] -ArgumentList $args[1..$args.Length] -verb "runAs"
+        }
     }
 }
 
@@ -348,7 +411,6 @@ function Install-MyModules {
     Install-Module -Name PSFzf -Scope CurrentUser -Repository 'PSGallery' -Force
     Install-Module -Name PSProfiler -Scope CurrentUser -Repository 'PSGallery' -Force
 }
-
 
 if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name PSReadLine)) ) {
     # example: https://github.com/PowerShell/PSReadLine/blob/master/PSReadLine/SamplePSReadLineProfile.ps1
@@ -386,14 +448,14 @@ if ( $(Test-CommandExists 'thefuck') ){
 
         if (-not [string]::IsNullOrWhiteSpace($history)) {
             $fuck = $(thefuck $args $history)
-            if (-not [string]::IsNullOrWhiteSpace($fuck)) {
-                if ($fuck.StartsWith("echo")) { $fuck = $fuck.Substring(5) } else { iex "$fuck" }
+            if ( -not [string]::IsNullOrWhiteSpace($fuck) ) {
+                if ( $fuck.StartsWith("echo") ) { $fuck = $fuck.Substring(5) } else { iex "$fuck" }
             }
         }
         [Console]::ResetColor()
         $env:PYTHONIOENCODING=$PYTHONIOENCODING_BKP
     }
-    Set-Alias f    fuck -Option AllScope
+    Set-Alias f fuck -Option AllScope
 }
 
 # hacks for old powerhsell versions
