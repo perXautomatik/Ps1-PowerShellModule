@@ -157,7 +157,7 @@ if ( $(Test-CommandExists 'git') ) {
         }
     }
 
-    if ( $IsWindows -or ($PSVersionTable.PSEdition -eq "Desktop") ){
+    if ( $IsWindows ) {
         function git-bash {
             if ( $args.Count -eq 0 ){
                 . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") -l
@@ -320,7 +320,12 @@ function Download-Latest-Profile {
     Reload-Profile
 }
 
-if ( $IsWindows -or ($PSVersionTable.PSEdition -eq "Desktop") ) {
+if ( $PSVersionTable.PSEdition -eq $null ) {
+    $PSVersionTable.PSEdition = "Desktop"
+    $IsWindows = $true
+}
+
+if ( $IsWindows ) {
     # src: http://serverfault.com/questions/95431
     function isAdmin {
         $user = [Security.Principal.WindowsIdentity]::GetCurrent();
@@ -490,10 +495,6 @@ if ( $PSVersionTable.PSVersion.Major -lt 7 ) {
         return $toReturn
     }
     Set-Alias d    Use-Default
-}
-
-if ( $PSVersionTable.PSEdition -eq $null ){
-    $PSVersionTable.PSEdition = "Desktop"
 }
 
 Write-Host "`$PSVersion: $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor).$($PSVersionTable.PSVersion.Patch)"
