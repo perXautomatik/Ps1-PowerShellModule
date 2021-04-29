@@ -54,15 +54,15 @@ function Test-CommandExists {
 }
 
 function Get-ModulesAvailable {
-    if ( $args -eq $null ){
+    if ( $args -eq $null ) {
         Get-Module -ListAvailable
     } else {
         Get-Module -ListAvailable $args
     }
 }
 
-function Get-ModulesAvailable {
-    if ( $args -eq $null ){
+function Get-ModulesLoaded {
+    if ( $args -eq $null ) {
         Get-Module -All
     } else {
         Get-Module -All $args
@@ -95,7 +95,7 @@ function Remove-CustomAliases { # https://stackoverflow.com/a/2816523
 }
 
 function Get-Environment {  # Get-Variable to show all Powershell Variables accessible via $
-    if( $args.Count -eq 0 ){
+    if( $args.Count -eq 0 ) {
         Get-Childitem env:
     } elseif( $args.Count -eq 1 ) {
         Start-Process (Get-Command $args[0]).Source
@@ -152,14 +152,14 @@ if ( $(Test-CommandExists 'git') ) {
 
     function git-root {
         $gitrootdir = (git rev-parse --show-toplevel)
-        if ($gitrootdir) {
+        if ( $gitrootdir ) {
             Set-Location $gitrootdir
         }
     }
 
     if ( $IsWindows ) {
         function git-bash {
-            if ( $args.Count -eq 0 ){
+            if ( $args.Count -eq 0 ) {
                 . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") -l
             } else {
                 . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") $args
@@ -177,7 +177,7 @@ function Select-Value { # src: https://geekeefy.wordpress.com/2017/06/26/selecti
     process {
         # Identify the PropertyName for respective matching Value, in order to populate it Default Properties
         $Property = ($PSItem.properties.Where({$_.Value -Like "$Value"})).Name
-        If($Property){
+        If($Property) {
             # Create Property a set which includes the 'DefaultPropertySet' and Property for the respective 'Value' matched
             $DefaultPropertySet = $PSItem.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
             $TypeName = ($PSItem.PSTypenames)[0]
@@ -339,7 +339,7 @@ if ( $IsWindows ) {
     function stree($directory = $pwd) {
         $gitrootdir = (Invoke-Command{Set-Location $args[0]; git rev-parse --show-toplevel 2>&1;} -ArgumentList $directory)
 
-        if ( Test-Path -Path "$gitrootdir\.git" -PathType Container){
+        if ( Test-Path -Path "$gitrootdir\.git" -PathType Container) {
             $newestExe = Get-Item "${env:ProgramFiles(x86)}\Atlassian\SourceTree\SourceTree.exe" | select -Last 1
             # Write-Host "Opening $gitrootdir with $newestExe"
             start-process -filepath $newestExe -ArgumentList "-f `"$gitrootdir`" log"
@@ -374,7 +374,7 @@ function Get-HostExecutable {
 }
 
 # don't override chocolatey sudo or unix sudo
-if ( -not $(Test-CommandExists 'sudo') ){
+if ( -not $(Test-CommandExists 'sudo') ) {
     function sudo() {
         if ( $args.Length -eq 0 ) {
             start-process $(Get-HostExecutable) -verb "runAs"
@@ -391,7 +391,7 @@ function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
   param()
   $havePSReadline = ( $(Get-Module PSReadline -ea SilentlyContinue) -ne $null )
   $target = if ( $havePSReadline ) { "entire command history, including from previous sessions" } else { "command history" }
-  if ( -not $pscmdlet.ShouldProcess($target) ){ return }
+  if ( -not $pscmdlet.ShouldProcess($target) ) { return }
   if ( $havePSReadline ) {
         Clear-Host
         # Remove PSReadline's saved-history file.
@@ -429,7 +429,7 @@ if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -
     Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
     Set-PSReadlineKeyHandler -Chord 'Shift+Tab' -Function Complete
 
-    if ( $(Get-Module PSReadline).Version -ge 2.2 ){
+    if ( $(Get-Module PSReadline).Version -ge 2.2 ) {
         Set-PSReadLineOption -predictionsource history -ea SilentlyContinue
     }
 
@@ -445,7 +445,7 @@ if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -
 }
 
 # already expanded to save time https://github.com/nvbn/thefuck/wiki/Shell-aliases#powershell
-if ( $(Test-CommandExists 'thefuck') ){
+if ( $(Test-CommandExists 'thefuck') ) {
     function fuck {
         $PYTHONIOENCODING_BKP=$env:PYTHONIOENCODING
         $env:PYTHONIOENCODING="utf-8"
