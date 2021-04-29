@@ -2,6 +2,8 @@
 # src: https://gist.github.com/apfelchips/62a71500a0f044477698da71634ab87b
 # New-Item $(Split-Path "$($PROFILE.CurrentUserCurrentHost)") -ItemType Directory -ea 0; Invoke-WebRequest -Uri "https://git.io/JYZTu" -OutFile "$($PROFILE.CurrentUserCurrentHost)"
 
+# Ref: https://devblogs.microsoft.com/powershell/optimizing-your-profile/#measure-script
+
 Clear-Host # remove advertisements
 
 # bash-like
@@ -226,7 +228,7 @@ if ( "${env:ChocolateyInstall}" -eq "" ) {
 }
 
 if ( Test-Path("${env:ChocolateyInstall}\helpers\chocolateyProfile.psm1") ) {
-    Import-Module "${env:ChocolateyInstall}\helpers\chocolateyProfile.psm1"
+    Import-Module "${env:ChocolateyInstall}\helpers\chocolateyProfile.psm1" -ea SilentlyContinue
 }
 
 function Reload-Profile {
@@ -319,15 +321,16 @@ function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
 }
 
 function Install-MyModules {
-    Install-Module PSReadLine -Scope CurrentUser -Repository 'PSGallery' -AllowPrerelease -Force
-    Install-Module posh-git -Scope CurrentUser -Repository 'PSGallery' -AllowPrerelease -Force
-    Install-Module PSFzf -Scope CurrentUser -Repository 'PSGallery' -Force
+    Install-Module -Name PSReadLine -Scope CurrentUser -Repository 'PSGallery' -AllowPrerelease -Force
+    Install-Module -Name posh-git -Scope CurrentUser -Repository 'PSGallery' -AllowPrerelease -Force
+    Install-Module -Name PSFzf -Scope CurrentUser -Repository 'PSGallery' -Force
+    Install-Module -Name PSProfiler -Scope CurrentUser -Repository 'PSGallery' -Force
 }
 
 
 if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name PSReadLine)) ) {
     # example: https://github.com/PowerShell/PSReadLine/blob/master/PSReadLine/SamplePSReadLineProfile.ps1
-    Import-Module PSReadLine
+    Import-Module PSReadLine -ea SilentlyContinue
 
     # Set-PSReadLineOption -EditMode Emac
     Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
@@ -349,7 +352,7 @@ if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -
 }
 
 if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name posh-git)) ) {
-    Import-Module posh-git
+    Import-Module posh-git -ea SilentlyContinue
 }
 
 # already expanded to save time https://github.com/nvbn/thefuck/wiki/Shell-aliases#powershell
