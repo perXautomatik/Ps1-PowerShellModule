@@ -304,8 +304,7 @@ function Set-FileTime {
         }
     }
 }
-
-New-Alias touch Set-FileTime
+New-Alias touch Set-FileTime -Option AllScope
 
 function Reload-Profile {
     . $PROFILE.CurrentUserCurrentHost
