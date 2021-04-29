@@ -319,7 +319,7 @@ function Download-Latest-Profile {
     Reload-Profile
 }
 
-if ( $PSVersionTable.PSEdition -eq $null ) {
+if ( ($PSVersionTable.PSEdition -eq $null) -or ($PSVersionTable.PSEdition -eq "Desktop") ) {
     $PSVersionTable.PSEdition = "Desktop"
     $IsWindows = $true
 }
