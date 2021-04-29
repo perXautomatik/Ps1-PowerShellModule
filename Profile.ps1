@@ -54,7 +54,7 @@ function Test-CommandExists {
 }
 
 function Get-ModulesAvailable {
-    if ( $args -eq $null ) {
+    if ( $args.Count -eq 0 ) {
         Get-Module -ListAvailable
     } else {
         Get-Module -ListAvailable $args
@@ -62,7 +62,7 @@ function Get-ModulesAvailable {
 }
 
 function Get-ModulesLoaded {
-    if ( $args -eq $null ) {
+    if ( $args.Count -eq 0 ) {
         Get-Module -All
     } else {
         Get-Module -All $args
