@@ -4,6 +4,7 @@
 
 # ref: https://devblogs.microsoft.com/powershell/optimizing-your-profile/#measure-script
 # ref: Powershell $? https://stackoverflow.com/a/55362991
+# ref: Write-* https://stackoverflow.com/a/38527767
 
 Clear-Host # remove advertisements
 
@@ -21,7 +22,7 @@ Set-Alias mv         Move-Item -Option AllScope
 Set-Alias ps         Get-Process -Option AllScope
 Set-Alias pwd        Get-Location -Option AllScope
 Set-Alias which      Get-Command -Option AllScope
-Set-Alias env        Get-Environment -Option AllScope
+
 
 Set-Alias open       Invoke-Item -Option AllScope
 Set-Alias basename   Split-Path -Option AllScope
@@ -94,6 +95,15 @@ function Remove-CustomAliases { # https://stackoverflow.com/a/2816523
     Get-Alias | Where-Object { ! $_.Options -match "ReadOnly" } | % { Remove-Item alias:$_ }
 }
 
+
+function set-x {
+    Set-PSDebug -trace 2
+}
+
+function set+x {
+    Set-PSDebug -trace 0
+}
+
 function Get-Environment {  # Get-Variable to show all Powershell Variables accessible via $
     if ( $args.Count -eq 0 ) {
         Get-Childitem env:
@@ -103,6 +113,7 @@ function Get-Environment {  # Get-Variable to show all Powershell Variables acce
         Start-Process (Get-Command $args[0]).Source -ArgumentList $args[1..($args.Count-1)]
     }
 }
+Set-Alias env        Get-Environment -Option AllScope
 
 # TODO:
 # function Set-EnvironmentAndPSVariable{
@@ -140,7 +151,7 @@ function cf {
     if ( $(Get-Module PSFzf) -ne $null ) {
         Get-ChildItem . -Recurse -Attributes Directory | Invoke-Fzf | Set-Location
     } else {
-        Write-Host "please install PSFzf"
+        Write-Error "please install PSFzf"
     }
 }
 
@@ -229,12 +240,12 @@ function md {
 }
 
 function pause($message="Press any key to continue . . . ") {
-    Write-Host -NoNewline $message
+    Write-Information -NoNewline $message
     $i=16,17,18,20,91,92,93,144,145,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183
     while ($k.VirtualKeyCode -eq $null -or $i -Contains $k.VirtualKeyCode){
         $k = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     }
-    Write-Host
+    Write-Information
 }
 
 # native touch implementation
@@ -340,16 +351,16 @@ if ( $IsWindows ) {
 
         if ( Test-Path -Path "$gitrootdir\.git" -PathType Container) {
             $newestExe = Get-Item "${env:ProgramFiles(x86)}\Atlassian\SourceTree\SourceTree.exe" | select -Last 1
-            # Write-Host "Opening $gitrootdir with $newestExe"
+            Write-Debug "Opening $gitrootdir with $newestExe"
             start-process -filepath $newestExe -ArgumentList "-f `"$gitrootdir`" log"
         } else {
-            Write-Host "git directory not found"
+            Write-Error "git directory not found"
         }
     }
     if ( "${env:ChocolateyInstall}" -eq "" ) {
         function Install-Chocolatey {
             if (Get-Command choco -ErrorAction SilentlyContinue) {
-                write-output "chocolatey already installed!";
+                Write-Error "chocolatey already installed!"
             } else {
                 start-process (Get-HostExecutable) -ArgumentList "-Command Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1') -verb RunAs"
             }
@@ -496,6 +507,6 @@ if ( $PSVersionTable.PSVersion.Major -lt 7 ) {
     Set-Alias d    Use-Default
 }
 
-Write-Host "`$PSVersion: $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor).$($PSVersionTable.PSVersion.Patch)"
-Write-Host "`$PSEdition: $($PSVersionTable.PSEdition)"
-Write-Host "`$Profile:   $PSCommandPath"
+Write-Information "`$PSVersion: $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor).$($PSVersionTable.PSVersion.Patch)"
+Write-Information "`$PSEdition: $($PSVersionTable.PSEdition)"
+Write-Information "`$Profile:   $PSCommandPath"
