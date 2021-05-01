@@ -23,9 +23,9 @@ Set-Alias ps         Get-Process -Option AllScope
 Set-Alias pwd        Get-Location -Option AllScope
 Set-Alias which      Get-Command -Option AllScope
 
-
 Set-Alias open       Invoke-Item -Option AllScope
 Set-Alias basename   Split-Path -Option AllScope
+Set-Alias realpath   Resolve-Path -Option AllScope
 
 # cmd-like
 Set-Alias rm         Remove-Item -Option AllScope
