@@ -17,7 +17,7 @@ function Test-IsNonInteractiveShell {
     return $false
 }
 
-if (-not Test-IsNonInteractiveShell) {
+if (-not (Test-IsNonInteractiveShell)) {
 Clear-Host # remove advertisements
 
 # bash-like
