@@ -7,7 +7,6 @@
 # ref: Write-* https://stackoverflow.com/a/38527767
 
 #src: https://stackoverflow.com/a/34098997/7595318
-
 function Test-IsInteractive {
     # Test each Arg for match of abbreviated '-NonInteractive' command.
     $NonInteractiveFlag = [Environment]::GetCommandLineArgs() | Where-Object{ $_ -like '-NonInteractive' }
