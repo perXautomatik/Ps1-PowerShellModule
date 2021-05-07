@@ -10,7 +10,7 @@
 function Test-IsInteractive {
     # Test each Arg for match of abbreviated '-NonInteractive' command.
     $NonInteractiveFlag = [Environment]::GetCommandLineArgs() | Where-Object{ $_ -like '-NonInteractive' }
-    if ( [Environment]::UserInteractive -or ( $NonInteractiveFlag -ne $null ) ) {
+    if ( (-not [Environment]::UserInteractive) -or ( $NonInteractiveFlag -ne $null ) ) {
         return $false
     }
     return $true
