@@ -6,6 +6,18 @@
 # ref: Powershell $? https://stackoverflow.com/a/55362991
 # ref: Write-* https://stackoverflow.com/a/38527767
 
+#src: https://stackoverflow.com/a/34098997/7595318
+
+function Test-IsNonInteractiveShell {
+    # Test each Arg for match of abbreviated '-NonInteractive' command.
+    $NonInteractiveFlag = [Environment]::GetCommandLineArgs() | Where-Object{ $_ -like '-NonI*' }
+    if ( [Environment]::UserInteractive -and -not $NonInteractiveFlag ) {
+        return $true
+    }
+    return $false
+}
+
+if (-not Test-IsNonInteractiveShell) {
 Clear-Host # remove advertisements
 
 # bash-like
@@ -44,7 +56,7 @@ Set-Alias ren        Rename-Item -Option AllScope
 Set-Alias set        Set-Variable -Option AllScope
 Set-Alias type       Get-Content -Option AllScope
 
-# src: https://devblogs.microsoft.com/scripting/use-a-powershell-function-to-see-if-a-command-exists/
+#src: https://devblogs.microsoft.com/scripting/use-a-powershell-function-to-see-if-a-command-exists/
 function Test-CommandExists {
     Param ($command)
     $oldErrorActionPreference = $ErrorActionPreference
@@ -510,3 +522,5 @@ if ( $PSVersionTable.PSVersion.Major -lt 7 ) {
 Write-Information -InformationAction Continue "`$PSVersion: $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor).$($PSVersionTable.PSVersion.Patch)"
 Write-Information -InformationAction Continue "`$PSEdition: $($PSVersionTable.PSEdition)"
 Write-Information -InformationAction Continue "`$Profile:   $PSCommandPath"
+
+} # interactive test close
