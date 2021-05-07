@@ -8,16 +8,16 @@
 
 #src: https://stackoverflow.com/a/34098997/7595318
 
-function Test-IsNonInteractiveShell {
+function Test-IsInteractive {
     # Test each Arg for match of abbreviated '-NonInteractive' command.
-    $NonInteractiveFlag = [Environment]::GetCommandLineArgs() | Where-Object{ $_ -like '-NonI*' }
-    if ( [Environment]::UserInteractive -and -not $NonInteractiveFlag ) {
-        return $true
+    $NonInteractiveFlag = [Environment]::GetCommandLineArgs() | Where-Object{ $_ -like '-NonInteractive' }
+    if ( [Environment]::UserInteractive -and ( $NonInteractiveFlag -ne $null ) ) {
+        return $false
     }
-    return $false
+    return $true
 }
 
-if (-not (Test-IsNonInteractiveShell)) {
+if ( Test-IsInteractive ) {
 Clear-Host # remove advertisements
 
 # bash-like
