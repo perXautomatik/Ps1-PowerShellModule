@@ -6,7 +6,7 @@
 # ref: Powershell $? https://stackoverflow.com/a/55362991
 
 # ref: Write-* https://stackoverflow.com/a/38527767
-# Write-Host ==> Write-Information -InformationAction Continue
+# Write-Host wrapper for Write-Information -InformationAction Continue
 
 #src: https://stackoverflow.com/a/34098997/7595318
 function Test-IsInteractive {
