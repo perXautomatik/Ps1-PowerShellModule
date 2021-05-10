@@ -5,7 +5,7 @@
 # ref: https://devblogs.microsoft.com/powershell/optimizing-your-profile/#measure-script
 # ref: Powershell $? https://stackoverflow.com/a/55362991
 
- ref: Write-* https://stackoverflow.com/a/38527767
+# ref: Write-* https://stackoverflow.com/a/38527767
 # Write-Host ==> Write-Information -InformationAction Continue
 
 #src: https://stackoverflow.com/a/34098997/7595318
