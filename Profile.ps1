@@ -4,7 +4,9 @@
 
 # ref: https://devblogs.microsoft.com/powershell/optimizing-your-profile/#measure-script
 # ref: Powershell $? https://stackoverflow.com/a/55362991
-# ref: Write-* https://stackoverflow.com/a/38527767
+
+ ref: Write-* https://stackoverflow.com/a/38527767
+# Write-Host ==> Write-Information -InformationAction Continue
 
 #src: https://stackoverflow.com/a/34098997/7595318
 function Test-IsInteractive {
@@ -251,12 +253,12 @@ function md {
 }
 
 function pause($message="Press any key to continue . . . ") {
-     -NoNewline $message
+    Write-Host -NoNewline $message
     $i=16,17,18,20,91,92,93,144,145,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183
     while ($k.VirtualKeyCode -eq $null -or $i -Contains $k.VirtualKeyCode){
         $k = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     }
-    Write-Host
+    Write-Host ""
 }
 
 # native touch implementation
