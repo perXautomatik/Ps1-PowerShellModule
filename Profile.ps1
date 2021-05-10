@@ -251,12 +251,12 @@ function md {
 }
 
 function pause($message="Press any key to continue . . . ") {
-    Write-Information -InformationAction Continue -NoNewline $message
+     -NoNewline $message
     $i=16,17,18,20,91,92,93,144,145,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183
     while ($k.VirtualKeyCode -eq $null -or $i -Contains $k.VirtualKeyCode){
         $k = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     }
-    Write-Information -InformationAction Continue
+    Write-Host
 }
 
 # native touch implementation
@@ -518,8 +518,8 @@ if ( $PSVersionTable.PSVersion.Major -lt 7 ) {
     Set-Alias d    Use-Default
 }
 
-Write-Information -InformationAction Continue "`$PSVersion: $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor).$($PSVersionTable.PSVersion.Patch)"
-Write-Information -InformationAction Continue "`$PSEdition: $($PSVersionTable.PSEdition)"
-Write-Information -InformationAction Continue "`$Profile:   $PSCommandPath"
+Write-Host "`$PSVersion: $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor).$($PSVersionTable.PSVersion.Patch)"
+Write-Host "`$PSEdition: $($PSVersionTable.PSEdition)"
+Write-Host "`$Profile:   $PSCommandPath"
 
 } # interactive test close
