@@ -366,11 +366,15 @@ if ( $IsWindows ) {
     }
 
     function Restart-Explorer {
-        Start-Process $(Get-HostExecutable) -ArgumentList "-noProfile -noLogo -Command 'Get-Process explorer | Stop-Process'" -verb "runAs" -NoNewWindow
+        Start-Process "$(Get-HostExecutable)" -ArgumentList "-noProfile -noLogo -Command 'Get-Process explorer | Stop-Process'" -verb "runAs"
+    }
+
+    function Reset-Spooler {
+        Start-Process "$(Get-HostExecutable)" -ArgumentList "-noProfile -noLogo -Command 'Get-Service -Name Spooler | Stop-Service -Force; Get-Item ${env:SystemRoot}\System32\spool\PRINTERS\* | Remove-Item -Force -Recurse; Get-Service -Name Spooler | Start-Service'" -verb "runAs"
     }
 
     function subl {
-        start-process "${Env:ProgramFiles}\Sublime Text 3\subl.exe" -ArgumentList $args -WindowStyle Hidden # hide subl shim script
+        Start-Process "${Env:ProgramFiles}\Sublime Text 3\subl.exe" -ArgumentList $args -WindowStyle Hidden # hide subl shim script
     }
 
     function stree($directory = $pwd) {
@@ -379,7 +383,7 @@ if ( $IsWindows ) {
         if ( Test-Path -Path "$gitrootdir\.git" -PathType Container) {
             $newestExe = Get-Item "${env:ProgramFiles(x86)}\Atlassian\SourceTree\SourceTree.exe" | select -Last 1
             Write-Debug "Opening $gitrootdir with $newestExe"
-            start-process -filepath $newestExe -ArgumentList "-f `"$gitrootdir`" log"
+            Start-Process -filepath $newestExe -ArgumentList "-f `"$gitrootdir`" log"
         } else {
             Write-Error "git directory not found"
         }
@@ -389,12 +393,12 @@ if ( $IsWindows ) {
             if (Get-Command choco -ErrorAction SilentlyContinue) {
                 Write-Error "chocolatey already installed!"
             } else {
-                start-process (Get-HostExecutable) -ArgumentList "-Command Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1') -verb RunAs"
+                Start-Process (Get-HostExecutable) -ArgumentList "-Command Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1') -verb RunAs"
             }
         }
     } else {
         function choco {
-            start-process (Get-HostExecutable) -ArgumentList "-noProfile -noLogo -Command choco.exe ${args}; pause" -verb runAs
+            Start-Process (Get-HostExecutable) -ArgumentList "-noProfile -noLogo -Command choco.exe ${args}; pause" -verb runAs
         }
     }
 
@@ -414,11 +418,11 @@ function Get-HostExecutable {
 if ( -not $(Test-CommandExists 'sudo') ) {
     function sudo() {
         if ( $args.Length -eq 0 ) {
-            start-process $(Get-HostExecutable) -verb "runAs"
+            Start-Process $(Get-HostExecutable) -verb "runAs"
         } elseif ( $args.Length -eq 1 ) {
-            start-process $args[0] -verb "runAs"
+            Start-Process $args[0] -verb "runAs"
         } else {
-            start-process $args[0] -ArgumentList $args[1..$args.Length] -verb "runAs"
+            Start-Process $args[0] -ArgumentList $args[1..$args.Length] -verb "runAs"
         }
     }
 }
@@ -504,7 +508,7 @@ if ( $(Test-CommandExists 'thefuck') ) {
 if ( $PSVersionTable.PSVersion.Major -lt 7 ) {
     # https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget
     function Install-PowerShellGet {
-        start-process "$(Get-HostExecutable)" -ArgumentList "-noProfile -noLogo -Command Install-PackageProvider -Name NuGet -Force; Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause" -verb "RunAs"
+        Start-Process "$(Get-HostExecutable)" -ArgumentList "-noProfile -noLogo -Command Install-PackageProvider -Name NuGet -Force; Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause" -verb "RunAs"
     }
 
     $PSDefaultParameterValues['Out-File:Encoding'] = 'utf8' # Fix Encoding for PS 5.1 -> 6.0 https://stackoverflow.com/a/40098904
