@@ -366,7 +366,7 @@ if ( $IsWindows ) {
     }
 
     function Restart-Explorer {
-        Start-Process $(Get-HostExecutable) -ArgumentList "-Command Get-Process explorer | Stop-Process" -verb "runAs"
+        Start-Process $(Get-HostExecutable) -ArgumentList "-noProfile -noLogo -Command 'Get-Process explorer | Stop-Process'" -verb "runAs" -NoNewWindow
     }
 
     function subl {
