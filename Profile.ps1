@@ -350,9 +350,9 @@ if ( ($PSVersionTable.PSEdition -eq $null) -or ($PSVersionTable.PSEdition -eq "D
 
 if ( $IsWindows ) {
     # src: http://serverfault.com/questions/95431
-    function isAdmin {
+    function Test-IsAdmin {
         $user = [Security.Principal.WindowsIdentity]::GetCurrent();
-        (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator);
+        return $(New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator);
     }
 
     function Restart-Explorer {
