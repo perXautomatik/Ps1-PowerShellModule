@@ -348,6 +348,16 @@ if ( ($PSVersionTable.PSEdition -eq $null) -or ($PSVersionTable.PSEdition -eq "D
     $IsWindows = $true
 }
 
+
+if ( -not $IsWindows ) {
+    function Test-IsAdmin {
+        if ( (id -u) -eq 0 ) {
+            return $true
+        }
+        return $false
+    }
+}
+
 if ( $IsWindows ) {
     # src: http://serverfault.com/questions/95431
     function Test-IsAdmin {
