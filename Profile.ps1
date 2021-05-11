@@ -355,6 +355,10 @@ if ( $IsWindows ) {
         (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator);
     }
 
+    function Restart-Explorer {
+        $(Get-HostExecutable) -ArgumentList "-Command Get-Process explorer | Stop-Process" -verb "runAs"
+    }
+
     function subl {
         start-process "${Env:ProgramFiles}\Sublime Text 3\subl.exe" -ArgumentList $args -WindowStyle Hidden # hide subl shim script
     }
