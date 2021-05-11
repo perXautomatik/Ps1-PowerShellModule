@@ -370,7 +370,7 @@ if ( $IsWindows ) {
     }
 
     function Reset-Spooler {
-        Start-Process "$(Get-HostExecutable)" -ArgumentList "-noProfile -noLogo -Command 'Get-Service -Name Spooler | Stop-Service -Force; Get-Item ${env:SystemRoot}\System32\spool\PRINTERS\* | Remove-Item -Force -Recurse; Get-Service -Name Spooler | Start-Service'" -verb "runAs"
+        Start-Process "$(Get-HostExecutable)" -ArgumentList "-noProfile -noLogo -Command 'Stop-Service -Name Spooler -Force; Get-Item ${env:SystemRoot}\System32\spool\PRINTERS\* | Remove-Item -Force -Recurse; Start-Service -Name Spooler'" -verb "runAs"
     }
 
     function subl {
