@@ -158,6 +158,7 @@ function cdn { Set-Location "$NOTES_DIR" }
 function cdcheat { Set-Location "$CHEATS_DIR" }
 function cdt { Set-Location "$TODO_DIR" }
 function cddev { Set-Location "$DEVEL_DIR" }
+function cddd { Set-Location "$DEVEL_DIR" }
 function cdports { Set-Location "$PORTS_DIR" }
 
 function cf {
@@ -366,6 +367,7 @@ if ( $IsWindows ) {
     }
 
     function Restart-Explorer {
+        Get-Process explorer | Stop-Process
         Start-Process "$(Get-HostExecutable)" -ArgumentList "-noProfile -noLogo -Command 'Get-Process explorer | Stop-Process'" -verb "runAs"
     }
 
