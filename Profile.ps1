@@ -376,7 +376,7 @@ if ( $IsWindows ) {
     }
 
     function subl {
-        Start-Process "${Env:ProgramFiles}\Sublime Text 3\subl.exe" -ArgumentList $args -WindowStyle Hidden # hide subl shim script
+        Start-Process "${Env:ProgramFiles}\Sublime Text\subl.exe" -ArgumentList $args -WindowStyle Hidden # hide subl shim script
     }
 
     function stree($directory = $pwd) {
