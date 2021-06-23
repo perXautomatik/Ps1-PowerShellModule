@@ -454,10 +454,15 @@ function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
 }
 
 function Install-MyModules {
-    Install-Module -Name PSReadLine -Scope CurrentUser -Repository 'PSGallery' -AllowPrerelease -Force
-    Install-Module -Name posh-git -Scope CurrentUser -Repository 'PSGallery' -AllowPrerelease -Force
-    Install-Module -Name PSFzf -Scope CurrentUser -Repository 'PSGallery' -Force
-    Install-Module -Name PSProfiler -Scope CurrentUser -Repository 'PSGallery' -Force # --> Measure-Script
+    PowerShellGet\Install-Module -Name PSReadLine -Scope CurrentUser -AllowPrerelease -Force
+    PowerShellGet\Install-Module -Name posh-git -Scope CurrentUser -Force
+    PowerShellGet\Install-Module -Name SqlServer -Scope CurrentUser -Force
+
+    # https://old.reddit.com/r/AZURE/comments/fh0ycv/azuread_vs_azurerm_vs_az/
+    # https://docs.microsoft.com/en-us/microsoft-365/enterprise/connect-to-microsoft-365-powershell
+    PowerShellGet\Install-Module -Name AzureAD -Scope CurrentUser -Force
+    PowerShellGet\Install-Module -Name PSFzf -Scope CurrentUser -Force
+    PowerShellGet\Install-Module -Name PSProfiler -Scope CurrentUser -Force # --> Measure-Script
 }
 
 if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name PSReadLine)) ) {
