@@ -1,10 +1,8 @@
 <#
- * Search Key: powershell
  * FileName: Microsoft.PowerShell_profile.ps1
  * Author: 刘 鹏
  * Email: littleNewton6@outlook.com
- * Create Date: 2020, May. 1
- * Update Date: 2021, Apr. 7
+ * Date: 2021, Jun. 28
  * Copyright: No copyright. You can use this code for anything with no warranty.
 #>
 
@@ -20,6 +18,7 @@ Import-Module oh-my-posh
 Import-Module PSReadLine
 
 # 设置 PowerShell 主题
+# Set-PoshPrompt ys
 Set-PoshPrompt paradox
 #------------------------------- Import Modules END   -------------------------------
 
@@ -102,7 +101,14 @@ Set-Alias -Name ll -Value Get-ChildItem
 
 # 4. 打开当前工作目录
 function OpenCurrentFolder {
-	Invoke-Item .
+	param
+	(
+		# 输入要打开的路径
+		# 用法示例：open C:\
+		# 默认路径：当前工作文件夹
+		$Path = '.'
+	)
+	Invoke-Item $Path
 }
 Set-Alias -Name open -Value OpenCurrentFolder
 #-------------------------------    Set Alias END     -------------------------------
