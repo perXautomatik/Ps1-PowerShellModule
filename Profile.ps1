@@ -204,11 +204,11 @@ if ( $(Test-CommandExists 'git') ) {
         }
 
         if ( -Not (Test-CommandExists 'sh') ){
-            Set-Alias vim   git-sh -Option AllScope
+            Set-Alias sh   git-sh -Option AllScope
         }
 
         if ( -Not (Test-CommandExists 'bash') ){
-            Set-Alias vim   git-bash -Option AllScope
+            Set-Alias bash   git-bash -Option AllScope
         }
 
         if ( -Not (Test-CommandExists 'vim') ){
