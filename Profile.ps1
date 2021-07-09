@@ -183,12 +183,36 @@ if ( $(Test-CommandExists 'git') ) {
     }
 
     if ( $IsWindows ) {
+        function git-sh {
+            if ( $args.Count -eq 0 ) {
+                . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\sh") -l
+            } else {
+                . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\sh") $args
+            }
+        }
+
         function git-bash {
             if ( $args.Count -eq 0 ) {
                 . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") -l
             } else {
                 . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") $args
             }
+        }
+
+        function git-vim {
+           . $(Join-Path -Path $(Split-Path -Path $(Get-Command git).Source) -ChildPath "..\bin\bash") -l -c `'vim $args`'
+        }
+
+        if ( -Not (Test-CommandExists 'sh') ){
+            Set-Alias vim   git-sh -Option AllScope
+        }
+
+        if ( -Not (Test-CommandExists 'bash') ){
+            Set-Alias vim   git-bash -Option AllScope
+        }
+
+        if ( -Not (Test-CommandExists 'vim') ){
+            Set-Alias vim   git-vim -Option AllScope
         }
     }
 }
