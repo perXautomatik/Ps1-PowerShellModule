@@ -482,6 +482,8 @@ function Install-MyModules {
     PowerShellGet\Install-Module -Name posh-git -Scope CurrentUser -Force
     PowerShellGet\Install-Module -Name SqlServer -Scope CurrentUser -Force
 
+    PowerShellGet\Install-Module -Name WFTools -Scope CurrentUser -Force # useful Tools eg. ConvertTo-FlatObject https://github.com/RamblingCookieMonster/PowerShell
+
     # https://old.reddit.com/r/AZURE/comments/fh0ycv/azuread_vs_azurerm_vs_az/
     # https://docs.microsoft.com/en-us/microsoft-365/enterprise/connect-to-microsoft-365-powershell
     PowerShellGet\Install-Module -Name AzureAD -Scope CurrentUser -Force
