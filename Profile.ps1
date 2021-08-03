@@ -19,7 +19,7 @@ function Test-IsInteractive {
 }
 
 if ( Test-IsInteractive ) {
-Clear-Host # remove advertisements
+# Clear-Host # remove advertisements (preferably use -noLogo)
 
 # bash-like
 Set-Alias cat        Get-Content -Option AllScope
