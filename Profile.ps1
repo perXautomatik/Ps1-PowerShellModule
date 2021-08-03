@@ -211,6 +211,10 @@ if ( $(Test-CommandExists 'git') ) {
             Set-Alias bash   git-bash -Option AllScope
         }
 
+        if ( -Not (Test-CommandExists 'vi') ){
+            Set-Alias vi   git-vim -Option AllScope
+        }
+
         if ( -Not (Test-CommandExists 'vim') ){
             Set-Alias vim   git-vim -Option AllScope
         }
