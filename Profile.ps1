@@ -482,17 +482,17 @@ function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
 }
 
 function Install-MyModules {
-    PowerShellGet\Install-Module -Name PSReadLine -Scope CurrentUser -AllowPrerelease -Force
-    PowerShellGet\Install-Module -Name posh-git -Scope CurrentUser -Force
-    PowerShellGet\Install-Module -Name SqlServer -Scope CurrentUser -Force
+    PowerShellGet\Install-Module -Name PSReadLine -Scope CurrentUser -AllowPrerelease -Force -AllowClobber
+    PowerShellGet\Install-Module -Name posh-git -Scope CurrentUser -Force -AllowClobber
+    PowerShellGet\Install-Module -Name SqlServer -Scope CurrentUser -Force -AllowClobber
 
-    PowerShellGet\Install-Module -Name WFTools -Scope CurrentUser -Force # useful Tools eg. ConvertTo-FlatObject https://github.com/RamblingCookieMonster/PowerShell
+    PowerShellGet\Install-Module -Name WFTools -Scope CurrentUser -Force -AllowClobber # useful Tools eg. ConvertTo-FlatObject https://github.com/RamblingCookieMonster/PowerShell
 
     # https://old.reddit.com/r/AZURE/comments/fh0ycv/azuread_vs_azurerm_vs_az/
     # https://docs.microsoft.com/en-us/microsoft-365/enterprise/connect-to-microsoft-365-powershell
-    PowerShellGet\Install-Module -Name AzureAD -Scope CurrentUser -Force
-    PowerShellGet\Install-Module -Name PSFzf -Scope CurrentUser -Force
-    PowerShellGet\Install-Module -Name PSProfiler -Scope CurrentUser -Force # --> Measure-Script
+    PowerShellGet\Install-Module -Name AzureAD -Scope CurrentUser -Force -AllowClobber
+    PowerShellGet\Install-Module -Name PSFzf -Scope CurrentUser -Force -AllowClobber
+    PowerShellGet\Install-Module -Name PSProfiler -Scope CurrentUser -Force -AllowClobber # --> Measure-Script
 }
 
 if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name PSReadLine)) ) {
