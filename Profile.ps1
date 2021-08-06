@@ -21,6 +21,9 @@ function Test-IsInteractive {
 if ( Test-IsInteractive ) {
 # Clear-Host # remove advertisements (preferably use -noLogo)
 
+# custom aliases
+Set-Alias flush-dns  Clear-DnsClientCache -Option AllScope
+
 # bash-like
 Set-Alias cat        Get-Content -Option AllScope
 Set-Alias cd         Set-Location -Option AllScope
