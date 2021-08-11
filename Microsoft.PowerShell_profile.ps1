@@ -2,7 +2,7 @@
  * FileName: Microsoft.PowerShell_profile.ps1
  * Author: 刘 鹏
  * Email: littleNewton6@outlook.com
- * Date: 2021, Jun. 28
+ * Date: 2021, Aug. 11
  * Copyright: No copyright. You can use this code for anything with no warranty.
 #>
 
@@ -112,3 +112,23 @@ function OpenCurrentFolder {
 }
 Set-Alias -Name open -Value OpenCurrentFolder
 #-------------------------------    Set Alias END     -------------------------------
+
+
+
+
+
+#-------------------------------   Set Network BEGIN    -------------------------------
+# 1. 获取所有 Network Interface
+function Get-AllNic {
+	Get-NetAdapter | Sort-Object -Property MacAddress
+}
+Set-Alias -Name getnic -Value Get-AllNic
+
+# 2. 获取 IPv4 关键路由
+function Get-IPv4Routes {
+	Get-NetRoute -AddressFamily IPv4 | Where-Object -FilterScript {$_.NextHop -ne '0.0.0.0'}
+}
+Set-Alias -Name getip -Value Get-IPv4Routes
+
+
+#-------------------------------    Set Network END     -------------------------------
