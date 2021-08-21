@@ -132,4 +132,10 @@ function Get-IPv4Routes {
 	Get-NetRoute -AddressFamily IPv4 | Where-Object -FilterScript {$_.NextHop -ne '0.0.0.0'}
 }
 Set-Alias -Name getip -Value Get-IPv4Routes
+
+# 3. 获取 IPv6 关键路由
+function Get-IPv6Routes {
+	Get-NetRoute -AddressFamily IPv6 | Where-Object -FilterScript {$_.NextHop -ne '::'}
+}
+Set-Alias -Name getip6 -Value Get-IPv6Routes
 #-------------------------------    Set Network END     -------------------------------
