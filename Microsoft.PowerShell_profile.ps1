@@ -2,7 +2,7 @@
  * FileName: Microsoft.PowerShell_profile.ps1
  * Author: 刘 鹏
  * Email: littleNewton6@outlook.com
- * Date: 2021, Aug. 11
+ * Date: 2021, Aug. 21
  * Copyright: No copyright. You can use this code for anything with no warranty.
 #>
 
@@ -29,6 +29,9 @@ Set-PoshPrompt paradox
 #-------------------------------  Set Hot-keys BEGIN  -------------------------------
 # 设置预测文本来源为历史记录
 Set-PSReadLineOption -PredictionSource History
+
+# 每次回溯输入历史，光标定位于输入内容末尾
+Set-PSReadLineOption -HistorySearchCursorMovesToEnd
 
 # 设置 Tab 为菜单补全和 Intellisense
 Set-PSReadLineKeyHandler -Key "Tab" -Function MenuComplete
@@ -129,6 +132,4 @@ function Get-IPv4Routes {
 	Get-NetRoute -AddressFamily IPv4 | Where-Object -FilterScript {$_.NextHop -ne '0.0.0.0'}
 }
 Set-Alias -Name getip -Value Get-IPv4Routes
-
-
 #-------------------------------    Set Network END     -------------------------------
