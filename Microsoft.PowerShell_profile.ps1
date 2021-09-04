@@ -1,4 +1,4 @@
-<#
+	<#
  * FileName: Microsoft.PowerShell_profile.ps1
  * Author: 刘 鹏
  * Email: littleNewton6@outlook.com
@@ -125,6 +125,18 @@ function OpenCurrentFolder {
 	Invoke-Item $Path
 }
 Set-Alias -Name open -Value OpenCurrentFolder
+
+# 5. 更改工作目录
+function Change-Directory {
+	param (
+		# 输入要切换到的路径
+		# 用法示例：cd C:/
+		# 默认路径：D 盘的桌面
+		$Path = 'D:\Users\newton\Desktop\'
+	)
+	Set-Location $Path
+}
+Set-Alias -Name cd -Value Change-Directory -Option AllScope
 #-------------------------------    Set Alias END     -------------------------------
 
 
