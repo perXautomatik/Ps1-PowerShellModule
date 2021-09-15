@@ -1,0 +1,17 @@
+﻿TAB T=1     
+TAB CLOSEALLOTHERS     
+URL GOTO=http://demo.imacros.net/Automate/AutoDataEntry
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:demo ATTR=NAME:fname CONTENT={{FNAME}}
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:demo ATTR=NAME:lname CONTENT={{LNAME}}
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:demo ATTR=NAME:address CONTENT={{ADDRESS}}
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:demo ATTR=NAME:city CONTENT={{CITY}} 
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:demo ATTR=NAME:zip CONTENT={{ZIP}}
+'Tip: Use the string ($) instead of the index to select the state and country 
+'Index would be the position of an entry in the combo box list, e. g. 161 for United States
+'The $ option is more robust against changes of the combo box content
+'Note * is used to ignore leading and trailing blanks that could be in the input data
+TAG POS=1 TYPE=SELECT FORM=ID:demo ATTR=NAME:state CONTENT=$*{{STATE-ID}}*
+TAG POS=1 TYPE=SELECT FORM=ID:demo ATTR=NAME:country CONTENT=$*{{COUNTRY-ID}}*
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:demo ATTR=NAME:email CONTENT={{EMAIL}}
+TAG POS=1 TYPE=BUTTON:SUBMIT FORM=ID:demo ATTR=TXT:SUBMIT
+TAG POS=1 TYPE=A ATTR=TXT:*Back*

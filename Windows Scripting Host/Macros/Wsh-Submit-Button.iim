@@ -1,0 +1,5 @@
+﻿TAB T=1     
+TAB CLOSEALLOTHERS   
+TAG POS=1 TYPE=BUTTON:SUBMIT FORM=ID:demo ATTR=TXT:Click<SP>to<SP>order<SP>now
+WAIT SECONDS=3
+URL GOTO=http://demo.imacros.net/Automate/OK

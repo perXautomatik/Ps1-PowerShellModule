@@ -1,0 +1,1 @@
+{"script":"(Get-Process vivaldi | Measure-Object WorkingSet -sum).sum/1Gb"}
