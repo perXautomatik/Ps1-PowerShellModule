@@ -1,9 +1,0 @@
-﻿TAB T=1     
-TAB CLOSEALLOTHERS  
-URL GOTO=http://demo.imacros.net/Automate/ExtractDemo2
-TAG POS={{myvar}} TYPE=A ATTR=HREF:http://demo.imacros.net/Automate/listing*
-TAG POS=1 TYPE=H3 ATTR=TXT:* EXTRACT=TXT
-
-TAG POS=1 TYPE=LI ATTR=TXT:* EXTRACT=TXT
-TAG POS=2 TYPE=LI ATTR=TXT:* EXTRACT=TXT
-TAG POS=3 TYPE=LI ATTR=TXT:* EXTRACT=TXT
