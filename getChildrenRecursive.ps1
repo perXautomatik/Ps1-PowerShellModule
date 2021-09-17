@@ -16,8 +16,12 @@ function getChildrenRecursive {
             }
             else {
                 $item
-            }    
-        }
+            }  
+        }  
+            else {
+                $item
+            }  
+       
     }    
     $object
 }
