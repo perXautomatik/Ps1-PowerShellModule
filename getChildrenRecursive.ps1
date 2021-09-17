@@ -6,22 +6,18 @@ function getChildrenRecursive {
       )
 
       if($depth -eq $null) {$depth = 0}
-      $str = '-' * $depth;
-  
+      $str = '-' * $depth;        
             
     foreach ($item in $object.PSObject.Properties) {
-            if ($item.TypeNameOfValue -eq 'System.Object') {    
-                if($item.Value.children) {
-                 $depth = 1+$depth;
-                    getChildrenRecursive $item.Value.children $pMethodPath $depth;
-                }
-                else {
-                    $str + (& $pMethodPath $item);
-                }    
+        if ($item.TypeNameOfValue -eq 'System.Object') {    
+            if($item.Value.children) {
+                $depth = 1+$depth;
+                getChildrenRecursive $item.Value.children $pMethodPath $depth;
             }
             else {
-                $str + (& $pMethodPath $item);
-            }           
+                $item
+            }    
         }
-        $object       
+    }    
+    $object
 }
