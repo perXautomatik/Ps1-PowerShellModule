@@ -16,11 +16,11 @@ function getChildrenRecursive {
                     getChildrenRecursive $item.Value.children $pMethodPath $depth   
                 }
                 else {
-                    write-Host "$str DEPTH  $depth " + $item.title+ "`n"
+                    & $pMethodPath $item
                 }    
             }
             else {
-                write-Host "$str DEPTH  $depth " + $item.title + "`n"
+                & $pMethodPath $item
             }           
         }
          
