@@ -1,8 +1,13 @@
-function presentJson ($object){
+function presentJson {
+param(
+    [Parameter(Mandatory=$true,ValueFromPipeline=$true)][PSCustomObject] $input
+  )
+
+'presenting' 
 $json = [ordered]@{}
 
-($object).PSObject.Properties |
+($input).PSObject.Properties |
     ForEach-Object { $json[$_.Name] = $_.Value }
 
-write-Host  $json.SyncRoot
+$json.SyncRoot
 }

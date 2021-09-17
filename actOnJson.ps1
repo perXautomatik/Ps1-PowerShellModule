@@ -11,7 +11,3 @@ $presentationMethodPath = (Join-Path -Path (Split-Path -Path $MyInvocation.MyCom
 getChildrenRecursive $jsonx $presentationMethodPath
 
 
-write-Host ($jsonx -eq $null)
-write-Host ($presentationMethod -eq $null)
-write-Host ($presentationMethodPath -eq $null)
-
