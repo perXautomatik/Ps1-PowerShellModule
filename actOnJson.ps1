@@ -1,10 +1,13 @@
-﻿$jsonx = "D:\OneDrive\TabSessionManager - Backup\BookmarkCommanderExport.txt"
+﻿cd (Split-Path -Path $MyInvocation.MyCommand.Definition -Parent)
+. .\getChildrenRecursive.ps1
+. .\presentJson.ps1
 
-$json = [ordered]@{}
+$jsonx = "D:\OneDrive\TabSessionManager - Backup\BookmarkCommanderExport.txt"
+$jsonx = Get-Content $jsonx -Raw | ConvertFrom-Json
+$presentationMethod = $function:presentJson
 
-(Get-Content $jsonx -Raw | ConvertFrom-Json).PSObject.Properties |
-    ForEach-Object { $json[$_.Name] = $_.Value }
 
-$json.SyncRoot
-$json.SyncRoot.children
+getChildrenRecursive($jsonx,$presentationMethod)
+
+
 
