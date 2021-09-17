@@ -6,22 +6,28 @@ function getChildrenRecursive {
       )
     
     if($depth -eq $null) {$depth = 0}
-    $s = '-' * $depth + $object      
-    $s.substring(0, [System.Math]::Min(15, $s.Length))
-    $children = @($object.children)
-
+    
+    $json = [ordered]@{}
     $object
-    $children.count
+    ($object).PSObject.Properties |
+        ForEach-Object { $json[$_.Name] = $_.Value }
+        
+        $json.SyncRoot
+    $children = $json.SyncRoot
+    
 
    if ($children.count -gt 0) {
     $depth = 1+$depth
         foreach ($child in $children) {   
+            $child
             if ($child) {  
                 $s = '-' * $depth + $child                         
-                $s.substring(0, [System.Math]::Min(15, $s.Length))
+                $s.substring(0, [System.Math]::Min(20, $s.Length))
                 getChildrenRecursive $child $pMethodPath $depth
             }
         }
 
     }
+
+
 }
