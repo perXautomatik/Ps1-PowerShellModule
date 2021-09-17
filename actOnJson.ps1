@@ -4,10 +4,14 @@
 
 $jsonx = "D:\OneDrive\TabSessionManager - Backup\BookmarkCommanderExport.txt"
 $jsonx = Get-Content $jsonx -Raw | ConvertFrom-Json
-$presentationMethod = $function:presentJson
+
+$presentationMethodPath = (Join-Path -Path (Split-Path -Path $MyInvocation.MyCommand.Definition -Parent) -ChildPath "presentJson.ps1" )
 
 
-getChildrenRecursive($jsonx,$presentationMethod)
+getChildrenRecursive $jsonx $presentationMethodPath
 
 
+write-Host ($jsonx -eq $null)
+write-Host ($presentationMethod -eq $null)
+write-Host ($presentationMethodPath -eq $null)
 

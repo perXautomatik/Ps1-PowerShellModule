@@ -1,8 +1,8 @@
 function presentJson ($object){
 $json = [ordered]@{}
 
-().PSObject.Properties |
+($object).PSObject.Properties |
     ForEach-Object { $json[$_.Name] = $_.Value }
 
-$json.SyncRoot
+write-Host  $json.SyncRoot
 }
