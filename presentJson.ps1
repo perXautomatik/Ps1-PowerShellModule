@@ -3,7 +3,6 @@ param(
     [Parameter(Mandatory=$true,ValueFromPipeline=$true)][PSCustomObject] $input
   )
 
-'presenting' 
 $json = [ordered]@{}
 
 ($input).PSObject.Properties |
