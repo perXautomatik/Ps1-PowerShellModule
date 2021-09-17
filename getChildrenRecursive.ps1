@@ -7,6 +7,7 @@ function getChildrenRecursive {
 
       if($depth -eq $null) {$depth = 0}
       $str = '-' * $depth
+     $object
             
     foreach ($item in $object.PSObject.Properties) {
             if ($item.TypeNameOfValue -eq 'System.Object') {    
@@ -14,9 +15,12 @@ function getChildrenRecursive {
                  $depth = 1+$depth                                                                                    
                     getChildrenRecursive $item.Value.children $pMethodPath $depth   
                 }
+                else {
+                    write-Host "$str DEPTH  $depth " + $item.title+ "`n"
+                }    
             }
             else {
-                write-Host "$str DEPTH  $depth " + $object.title + "`n"
+                write-Host "$str DEPTH  $depth " + $item.title + "`n"
             }           
         }
          
