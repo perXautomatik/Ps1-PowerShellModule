@@ -1,4 +1,4 @@
-	<#
+<#
  * FileName: Microsoft.PowerShell_profile.ps1
  * Author: 刘 鹏
  * Email: littleNewton6@outlook.com
