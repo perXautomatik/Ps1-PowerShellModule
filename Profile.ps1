@@ -504,6 +504,7 @@ function Install-MyModules {
 
     if ($IsWindows){
         # Windows Update CLI tool http://woshub.com/pswindowsupdate-module/#h2_2
+        # Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -AutoReboot
         PowerShellGet\Install-Module -Name PSWindowsUpdate -Scope CurrentUser -Force -AllowClobber
     }
 }
