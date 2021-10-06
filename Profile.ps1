@@ -488,6 +488,7 @@ function Install-MyModules {
     PowerShellGet\Install-Module -Name PSReadLine -Scope CurrentUser -AllowPrerelease -Force -AllowClobber
     PowerShellGet\Install-Module -Name posh-git -Scope CurrentUser -Force -AllowClobber
     PowerShellGet\Install-Module -Name PSFzf -Scope CurrentUser -Force -AllowClobber
+
     PowerShellGet\Install-Module -Name PSProfiler -Scope CurrentUser -Force -AllowClobber # --> Measure-Script
 
     # serialization tools: eg. ConvertTo-HashString / ConvertTo-HashTable https://github.com/torgro/HashData
@@ -507,6 +508,15 @@ function Install-MyModules {
         # Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -AutoReboot
         PowerShellGet\Install-Module -Name PSWindowsUpdate -Scope CurrentUser -Force -AllowClobber
     }
+}
+
+function Import-MyModules {
+    TryImport-Module PSProfiler
+    TryImport-Module hashdata
+    TryImport-Module WFTools
+    TryImport-Module AzureAD
+    TryImport-Module SqlServer
+    TryImport-Module PSWindowsUpdate
 }
 
 if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name PSReadLine)) ) {
