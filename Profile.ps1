@@ -506,6 +506,7 @@ function Install-MyModules {
     if ( $IsWindows ){
         # Windows Update CLI tool http://woshub.com/pswindowsupdate-module/#h2_2
         # Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -AutoReboot
+        # alternative: Install-WUUpdates is native to Server
         PowerShellGet\Install-Module -Name PSWindowsUpdate -Scope CurrentUser -Force -AllowClobber
     }
 }
