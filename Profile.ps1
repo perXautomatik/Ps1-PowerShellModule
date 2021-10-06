@@ -487,16 +487,25 @@ function Clear-SavedHistory { # src: https://stackoverflow.com/a/38807689
 function Install-MyModules {
     PowerShellGet\Install-Module -Name PSReadLine -Scope CurrentUser -AllowPrerelease -Force -AllowClobber
     PowerShellGet\Install-Module -Name posh-git -Scope CurrentUser -Force -AllowClobber
-    PowerShellGet\Install-Module -Name SqlServer -Scope CurrentUser -Force -AllowClobber
+    PowerShellGet\Install-Module -Name PSFzf -Scope CurrentUser -Force -AllowClobber
+    PowerShellGet\Install-Module -Name PSProfiler -Scope CurrentUser -Force -AllowClobber # --> Measure-Script
 
-    PowerShellGet\Install-Module -Name WFTools -Scope CurrentUser -Force -AllowClobber # useful Tools eg. ConvertTo-FlatObject https://github.com/RamblingCookieMonster/PowerShell
-    PowerShellGet\Install-Module -Name hashdata -Scope CurrentUser -Force - AllowClobber # Serialization tools: eg. ConvertTo-HashString / ConvertTo-HashTable
+    # serialization tools: eg. ConvertTo-HashString / ConvertTo-HashTable https://github.com/torgro/HashData
+    PowerShellGet\Install-Module -Name hashdata -Scope CurrentUser -Force - AllowClobber
+
+    # useful Tools eg. ConvertTo-FlatObject https://github.com/RamblingCookieMonster/PowerShell
+    PowerShellGet\Install-Module -Name WFTools -Scope CurrentUser -Force -AllowClobber
 
     # https://old.reddit.com/r/AZURE/comments/fh0ycv/azuread_vs_azurerm_vs_az/
     # https://docs.microsoft.com/en-us/microsoft-365/enterprise/connect-to-microsoft-365-powershell
     PowerShellGet\Install-Module -Name AzureAD -Scope CurrentUser -Force -AllowClobber
-    PowerShellGet\Install-Module -Name PSFzf -Scope CurrentUser -Force -AllowClobber
-    PowerShellGet\Install-Module -Name PSProfiler -Scope CurrentUser -Force -AllowClobber # --> Measure-Script
+
+    PowerShellGet\Install-Module -Name SqlServer -Scope CurrentUser -Force -AllowClobber
+
+    if ($IsWindows){
+        # Windows Update CLI tool http://woshub.com/pswindowsupdate-module/#h2_2
+        PowerShellGet\Install-Module -Name PSWindowsUpdate -Scope CurrentUser -Force -AllowClobber
+    }
 }
 
 if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name PSReadLine)) ) {
