@@ -490,6 +490,7 @@ function Install-MyModules {
     PowerShellGet\Install-Module -Name SqlServer -Scope CurrentUser -Force -AllowClobber
 
     PowerShellGet\Install-Module -Name WFTools -Scope CurrentUser -Force -AllowClobber # useful Tools eg. ConvertTo-FlatObject https://github.com/RamblingCookieMonster/PowerShell
+    PowerShellGet\Install-Module -Name hashdata -Scope CurrentUser -Force - AllowClobber # Serialization tools: eg. ConvertTo-HashString / ConvertTo-HashTable
 
     # https://old.reddit.com/r/AZURE/comments/fh0ycv/azuread_vs_azurerm_vs_az/
     # https://docs.microsoft.com/en-us/microsoft-365/enterprise/connect-to-microsoft-365-powershell
