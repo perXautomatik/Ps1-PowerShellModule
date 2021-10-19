@@ -494,7 +494,7 @@ function Install-MyModules {
     # serialization tools: eg. ConvertTo-HashString / ConvertTo-HashTable https://github.com/torgro/HashData
     PowerShellGet\Install-Module -Name hashdata -Scope CurrentUser -Force - AllowClobber
 
-    # useful Tools eg. ConvertTo-FlatObject https://github.com/RamblingCookieMonster/PowerShell
+    # useful Tools eg. ConvertTo-FlatObject, Join-Object... https://github.com/RamblingCookieMonster/PowerShell
     PowerShellGet\Install-Module -Name WFTools -Scope CurrentUser -Force -AllowClobber
 
     # https://old.reddit.com/r/AZURE/comments/fh0ycv/azuread_vs_azurerm_vs_az/
