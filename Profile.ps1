@@ -573,7 +573,7 @@ if ( $PSVersionTable.PSVersion.Major -lt 7 ) {
         Start-Process "$(Get-HostExecutable)" -ArgumentList "-noProfile -noLogo -Command Install-PackageProvider -Name NuGet -Force; Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause" -verb "RunAs"
     }
 
-    $PSDefaultParameterValues['Out-File:Encoding'] = 'utf8' # Fix Encoding for PS 5.1 -> 6.0 https://stackoverflow.com/a/40098904
+    $PSDefaultParameterValues['Out-File:Encoding'] = 'utf8' # Fix Encoding for PS 5.1 https://stackoverflow.com/a/40098904
 
     function Get-ExitBoolean($command) { # fixed: https://github.com/PowerShell/PowerShell/pull/9849
         & $command | Out-Null; $?
@@ -600,8 +600,8 @@ if ( $PSVersionTable.PSVersion.Major -lt 7 ) {
     Set-Alias d    Use-Default
 }
 
-Write-Host "`$PSVersion: $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor).$($PSVersionTable.PSVersion.Patch)"
-Write-Host "`$PSEdition: $($PSVersionTable.PSEdition)"
-Write-Host "`$Profile:   $PSCommandPath"
+Write-Host "PSVersion: $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor).$($PSVersionTable.PSVersion.Patch)"
+Write-Host "PSEdition: $($PSVersionTable.PSEdition)"
+Write-Host "Profile:   $PSCommandPath"
 
 } # interactive test close
