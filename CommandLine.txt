@@ -1,0 +1,48 @@
+CommandLine                                                                                                                                                  
+-----------                                                                                                                                                  
+(Get-PSReadlineOption).HistorySavePath                                                                                                                       
+Get-PSReadLineKeyHandler                                                                                                                                     
+Get-PSReadLineOption                                                                                                                                         
+New-Item -Path "C:\Users\crbk01\OneDrive - Region Gotland\WindowsPowerShell\PSReadline" -ItemType SymbolicLink -Value "C:\Users\crbk01\AppData\Roaming\Mic...
+New-Item -Path "C:\Users\crbk01\OneDrive - Region Gotland\WindowsPowerShell\PSReadline" -ItemType Hardlink -Value "C:\Users\crbk01\AppData\Roaming\Microso...
+New-Item -Path "C:\Users\crbk01\OneDrive - Region Gotland\WindowsPowerShell\PSReadline" -ItemType Junction -Value "C:\Users\crbk01\AppData\Roaming\Microso...
+(Get-PSReadlineOption).HistorySavePath                                                                                                                       
+set-PSReadlineOption -HistorySavePath "C:\Users\crbk01\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"                      
+Set-PSReadLineOption -HistorySavePath C:\Users\crbk01\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt -HistorySaveStyle in...
+Set-PSReadLineOption -HistorySavePath C:\Users\crbk01\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt -HistorySaveStyle sa...
+(Get-PSReadlineOption).HistorySavePath                                                                                                                       
+Get-PSReadLineOption                                                                                                                                         
+ [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState                                                                                                    
+cd "C:\Program Files\TortoiseGit\bin"                                                                                                                        
+ls                                                                                                                                                           
+.\TortoiseGitProc.exe                                                                                                                                        
+cd "C:\Users\crbk01\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\"                                                                                
+".\C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe"                                                                                                     
+"C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe"                                                                                                       
+.\"C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe"                                                                                                     
+.\C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe                                                                                                       
+'.\C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe'                                                                                                     
+.\'C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe'                                                                                                     
+&"C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe"                                                                                                      
+&"C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" /command:repostatus                                                                                  
+&"C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" /command:repostatus /path:"C:\Users\crbk01\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine"  
+&"C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" /command:repostatus /path:"C:\Users\crbk01\OneDrive - Region Gotland\WindowsPowerShell"              
+cd "C:\Users\crbk01\OneDrive - Region Gotland\WindowsPowerShell"                                                                                             
+&"C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe"                                                                                                      
+&"C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" /path                                                                                                
+&"C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe -command repostatus -path C:\Users\crbk01\OneDrive - Region Gotland\WindowsPowerShell"                
+Import-Module ecoargs                                                                                                                                        
+Import-Module echoargs                                                                                                                                       
+Import-Module pscx                                                                                                                                           
+Install-Module -Name Pscx                                                                                                                                    
+echoargs &"C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe -command repostatus -path C:\Users\crbk01\OneDrive - Region Gotland\WindowsPowerShell"       
+echoargs                                                                                                                                                     
+Import-Module pscx                                                                                                                                           
+Import-Module -name pscx                                                                                                                                     
+$history = [System.Collections.ArrayList]([System.IO.File]::ReadAllLines((Get-PSReadlineOption).HistorySavePath))...                                         
+get-history                                                                                                                                                  
+get-history -Verbose                                                                                                                                         
+get-history | select -commandline                                                                                                                            
+get-history | select commandline                                                                                                                             
+
+
