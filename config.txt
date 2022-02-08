@@ -1,0 +1,18 @@
+[submodule "yamjyn.commandlist"]
+	url = C:/Users/crbk01/AppData/Roaming/Code/User/globalStorage/yamajyn.commandlist
+	active = true
+[submodule "EspHeaderExport"]
+	url = https://github.com/perXautomatik/Esp-Header-Export.git
+	active = true
+[submodule "pshelAndbash"]
+	url = https://github.com/perXautomatik/PowerShell-and-bash.git
+	active = true
+[submodule "pshell"]
+	url = https://github.com/perXautomatik/PowerShell.git
+	active = true
+[submodule "createToutchedFile"]
+	url = https://github.com/perXautomatik/Powershell-CreateTouchedFile.git
+	active = true
+[submodule "groupIntoFolders"]
+	url = https://github.com/perXautomatik/powershell-GroupIntoFolder.git
+	active = true

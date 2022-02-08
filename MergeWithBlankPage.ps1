@@ -1,8 +1,8 @@
 ﻿         
-    $emptyPage = "G:\sbf\Livsmiljö\Gemensamt\mapbasic program projekt\MapBasic-Gis_OrganizeEmails\tomtPdfBlad.pdf"
-    $path = "C:\Users\crbk01\Desktop\mellersta"
+    $emptyPage = "G:\sbf\Livsmiljö\Gemensamt\mapbasic program projekt\organiserarFörMailboxen\tomtPdfBlad.pdf"
+    $path = "C:\Users\crbk01\Desktop\norra"
     $i = 1
-    $param1 = "C:\Users\crbk01\OneDrive - Region Gotland\PortableApps\cpdf\cpdf.exe"
+    $param1 = "C:\Users\crbk01\OneDrive - Region Gotland\PortableApps\cpdf\cpdf" 
     $param2 = "-pages"
 
     dir $path\*.pdf | Sort-Object -Property CreationTime -Descending | foreach-object{   
