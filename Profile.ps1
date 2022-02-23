@@ -268,20 +268,16 @@ function grep {
     process { $_ | Select-String -Pattern $args }
 }
 
-function help {
-    get-help $args[0] | out-host -paging
-}
-
 function man {
-    get-help $args[0] | out-host -paging
+    Get-Help $args[0] | out-host -paging
 }
 
 function mkdir {
-    new-item -type directory -path (Join-Path "$args" -ChildPath "")
+    New-Item -type directory -path (Join-Path "$args" -ChildPath "")
 }
 
 function md {
-    new-item -type directory -path (Join-Path "$args" -ChildPath "")
+    New-Item -type directory -path (Join-Path "$args" -ChildPath "")
 }
 
 function pause($message="Press any key to continue . . . ") {
@@ -379,7 +375,6 @@ if ( ($PSVersionTable.PSEdition -eq $null) -or ($PSVersionTable.PSEdition -eq "D
     $PSVersionTable.PSEdition = "Desktop"
     $IsWindows = $true
 }
-
 
 if ( -not $IsWindows ) {
     function Test-IsAdmin {
@@ -506,7 +501,7 @@ function Install-MyModules {
     if ( $IsWindows ){
         # Windows Update CLI tool http://woshub.com/pswindowsupdate-module/#h2_2
         # Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -AutoReboot
-        # alternative: Install-WUUpdates is native to Server
+        # native alternative: WindowsUpdateProvider\Install-WUUpdates >= Windows Server 2019
         PowerShellGet\Install-Module -Name PSWindowsUpdate -Scope CurrentUser -Force -AllowClobber
     }
 }
