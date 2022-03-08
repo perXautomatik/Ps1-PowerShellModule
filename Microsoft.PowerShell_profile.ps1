@@ -1,10 +1,11 @@
 <#
  * FileName: Microsoft.PowerShell_profile.ps1
- * Author: 刘 鹏
- * Email: littleNewton6@outlook.com
- * Date: 2021, Aug. 21
+ * Author: perXautomatik
+ * Email: christoffer.broback@gmail.com
+ * Date: 08/03/2022
  * Copyright: No copyright. You can use this code for anything with no warranty.
 #>
+
 # Increase history
 $MaximumHistoryCount = 10000
 
@@ -21,6 +22,11 @@ Import-Module PSReadLine
 # 设置 PowerShell 主题
 # Set-PoshPrompt ys
 #Set-PoshPrompt paradox
+#ps ecoArgs;
+Import-Module echoargs ;
+#pscx history;
+Install-Module -Name Pscx
+Import-Module -name pscx
 #------------------------------- Import Modules END   -------------------------------
 
 
@@ -29,6 +35,17 @@ $PSDefaultParameterValues["Out-File:Encoding"]="utf8"
 
 # Show selection menu for tab
 Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
+
+#ps ExecutionPolicy;
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+
+
+#------------------------------- Set Paths           -------------------------------
+
+echo "ps setHistorySavePath" ; set-PSReadlineOption -HistorySavePath "C:\Users\crbk01\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
+
+#------------------------------- Set Paths  end       -------------------------------
+
 #-------------------------------  Set Hot-keys BEGIN  -------------------------------
 # 设置预测文本来源为历史记录
 #Set-PSReadLineOption -PredictionSource History
@@ -193,9 +210,6 @@ function pstree {
 }
 
 
-
-
-
 #-------------------------------    Functions BEGIN   -------------------------------
 # Python 直接执行
 $env:PATHEXT += ";.py"
@@ -296,7 +310,12 @@ del alias:gp -Force
 Set-Alias -Name gc -Value checkout
 Set-Alias -Name gp -Value pull
 
-
+del alias:bcompare -Force
+Set-Alias -Name bcompare -Value "C:\\Users\\crbk01\\Desktop\\WhenOffline\\BeondCompare4\\BComp.exe\" \"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\"
+del alias:browserflags -Force
+Set-Alias -Name browserflags -Value vivaldi "vivaldi://flags"
+del alias:reboot -Force
+set-Alias -Name reboot -Value shutdown /r
 #-------------------------------   Set Network BEGIN    -------------------------------
 # 1. 获取所有 Network Interface
 function Get-AllNic {
