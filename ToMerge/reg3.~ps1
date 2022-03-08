@@ -1,0 +1,1 @@
+﻿get-childitem -path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\' | out-file H:\hkcu-regbackup.txt
