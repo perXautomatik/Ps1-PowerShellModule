@@ -42,9 +42,26 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
 
 #------------------------------- Set Paths           -------------------------------
 
-echo "ps setHistorySavePath" ; set-PSReadlineOption -HistorySavePath "C:\Users\crbk01\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
+#ps setHistorySavePath
+set-PSReadlineOption -HistorySavePath "D:\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt"
 
 #------------------------------- Set Paths  end       -------------------------------
+
+#------------------------------- SystemMigration      -------------------------------
+
+#choco check if installed
+#path to list of aps to install
+#choco ask to install if not present
+
+#list of portable apps,download source 
+#path
+#download and extract if not present, ask to confirm
+
+#git Repos paths and origions,
+
+#------------------------------- Set Paths  end       -------------------------------
+
+
 
 #-------------------------------  Set Hot-keys BEGIN  -------------------------------
 # 设置预测文本来源为历史记录
