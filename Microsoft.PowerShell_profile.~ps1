@@ -312,7 +312,7 @@ Set-Alias -Name gp -Value pull
 
 
 function bc($REMOTE,$LOCAL,$BASE,$MERGED) {
-cmd /c "C:\Users\crbk01\Desktop\WhenOffline\BeondCompare4\BComp.exe" "$REMOTE" "$LOCAL" "$BASE" "$MERGED"
+ "C:\\Users\\crbk01\\Desktop\\WhenOffline\\BeondCompare4\\BComp.exe\" \"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\"
 }
 Set-Alias -Name bcompare -Value bc
 
