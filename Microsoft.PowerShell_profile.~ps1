@@ -6,6 +6,9 @@
  * Copyright: No copyright. You can use this code for anything with no warranty.
 #>
 
+#loadMessage
+echo "Microsoft.PowerShell_profile.ps1"
+
 # Increase history
 $MaximumHistoryCount = 10000
 
@@ -46,6 +49,96 @@ Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
 #------------------------------- Set Paths           -------------------------------
 
 #ps setHistorySavePath
-set-PSReadlineOption -HistorySavePath "D:\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt"
+set-PSReadlineOption -HistorySavePath "C:\Users\crbk01\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt"
+
+# vscode Portable Path
+#$path = [Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')
+$newpath = 'D:\portapps\6, Text,programming, x Editing\PortableApps\vscode-portable\vscode-portable.exe'
+[Environment]::SetEnvironmentVariable("code", $newpath)
 
 #------------------------------- Set Paths  end       -------------------------------
+#-------------------------------  Set Hot-keys BEGIN  -------------------------------
+# 设置预测文本来源为历史记录
+#Set-PSReadLineOption -PredictionSource History
+
+# 每次回溯输入历史，光标定位于输入内容末尾
+Set-PSReadLineOption -HistorySearchCursorMovesToEnd
+
+# 设置 Tab 为菜单补全和 Intellisense
+Set-PSReadLineKeyHandler -Key "Tab" -Function MenuComplete
+
+# 设置 Ctrl+d 为退出 PowerShell
+Set-PSReadlineKeyHandler -Key "Ctrl+d" -Function ViExit
+
+# 设置 Ctrl+z 为撤销
+Set-PSReadLineKeyHandler -Key "Ctrl+z" -Function Undo
+
+# 设置向上键为后向搜索历史记录
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+
+# 设置向下键为前向搜索历史纪录
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+#-------------------------------  Set Hot-keys END    -------------------------------
+# Helper Functions
+#######################################################
+
+function uptimef {
+	Get-WmiObject win32_operatingsystem | select csname, @{LABEL='LastBootUpTime';
+	EXPRESSION={$_.ConverttoDateTime($_.lastbootuptime)}}
+}
+
+function reloadProfile {
+	& $profile
+}
+
+function find-file($name) {
+	ls -recurse -filter "*${name}*" -ErrorAction SilentlyContinue | foreach {
+		$place_path = $_.directory
+		echo "${place_path}\${_}"
+	}
+}
+
+function printpath {
+	($Env:Path).Split(";")
+}
+
+
+function unzipf ($file) {
+	$dirname = (Get-Item $file).Basename
+	echo("Extracting", $file, "to", $dirname)
+	New-Item -Force -ItemType directory -Path $dirname
+	expand-archive $file -OutputPath $dirname -ShowProgress
+}
+#------------------------------- SystemMigration      -------------------------------
+
+#choco check if installed
+#path to list of aps to install
+#choco ask to install if not present
+
+#list of portable apps,download source
+#path
+#download and extract if not present, ask to confirm
+
+#path to portable apps
+#path to standard download location
+
+
+#git Repos paths and origions,
+#git systemwide profile folder
+#git global path
+
+#everything data folder
+#autohotkey script to run on startup
+
+#startup programs
+
+#reg to add if not present
+
+#------------------------------- SystemMigration end  -------------------------------
+
+#https://stackoverflow.com/questions/44758698/change-powershell-psreadline-menucomplete-functions-colors
+$colors = @{
+   "Selection" = "$([char]0x1b)[38;2;0;0;0;48;2;178;255;102m"
+}
+
+Set-PSReadLineOption -Colors $colors

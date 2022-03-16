@@ -1,60 +1,28 @@
 
-#------------------------------- SystemMigration      -------------------------------
-
-#choco check if installed
-#path to list of aps to install
-#choco ask to install if not present
-
-#list of portable apps,download source
-#path
-#download and extract if not present, ask to confirm
-
-#path to portable apps
-#path to standard download location
-
-
-#git Repos paths and origions,
-#git systemwide profile folder
-#git global path
-
-#everything data folder
-#autohotkey script to run on startup
-
-#startup programs
-
-#reg to add if not present
-
-#------------------------------- SystemMigration end  -------------------------------
-
-
-
-
-
-
+echo "profile loaded"
 #-------------------------------   Set Alias BEGIN    -------------------------------
 set-alias -name reload-profile -value reloadProfile
 set-alias -name uptime -value uptimef
-New-Alias -name print-path -value printpath
+set-alias -name print-path -value printpath
 
-New-Alias -name unzip -value unzipf
-
+set-alias -name unzip -value unzipf
 
 # 1. 编译函数 make
 function MakeThings {
 	nmake.exe $args -nologo
 };
-New-Alias -Name make -Value MakeThings
+set-alias -Name make -Value MakeThings
 
 # 2. 更新系统 os-update
-New-Alias -Name os-update -Value Update-Packages
+set-alias -Name os-update -Value Update-Packages
 
 # 3. 查看目录 ls & ll
 function ListDirectory {
 	(Get-ChildItem).Name
 	Write-Host("")
 };
-#New-Alias -Name ls -Value ListDirectory
-New-Alias -Name ll -Value Get-ChildItem
+#set-alias -Name ls -Value ListDirectory
+set-alias -Name ll -Value Get-ChildItem
 
 # 4. 打开当前工作目录
 function OpenCurrentFolderF {
@@ -67,7 +35,7 @@ function OpenCurrentFolderF {
 	)
 	Invoke-Item $Path
 };
-New-Alias -Name open-current-folder -Value OpenCurrentFolderF
+set-alias -Name open-current-folder -Value OpenCurrentFolderF
 
 # 5. 更改工作目录
 function Change-Directory {
@@ -81,32 +49,50 @@ function Change-Directory {
 };
 
 #######################################################
-#New-Alias -Name cd -Value Change-Directory -Option AllScope
+#set-alias -Name cd -Value Change-Directory -Option AllScope
 
 # filesInFolAsStream ;
-New-Alias -Name filesinfolasstream -Value get-childitem | out-string -stream
+set-alias -Name filesinfolasstream -Value get-childitem | out-string -stream
 
 #new ps OpenAsADmin
 function openasadminf {
-Start-Process powershell -Verb runAs
+	Start-Process powershell -Verb runAs
 }
-New-Alias -Name OpenAsADmin -Value openasadminf
+
+set-alias -Name OpenAsADmin -Value openasadminf
 
 Function EFunc {Search-Everything -PathExclude 'C:\users\Crbk01\AppData\Local\Temp'-Filter '<wholefilename:child:.git file:>|<wholefilename:child:.git folder:>' -global | Where{ $_ -notmatch 'C..9dfe73ef|OneDrive|GitHubDesktop.app|Microsoft VS Code._.resources.app|Installer.resources.app.node_modules|Microsoft.E dge.User Data.*.Extensions|Program Files.*.(Esri|MapInfo|ArcGIS)|Recycle.Bin' }}  ;
-New-Alias -name EveryGitRepo -Value EFunc
+set-alias -name EveryGitRepo -Value EFunc
 
 Function EGSfunc {cd $_; Out-File -FilePath .\lazy.log -inputObject (git lazy 'AutoCommit' 2>&1 )} ;
-New-Alias -name gitSilently -Value EGSfunc
+set-alias -name gitSilently -Value EGSfunc
 
-Function EGSRfunc { out-null -InputObject( git remote -v | Tee-Object -Variable proc ) ; %{$proc -split '\n'} | %{ $properties = $_ -split '[\t\s]'; $remote = try{ New-Object PSObject -Property @{ name = $properties[0].Trim();  url = $properties[1].Trim();  type = $properties[2].Trim() } } catch {'noRemote'} ; $remote | select-object -first 1 | select url} } ;
-New-Alias -name gitSingleRemote -Value EGSRfunc
+Function EGSRfunc
+{
+	out-null -InputObject( git remote -v | Tee-Object -Variable proc ) ;
+	 %{$proc -split '\n'} | %{ $properties = $_ -split '[\t\s]';
+	  $remote = try{ New-Object PSObject -Property @{ name = $properties[0].Trim();
+	    url = $properties[1].Trim();  type = $properties[2].Trim() } } catch {'noRemote'} ;
+	     $remote | select-object -first 1 | select url}
+	  } ;
+set-alias -name gitSingleRemote -Value EGSRfunc
+
+function AliasFunctionEverything([string]$filter)
+	{Search-Everything -filter $filter -global}
+
+set-alias -name code -value '& $env:code'
+
+set-alias -name everything -value AliasFunctionEverything
 
 #Git Ad $leaf as submodule from $remote and branch $branch
-Function EFuncGT([string]$leaf,[string]$remote,[string]$branch){ git submodule add -f --name $leaf -- $remote $branch ; git commit -am $leaf+$remote+$branch } ;
-New-Alias -name GitAdEPathAsSNB -value EFuncGT
+Function EFuncGT([string]$leaf,[string]$remote,[string]$branch)
+{
+ git submodule add -f --name $leaf -- $remote $branch ; git commit -am $leaf+$remote+$branch
+ } ;
+set-alias -name GitAdEPathAsSNB -value EFuncGT
 
 Function EGLp($path,$message) { cd $path ; git add .; git commit -m $message ; git push } ;
-New-Alias -name GitUp -value EGLp
+set-alias -name GitUp -value EGLp
 
 
 function pull () { & get pull $args }
@@ -115,24 +101,24 @@ function checkout () { & git checkout $args }
 #del alias:gc -Force
 #del alias:gp -Force
 
-#New-Alias -Name gc -Value checkout
-#New-Alias -Name gp -Value pull
+#set-alias -Name gc -Value checkout
+#set-alias -Name gp -Value pull
 
 
 function bc($REMOTE,$LOCAL,$BASE,$MERGED) {
 cmd /c "C:\Users\crbk01\Desktop\WhenOffline\BeondCompare4\BComp.exe" "$REMOTE" "$LOCAL" "$BASE" "$MERGED"
 }
-New-Alias -Name bcompare -Value bc
+set-alias -Name bcompare -Value bc
 
 function viv {
 vivaldi "vivaldi://flags"
 }
-New-Alias -Name browserflags -Value viv
+set-alias -Name browserflags -Value viv
 
 function rb {
 shutdown /r
 }
-New-Alias -Name reboot -Value rb
+set-alias -Name reboot -Value rb
 
 #-------------------------------    Set Alias END     -------------------------------
 
@@ -292,17 +278,17 @@ function Update-Packages {
 function Get-AllNic {
 	Get-NetAdapter | Sort-Object -Property MacAddress
 }
-New-Alias -Name getnic -Value Get-AllNic
+set-alias -Name getnic -Value Get-AllNic
 
 # 2. 获取 IPv4 关键路由
 function Get-IPv4Routes {
 	Get-NetRoute -AddressFamily IPv4 | Where-Object -FilterScript {$_.NextHop -ne '0.0.0.0'}
 }
-New-Alias -Name getip -Value Get-IPv4Routes
+set-alias -Name getip -Value Get-IPv4Routes
 
 # 3. 获取 IPv6 关键路由
 function Get-IPv6Routes {
 	Get-NetRoute -AddressFamily IPv6 | Where-Object -FilterScript {$_.NextHop -ne '::'}
 }
-New-Alias -Name getip6 -Value Get-IPv6Routes
+set-alias -Name getip6 -Value Get-IPv6Routes
 #-------------------------------    Set Network END     -------------------------------

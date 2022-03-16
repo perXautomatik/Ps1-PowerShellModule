@@ -6,6 +6,9 @@
  * Copyright: No copyright. You can use this code for anything with no warranty.
 #>
 
+#loadMessage
+echo "Microsoft.PowerShell_profile.ps1"
+
 # Increase history
 $MaximumHistoryCount = 10000
 
@@ -46,7 +49,12 @@ Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
 #------------------------------- Set Paths           -------------------------------
 
 #ps setHistorySavePath
-set-PSReadlineOption -HistorySavePath "D:\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt"
+set-PSReadlineOption -HistorySavePath "C:\Users\crbk01\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt"
+
+# vscode Portable Path
+#$path = [Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')
+$newpath = 'D:\portapps\6, Text,programming, x Editing\PortableApps\vscode-portable\vscode-portable.exe'
+[Environment]::SetEnvironmentVariable("code", $newpath)
 
 #------------------------------- Set Paths  end       -------------------------------
 #-------------------------------  Set Hot-keys BEGIN  -------------------------------
@@ -66,9 +74,9 @@ Set-PSReadlineKeyHandler -Key "Ctrl+d" -Function ViExit
 Set-PSReadLineKeyHandler -Key "Ctrl+z" -Function Undo
 
 # 设置向上键为后向搜索历史记录
-Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
-
 # 设置向下键为前向搜索历史纪录
+# Autocompletion for arrow keys @ https://dev.to/ofhouse/add-a-bash-like-autocomplete-to-your-powershell-4257
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 #-------------------------------  Set Hot-keys END    -------------------------------
 # Helper Functions
@@ -101,3 +109,37 @@ function unzipf ($file) {
 	New-Item -Force -ItemType directory -Path $dirname
 	expand-archive $file -OutputPath $dirname -ShowProgress
 }
+#------------------------------- SystemMigration      -------------------------------
+
+#choco check if installed
+#path to list of aps to install
+#choco ask to install if not present
+
+#list of portable apps,download source
+#path
+#download and extract if not present, ask to confirm
+
+#path to portable apps
+#path to standard download location
+
+
+#git Repos paths and origions,
+#git systemwide profile folder
+#git global path
+
+#everything data folder
+#autohotkey script to run on startup
+
+#startup programs
+
+#reg to add if not present
+
+#------------------------------- SystemMigration end  -------------------------------
+
+#change selection to neongreen
+#https://stackoverflow.com/questions/44758698/change-powershell-psreadline-menucomplete-functions-colors
+$colors = @{
+   "Selection" = "$([char]0x1b)[38;2;0;0;0;48;2;178;255;102m"
+}
+
+Set-PSReadLineOption -Colors $colors
