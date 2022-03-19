@@ -41,12 +41,12 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
 
 #https://stackoverflow.com/questions/47356782/powershell-capture-git-output
 #Then stderr should be redirected to stdout.
-set GIT_REDIRECT_STDERR=2>&1
+#set GIT_REDIRECT_STDERR=2>&1
 
 #------------------------------- Set Paths           -------------------------------
 
 #ps setHistorySavePath
-set-PSReadlineOption -HistorySavePath "D:\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt"
+set-PSReadlineOption -HistorySavePath "C:\Users\Användaren\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt"
 
 #------------------------------- Set Paths  end       -------------------------------
 
