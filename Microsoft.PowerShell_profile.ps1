@@ -368,3 +368,9 @@ function Get-IPv6Routes {
 }
 Set-Alias -Name getip6 -Value Get-IPv6Routes
 #-------------------------------    Set Network END     -------------------------------
+
+# Chocolatey profile
+$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+if (Test-Path($ChocolateyProfile)) {
+  Import-Module "$ChocolateyProfile"
+}
