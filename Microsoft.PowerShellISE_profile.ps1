@@ -5,5 +5,5 @@ $moduleBrowser = $psISE.CurrentPowerShellTab.VerticalAddOnTools.Add('Module Brow
 $psISE.CurrentPowerShellTab.VisibleVerticalAddOnTools.SelectedAddOnTool = $moduleBrowser
 #Module Browser End
 # Start AzureAutomationISEAddOn snippet
-Import-Module AzureAutomationAuthoringToolkit
+# Import-Module AzureAutomationAuthoringToolkit
 # End AzureAutomationISEAddOn snippet
