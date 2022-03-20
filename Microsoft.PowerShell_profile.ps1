@@ -7,22 +7,22 @@
 #>
 
 #loadMessage
-echo "Microsoft.PowerShell_profile.ps1"
+echo 'Microsoft.PowerShell_profile.ps1'
 
 # Increase history
 $MaximumHistoryCount = 10000
 
 #------------------------------- Import Modules BEGIN -------------------------------
-# 引入 posh-git
-Import-Module posh-git
+# ?? posh-git
+#Import-Module posh-git
 
-# 引入 oh-my-posh
+# ?? oh-my-posh
 #Import-Module oh-my-posh
 
-# 引入 ps-read-line
+# ?? ps-read-line
 Import-Module PSReadLine
 
-# 设置 PowerShell 主题
+# ?? PowerShell ??
 # Set-PoshPrompt ys
 #Set-PoshPrompt paradox
 #ps ecoArgs;
@@ -34,7 +34,7 @@ Import-Module PSReadLine
 
 
 # Produce UTF-8 by default
-$PSDefaultParameterValues["Out-File:Encoding"]="utf8"
+$PSDefaultParameterValues['Out-File:Encoding']='utf8'
 
 # Show selection menu for tab
 Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
@@ -49,32 +49,34 @@ Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
 #------------------------------- Set Paths           -------------------------------
 
 #ps setHistorySavePath
-set-PSReadlineOption -HistorySavePath "C:\Users\Användaren\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt"
+$historyPath = 'C:\Users\Anv�ndaren\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt'
+set-PSReadlineOption -HistorySavePath $historyPath
+echo "historyPath: $historyPath"
 
 # vscode Portable Path
 #$path = [Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')
 $newpath = 'D:\portapps\6, Text,programming, x Editing\PortableApps\vscode-portable\vscode-portable.exe'
-[Environment]::SetEnvironmentVariable("code", $newpath)
+[Environment]::SetEnvironmentVariable('code', $newpath)
 
 #------------------------------- Set Paths  end       -------------------------------
 #-------------------------------  Set Hot-keys BEGIN  -------------------------------
-# 设置预测文本来源为历史记录
+# ?????????????
 #Set-PSReadLineOption -PredictionSource History
 
-# 每次回溯输入历史，光标定位于输入内容末尾
+# ????????,???????????
 Set-PSReadLineOption -HistorySearchCursorMovesToEnd
 
-# 设置 Tab 为菜单补全和 Intellisense
-Set-PSReadLineKeyHandler -Key "Tab" -Function MenuComplete
+# ?? Tab ?????? Intellisense
+Set-PSReadLineKeyHandler -Key 'Tab' -Function MenuComplete
 
-# 设置 Ctrl+d 为退出 PowerShell
-Set-PSReadlineKeyHandler -Key "Ctrl+d" -Function ViExit
+# ?? Ctrl+d ??? PowerShell
+Set-PSReadlineKeyHandler -Key 'Ctrl+d' -Function ViExit
 
-# 设置 Ctrl+z 为撤销
-Set-PSReadLineKeyHandler -Key "Ctrl+z" -Function Undo
+# ?? Ctrl+z ???
+Set-PSReadLineKeyHandler -Key 'Ctrl+z' -Function Undo
 
-# 设置向上键为后向搜索历史记录
-# 设置向下键为前向搜索历史纪录
+# ??????????????
+# ??????????????
 # Autocompletion for arrow keys @ https://dev.to/ofhouse/add-a-bash-like-autocomplete-to-your-powershell-4257
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
@@ -92,20 +94,20 @@ function reloadProfile {
 }
 
 function find-file($name) {
-	ls -recurse -filter "*${name}*" -ErrorAction SilentlyContinue | foreach {
+	ls -recurse -filter '*${name}*' -ErrorAction SilentlyContinue | foreach {
 		$place_path = $_.directory
-		echo "${place_path}\${_}"
+		echo '${place_path}\${_}'
 	}
 }
 
 function printpath {
-	($Env:Path).Split(";")
+	($Env:Path).Split(';')
 }
 
 
 function unzipf ($file) {
 	$dirname = (Get-Item $file).Basename
-	echo("Extracting", $file, "to", $dirname)
+	echo 'Extracting, $file, to, $dirname'
 	New-Item -Force -ItemType directory -Path $dirname
 	expand-archive $file -OutputPath $dirname -ShowProgress
 }
@@ -138,35 +140,35 @@ function unzipf ($file) {
 
 
 #-------------------------------  Set Hot-keys BEGIN  -------------------------------
-# 设置预测文本来源为历史记录
+# ?????????????
 #Set-PSReadLineOption -PredictionSource History
 
-# 每次回溯输入历史，光标定位于输入内容末尾
+# ????????,???????????
 Set-PSReadLineOption -HistorySearchCursorMovesToEnd
 
-# 设置 Tab 为菜单补全和 Intellisense
-Set-PSReadLineKeyHandler -Key "Tab" -Function MenuComplete
+# ?? Tab ?????? Intellisense
+Set-PSReadLineKeyHandler -Key 'Tab' -Function MenuComplete
 
-# 设置 Ctrl+d 为退出 PowerShell
-Set-PSReadlineKeyHandler -Key "Ctrl+d" -Function ViExit
+# ?? Ctrl+d ??? PowerShell
+Set-PSReadlineKeyHandler -Key 'Ctrl+d' -Function ViExit
 
-# 设置 Ctrl+z 为撤销
-Set-PSReadLineKeyHandler -Key "Ctrl+z" -Function Undo
+# ?? Ctrl+z ???
+Set-PSReadLineKeyHandler -Key 'Ctrl+z' -Function Undo
 
-# 设置向上键为后向搜索历史记录
+# ??????????????
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 
-# 设置向下键为前向搜索历史纪录
+# ??????????????
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 #-------------------------------  Set Hot-keys END    -------------------------------
 
 #change selection to neongreen
 #https://stackoverflow.com/questions/44758698/change-powershell-psreadline-menucomplete-functions-colors
 $colors = @{
-   "Selection" = "$([char]0x1b)[38;2;0;0;0;48;2;178;255;102m"
+   'Selection' = '$([char]0x1b)[38;2;0;0;0;48;2;178;255;102m'
 }
 
-Set-PSReadLineOption -Colors $colors
+#Set-PSReadLineOption -Colors $colors
 # Helper Functions
 #######################################################
 
@@ -180,19 +182,19 @@ function reload-profile {
 }
 
 function find-file($name) {
-	ls -recurse -filter "*${name}*" -ErrorAction SilentlyContinue | foreach {
+	ls -recurse -filter '*${name}*' -ErrorAction SilentlyContinue | foreach {
 		$place_path = $_.directory
-		echo "${place_path}\${_}"
+		echo '${place_path}\${_}'
 	}
 }
 
 function print-path {
-	($Env:Path).Split(";")
+	($Env:Path).Split(';')
 }
 
 function unzip ($file) {
 	$dirname = (Get-Item $file).Basename
-	echo("Extracting", $file, "to", $dirname)
+	echo('Extracting', $file, 'to', $dirname)
 	New-Item -Force -ItemType directory -Path $dirname
 	expand-archive $file -OutputPath $dirname -ShowProgress
 }
@@ -204,7 +206,7 @@ function unzip ($file) {
 
 
 # Chocolatey profile
-$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+$ChocolateyProfile = '$env:ChocolateyInstall\helpers\chocolateyProfile.psm1'
 if (Test-Path($ChocolateyProfile)) {
-  Import-Module "$ChocolateyProfile"
+  Import-Module '$ChocolateyProfile'
 }
