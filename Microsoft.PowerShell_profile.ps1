@@ -14,22 +14,22 @@ $MaximumHistoryCount = 10000
 
 #------------------------------- Import Modules BEGIN -------------------------------
 # ?? posh-git
-#Import-Module posh-git
+Import-Module posh-git
 
 # ?? oh-my-posh
-#Import-Module oh-my-posh
+Import-Module oh-my-posh
 
 # ?? ps-read-line
 Import-Module PSReadLine
 
 # ?? PowerShell ??
-# Set-PoshPrompt ys
-#Set-PoshPrompt paradox
+ Set-PoshPrompt ys
+Set-PoshPrompt paradox
 #ps ecoArgs;
-#Import-Module echoargs ;
+Import-Module echoargs ;
 #pscx history;
-#Install-Module -Name Pscx
-#Import-Module -name pscx
+Install-Module -Name Pscx
+Import-Module -name pscx
 #------------------------------- Import Modules END   -------------------------------
 
 

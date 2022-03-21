@@ -49,7 +49,7 @@ Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
 #------------------------------- Set Paths           -------------------------------
 
 #ps setHistorySavePath
-$historyPath = 'C:\Users\Anv√§ndaren\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt'
+$historyPath = 'C:\Users\Anv‰ndaren\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt'
 set-PSReadlineOption -HistorySavePath $historyPath
 echo "historyPath: $historyPath"
 
