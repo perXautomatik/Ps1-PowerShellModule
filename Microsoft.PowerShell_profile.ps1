@@ -47,16 +47,27 @@ Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
 #set GIT_REDIRECT_STDERR=2>&1
 
 #------------------------------- Set Paths           -------------------------------
-
-#ps setHistorySavePath
-set-PSReadlineOption -HistorySavePath "C:\Users\crbk01\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt"
-
-# vscode Portable Path
-#$path = [Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')
-$newpath = 'D:\portapps\6, Text,programming, x Editing\PortableApps\vscode-portable\vscode-portable.exe'
-[Environment]::SetEnvironmentVariable("code", $newpath)
-
+. .\setPaths.ps1
 #------------------------------- Set Paths  end       -------------------------------
+
+#------------------------------- overloading begin
+
+#https://www.sapien.com/blog/2014/10/21/a-better-tostring-method-for-hash-tables/			      
+#better hashtable ToString method			      
+  Update-TypeData -TypeName System.Collections.HashTable `
+    -MemberType ScriptMethod `
+    -MemberName ToString `
+    -Value { $hashstr = "@{"; $keys = $this.keys; foreach ($key in $keys) { $v = $this[$key]; 
+             if ($key -match "\s") { $hashstr += "`"$key`"" + "=" + "`"$v`"" + ";" }
+             else { $hashstr += $key + "=" + "`"$v`"" + ";" } }; $hashstr += "}";
+             return $hashstr }
+
+
+
+
+#-------------------------------  overloading end
+
+
 #-------------------------------  Set Hot-keys BEGIN  -------------------------------
 # 设置预测文本来源为历史记录
 #Set-PSReadLineOption -PredictionSource History

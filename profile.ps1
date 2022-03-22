@@ -1,31 +1,34 @@
 
 echo "profile loaded"
-#-------------------------------   Set Alias BEGIN    -------------------------------
+#-------------------------------   Set alias BEGIN    -------------------------------
 set-alias -name reload-profile -value reloadProfile
 set-alias -name uptime -value uptimef
 set-alias -name print-path -value printpath
 
 set-alias -name unzip -value unzipf
 
+
+
+
 # 1. 编译函数 make
-function MakeThings {
+function aliasMakeThings {
 	nmake.exe $args -nologo
 };
-set-alias -Name make -Value MakeThings
+set-alias -Name make -Value aliasMakeThings
 
 # 2. 更新系统 os-update
 set-alias -Name os-update -Value Update-Packages
 
 # 3. 查看目录 ls & ll
-function ListDirectory {
+function aliasListDirectory {
 	(Get-ChildItem).Name
 	Write-Host("")
 };
-#set-alias -Name ls -Value ListDirectory
+#set-alias -Name ls -Value aliasListDirectory
 set-alias -Name ll -Value Get-ChildItem
 
 # 4. 打开当前工作目录
-function OpenCurrentFolderF {
+function aliasOpenCurrentFolderF {
 	param
 	(
 		# 输入要打开的路径
@@ -35,10 +38,10 @@ function OpenCurrentFolderF {
 	)
 	Invoke-Item $Path
 };
-set-alias -Name open-current-folder -Value OpenCurrentFolderF
+set-alias -Name open-current-folder -Value aliasOpenCurrentFolderF
 
 # 5. 更改工作目录
-function Change-Directory {
+function aliasChangeDirectory {
 	param (
 		# 输入要切换到的路径
 		# 用法示例：cd C:/
@@ -49,25 +52,28 @@ function Change-Directory {
 };
 
 #######################################################
-#set-alias -Name cd -Value Change-Directory -Option AllScope
+#set-alias -Name cd -Value aliasChangeDirectory -Option AllScope
 
 # filesInFolAsStream ;
-set-alias -Name filesinfolasstream -Value get-childitem | out-string -stream
+function aliasfilesInFolAsStream {
+	get-childitem | out-string -stream
+}
+set-alias -Name filesinfolasstream -Value aliasfilesInFolAsStream
 
 #new ps OpenAsADmin
-function openasadminf {
+function aliasopenasadminf {
 	Start-Process powershell -Verb runAs
 }
 
-set-alias -Name OpenAsADmin -Value openasadminf
+set-alias -Name OpenAsADmin -Value aliasopenasadminf
 
-Function EFunc {Search-Everything -PathExclude 'C:\users\Crbk01\AppData\Local\Temp'-Filter '<wholefilename:child:.git file:>|<wholefilename:child:.git folder:>' -global | Where{ $_ -notmatch 'C..9dfe73ef|OneDrive|GitHubDesktop.app|Microsoft VS Code._.resources.app|Installer.resources.app.node_modules|Microsoft.E dge.User Data.*.Extensions|Program Files.*.(Esri|MapInfo|ArcGIS)|Recycle.Bin' }}  ;
-set-alias -name EveryGitRepo -Value EFunc
+Function aliasEFunc {Search-Everything -PathExclude 'C:\users\Crbk01\AppData\Local\Temp'-Filter '<wholefilename:child:.git file:>|<wholefilename:child:.git folder:>' -global | Where{ $_ -notmatch 'C..9dfe73ef|OneDrive|GitHubDesktop.app|Microsoft VS Code._.resources.app|Installer.resources.app.node_modules|Microsoft.E dge.User Data.*.Extensions|Program Files.*.(Esri|MapInfo|ArcGIS)|Recycle.Bin' }}  ;
+set-alias -name EveryGitRepo -Value aliasEFunc
 
-Function EGSfunc {cd $_; Out-File -FilePath .\lazy.log -inputObject (git lazy 'AutoCommit' 2>&1 )} ;
-set-alias -name gitSilently -Value EGSfunc
+Function aliasEGSfunc {cd $_; Out-File -FilePath .\lazy.log -inputObject (git lazy 'AutoCommit' 2>&1 )} ;
+set-alias -name gitSilently -Value aliasEGSfunc
 
-Function EGSRfunc
+Function aliasEGSRfunc
 {
 	out-null -InputObject( git remote -v | Tee-Object -Variable proc ) ;
 	 %{$proc -split '\n'} | %{ $properties = $_ -split '[\t\s]';
@@ -75,24 +81,57 @@ Function EGSRfunc
 	    url = $properties[1].Trim();  type = $properties[2].Trim() } } catch {'noRemote'} ;
 	     $remote | select-object -first 1 | select url}
 	  } ;
-set-alias -name gitSingleRemote -Value EGSRfunc
+set-alias -name gitSingleRemote -Value aliasEGSRfunc
 
-function AliasFunctionEverything([string]$filter)
+function aliasFunctionEverything([string]$filter)
 	{Search-Everything -filter $filter -global}
 
 set-alias -name code -value '& $env:code'
 
-set-alias -name everything -value AliasFunctionEverything
+set-alias -name everything -value aliasFunctionEverything
+					
+function aliasPshellHistoryPath {
+	(Get-PSReadlineOption).HistorySavePath
+}					
+set-alias -name pshelHistorypath -value aliasPshellHistoryPath
+
+function aliasPastDo($searchstring) {
+$path = aliasPshellHistoryPath; menu @( get-content $path | where{ $_ -match $searchstring }) | %{Invoke-Expression $_ }
+}
+
+set-alias -name pastDo -value aliasPastDo
+
+function aliasPastDoEdit($searchstring) {
+$path = aliasPshellHistoryPath; menu @( get-content $path | where{ $_ -match $searchstring }) | %{ Set-Clipboard -Value $_ }
+}
+
+set-alias -name pastDoEdit -value aliasPastDoEdit           
+
+function aliasExecuteThis($searchstring) {
+menu @(everything "ext:exe $searchString") | %{& $_ }
+}
+
+set-alias -name executeThis -value aliasExecuteThis
+
+
+function aliasMyAliases {
+Get-Alias -Definition alias* | select name
+}
+
+set-alias -name MyAliases -value aliasMyAliases
+
+
+
 
 #Git Ad $leaf as submodule from $remote and branch $branch
-Function EFuncGT([string]$leaf,[string]$remote,[string]$branch)
+Function aliasEFuncGT([string]$leaf,[string]$remote,[string]$branch)
 {
  git submodule add -f --name $leaf -- $remote $branch ; git commit -am $leaf+$remote+$branch
  } ;
-set-alias -name GitAdEPathAsSNB -value EFuncGT
+set-alias -name GitAdEPathAsSNB -value aliasEFuncGT
 
-Function EGLp($path,$message) { cd $path ; git add .; git commit -m $message ; git push } ;
-set-alias -name GitUp -value EGLp
+Function aliasEGLp($path,$message) { cd $path ; git add .; git commit -m $message ; git push } ;
+set-alias -name GitUp -value aliasEGLp
 
 
 function pull () { & get pull $args }
@@ -105,22 +144,22 @@ function checkout () { & git checkout $args }
 #set-alias -Name gp -Value pull
 
 
-function bc($REMOTE,$LOCAL,$BASE,$MERGED) {
+function aliasbc($REMOTE,$LOCAL,$BASE,$MERGED) {
 cmd /c "C:\Users\crbk01\Desktop\WhenOffline\BeondCompare4\BComp.exe" "$REMOTE" "$LOCAL" "$BASE" "$MERGED"
 }
-set-alias -Name bcompare -Value bc
+set-alias -Name bcompare -Value aliasbc
 
-function viv {
+function aliasviv {
 vivaldi "vivaldi://flags"
 }
-set-alias -Name browserflags -Value viv
+set-alias -Name browserflags -Value aliasviv
 
-function rb {
+function aliasrb {
 shutdown /r
 }
-set-alias -Name reboot -Value rb
+set-alias -Name reboot -Value aliasrb
 
-#-------------------------------    Set Alias END     -------------------------------
+#-------------------------------    Set alias END     -------------------------------
 
 
 

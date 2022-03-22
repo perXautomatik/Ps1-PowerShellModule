@@ -57,6 +57,20 @@ $newpath = 'D:\portapps\6, Text,programming, x Editing\PortableApps\vscode-porta
 [Environment]::SetEnvironmentVariable("code", $newpath)
 
 #------------------------------- Set Paths  end       -------------------------------
+
+#https://www.sapien.com/blog/2014/10/21/a-better-tostring-method-for-hash-tables/			      
+#better hashtable ToString method			      
+  Update-TypeData -TypeName System.Collections.HashTable `
+    -MemberType ScriptMethod `
+    -MemberName ToString `
+    -Value { $hashstr = "@{"; $keys = $this.keys; foreach ($key in $keys) { $v = $this[$key]; 
+             if ($key -match "\s") { $hashstr += "`"$key`"" + "=" + "`"$v`"" + ";" }
+             else { $hashstr += $key + "=" + "`"$v`"" + ";" } }; $hashstr += "}";
+             return $hashstr }
+
+
+
+
 #-------------------------------  Set Hot-keys BEGIN  -------------------------------
 # 设置预测文本来源为历史记录
 #Set-PSReadLineOption -PredictionSource History
@@ -74,9 +88,9 @@ Set-PSReadlineKeyHandler -Key "Ctrl+d" -Function ViExit
 Set-PSReadLineKeyHandler -Key "Ctrl+z" -Function Undo
 
 # 设置向上键为后向搜索历史记录
-Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
-
 # 设置向下键为前向搜索历史纪录
+# Autocompletion for arrow keys @ https://dev.to/ofhouse/add-a-bash-like-autocomplete-to-your-powershell-4257
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 #-------------------------------  Set Hot-keys END    -------------------------------
 # Helper Functions
@@ -136,6 +150,7 @@ function unzipf ($file) {
 
 #------------------------------- SystemMigration end  -------------------------------
 
+#change selection to neongreen
 #https://stackoverflow.com/questions/44758698/change-powershell-psreadline-menucomplete-functions-colors
 $colors = @{
    "Selection" = "$([char]0x1b)[38;2;0;0;0;48;2;178;255;102m"
