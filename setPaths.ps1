@@ -1,6 +1,8 @@
 
 #ps setHistorySavePath
-set-PSReadlineOption -HistorySavePath "C:\Users\crbk01\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt"
+$historyPath = "C:\Users\crbk01\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt"
+set-PSReadlineOption -HistorySavePath $historyPath
+echo "historyPath: $historyPath"
 
 # vscode Portable Path
 	#$path = [Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')
