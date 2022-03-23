@@ -13,23 +13,10 @@ echo "Microsoft.PowerShell_profile.ps1"
 $MaximumHistoryCount = 10000
 
 #------------------------------- Import Modules BEGIN -------------------------------
-# 引入 posh-git
-Import-Module posh-git
 
-# 引入 oh-my-posh
-#Import-Module oh-my-posh
+$pos = join-path -Path (split-path $profile -Parent)  -ChildPath 'importModules.ps1'
 
-# 引入 ps-read-line
-Import-Module PSReadLine
-
-# 设置 PowerShell 主题
-# Set-PoshPrompt ys
-#Set-PoshPrompt paradox
-#ps ecoArgs;
-#Import-Module echoargs ;
-#pscx history;
-#Install-Module -Name Pscx
-#Import-Module -name pscx
+ Import-Module $pos
 #------------------------------- Import Modules END   -------------------------------
 
 
@@ -47,7 +34,16 @@ Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
 #set GIT_REDIRECT_STDERR=2>&1
 
 #------------------------------- Set Paths           -------------------------------
-. .\setPaths.ps1
+$pos = join-path -Path (split-path $profile -Parent)  -ChildPath 'setPaths.ps1'
+
+Import-Module  $pos
+
+
+
+# Load scripts from the following locations
+$env:Path += ";D:\SysAdmin\scripts\PowerShellBasics"
+$env:Path += ";D:\SysAdmin\scripts\Connectors"
+$env:Path += ";D:\SysAdmin\scripts\Office365"
 #------------------------------- Set Paths  end       -------------------------------
 
 #------------------------------- overloading begin
@@ -61,10 +57,6 @@ Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
              if ($key -match "\s") { $hashstr += "`"$key`"" + "=" + "`"$v`"" + ";" }
              else { $hashstr += $key + "=" + "`"$v`"" + ";" } }; $hashstr += "}";
              return $hashstr }
-
-
-
-
 #-------------------------------  overloading end
 
 
@@ -146,11 +138,22 @@ function unzipf ($file) {
 #reg to add if not present
 
 #------------------------------- SystemMigration end  -------------------------------
-
+					      
+#------------------------------- Styling begin --------------------------------------					      
 #change selection to neongreen
 #https://stackoverflow.com/questions/44758698/change-powershell-psreadline-menucomplete-functions-colors
 $colors = @{
    "Selection" = "$([char]0x1b)[38;2;0;0;0;48;2;178;255;102m"
 }
-
 Set-PSReadLineOption -Colors $colors
+
+# Style default PowerShell Console
+$shell = $Host.UI.RawUI
+
+$shell.WindowTitle= "PS"
+
+$shell.BackgroundColor = "Black"
+$shell.ForegroundColor = "White"
+
+# Load custom theme for Windows Terminal
+#Set-Theme LazyAdmin
