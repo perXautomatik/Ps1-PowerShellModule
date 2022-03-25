@@ -14,6 +14,9 @@ Import-Module PSReadLine
 #Import-Module echoargs ;
 #pscx history;
 #Install-Module -Name Pscx
-#Import-Module -name pscx
+#Import-Module -name pscx   
+
+
+Add-Type -Path "C:\Users\crbk01\AppData\Local\GMap.NET\DllCache\SQLite_v103_NET4_x64\System.Data.SQLite.DLL"
 
 echo "modules imported"

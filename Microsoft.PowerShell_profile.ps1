@@ -13,9 +13,10 @@ echo "Microsoft.PowerShell_profile.ps1"
 $MaximumHistoryCount = 10000
 
 #------------------------------- Import Modules BEGIN -------------------------------
-
-$pos = join-path -Path (split-path $profile -Parent)  -ChildPath 'importModules.ps1'
-
+$profileFolder = (split-path $profile -Parent)
+$pos = join-path -Path $profileFolder -ChildPath 'importModules.ps1'
+ Import-Module $pos
+$pos = join-path -Path $profileFolder -ChildPath 'sqlite.ps1' 
  Import-Module $pos
 #------------------------------- Import Modules END   -------------------------------
 
