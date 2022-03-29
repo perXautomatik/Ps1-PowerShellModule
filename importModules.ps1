@@ -1,22 +1,25 @@
+Install-Module -Name PowerShellGet -Scope CurrentUser -AllowClobber -AllowPrerelease   -AcceptLicense -force -SkipPublisherCheck
+$profileFolder = (split-path $profile -Parent)
+$pos = join-path -Path $profileFolder -ChildPath 'sqlite.ps1'
+ Import-Module $pos
+
 # 引入 posh-git
-Import-Module posh-git
+find-module -name posh-git | install-module -Force ; Import-Module posh-git
 
 # 引入 oh-my-posh
-#Import-Module oh-my-posh
+find-module -name oh-my-posh | install-module -Force ; Import-Module oh-my-posh
+# 设置 PowerShell 主题
+# Set-PoshPrompt ys
+Set-PoshPrompt paradox
+
 
 # 引入 ps-read-line
 Import-Module PSReadLine
 
-# 设置 PowerShell 主题
-# Set-PoshPrompt ys
-#Set-PoshPrompt paradox
-#ps ecoArgs;
-#Import-Module echoargs ;
-#pscx history;
-#Install-Module -Name Pscx
-#Import-Module -name pscx   
 
+#Import-Module echoargs ; ps ecoArgs;
 
-Add-Type -Path "C:\Users\crbk01\AppData\Local\GMap.NET\DllCache\SQLite_v103_NET4_x64\System.Data.SQLite.DLL"
+find-module -name Pscx | install-module ; Import-Module -name pscx
+pscx history;
 
 echo "modules imported"

@@ -13,10 +13,9 @@ echo "Microsoft.PowerShell_profile.ps1"
 $MaximumHistoryCount = 10000
 
 #------------------------------- Import Modules BEGIN -------------------------------
+
 $profileFolder = (split-path $profile -Parent)
 $pos = join-path -Path $profileFolder -ChildPath 'importModules.ps1'
- Import-Module $pos
-$pos = join-path -Path $profileFolder -ChildPath 'sqlite.ps1' 
  Import-Module $pos
 #------------------------------- Import Modules END   -------------------------------
 
@@ -35,29 +34,25 @@ Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
 #set GIT_REDIRECT_STDERR=2>&1
 
 #------------------------------- Set Paths           -------------------------------
-$pos = join-path -Path (split-path $profile -Parent)  -ChildPath 'setPaths.ps1'
 
-Import-Module  $pos
+$paths = join-path -Path (split-path $profile -Parent)  -ChildPath 'setPaths.ps1'
+
+Import-Module  $paths
 
 
-
-# Load scripts from the following locations
-$env:Path += ";D:\SysAdmin\scripts\PowerShellBasics"
-$env:Path += ";D:\SysAdmin\scripts\Connectors"
-$env:Path += ";D:\SysAdmin\scripts\Office365"
 #------------------------------- Set Paths  end       -------------------------------
 
 #------------------------------- overloading begin
 
-#https://www.sapien.com/blog/2014/10/21/a-better-tostring-method-for-hash-tables/			      
-#better hashtable ToString method			      
+#https://www.sapien.com/blog/2014/10/21/a-better-tostring-method-for-hash-tables/
+#better hashtable ToString method
   Update-TypeData -TypeName System.Collections.HashTable `
     -MemberType ScriptMethod `
     -MemberName ToString `
-    -Value { $hashstr = "@{"; $keys = $this.keys; foreach ($key in $keys) { $v = $this[$key]; 
-             if ($key -match "\s") { $hashstr += "`"$key`"" + "=" + "`"$v`"" + ";" }
-             else { $hashstr += $key + "=" + "`"$v`"" + ";" } }; $hashstr += "}";
-             return $hashstr }
+    -Value { $hashstr = "@{"; $keys = $this.keys; foreach ($key in $keys) { $v = $this[$key];
+	     if ($key -match "\s") { $hashstr += "`"$key`"" + "=" + "`"$v`"" + ";" }
+	     else { $hashstr += $key + "=" + "`"$v`"" + ";" } }; $hashstr += "}";
+	     return $hashstr }
 #-------------------------------  overloading end
 
 
@@ -77,9 +72,7 @@ Set-PSReadlineKeyHandler -Key "Ctrl+d" -Function ViExit
 # 设置 Ctrl+z 为撤销
 Set-PSReadLineKeyHandler -Key "Ctrl+z" -Function Undo
 
-# 设置向上键为后向搜索历史记录
-# 设置向下键为前向搜索历史纪录
-# Autocompletion for arrow keys @ https://dev.to/ofhouse/add-a-bash-like-autocomplete-to-your-powershell-4257
+# 设置向上键为后向搜索历史记录 # Autocompletion for arrow keys @ https://dev.to/ofhouse/add-a-bash-like-autocomplete-to-your-powershell-4257
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 #-------------------------------  Set Hot-keys END    -------------------------------
@@ -139,12 +132,12 @@ function unzipf ($file) {
 #reg to add if not present
 
 #------------------------------- SystemMigration end  -------------------------------
-					      
-#------------------------------- Styling begin --------------------------------------					      
+
+#------------------------------- Styling begin --------------------------------------
 #change selection to neongreen
 #https://stackoverflow.com/questions/44758698/change-powershell-psreadline-menucomplete-functions-colors
 $colors = @{
-   "Selection" = "$([char]0x1b)[38;2;0;0;0;48;2;178;255;102m"
+   'Selection' = '$([char]0x1b)[38;2;0;0;0;48;2;178;255;102m'
 }
 Set-PSReadLineOption -Colors $colors
 

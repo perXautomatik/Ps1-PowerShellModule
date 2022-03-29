@@ -8,8 +8,6 @@ set-alias -name print-path -value printpath
 set-alias -name unzip -value unzipf
 
 
-
-
 # 1. 编译函数 make
 function aliasMakeThings {
 	nmake.exe $args -nologo
@@ -54,6 +52,34 @@ function aliasChangeDirectory {
 #######################################################
 #set-alias -Name cd -Value aliasChangeDirectory -Option AllScope
 
+function uptime {
+	Get-WmiObject win32_operatingsystem | select csname, @{LABEL='LastBootUpTime';
+	EXPRESSION={$_.ConverttoDateTime($_.lastbootuptime)}}
+}
+
+function reload-profile {
+	& $profile
+}
+
+function find-file($name) {
+	ls -recurse -filter "*${name}*" -ErrorAction SilentlyContinue | foreach {
+		$place_path = $_.directory
+		echo "${place_path}\${_}"
+	}
+}
+
+function print-path {
+	($Env:Path).Split(";")
+}
+
+function unzip ($file) {
+	$dirname = (Get-Item $file).Basename
+	echo("Extracting", $file, "to", $dirname)
+	New-Item -Force -ItemType directory -Path $dirname
+	expand-archive $file -OutputPath $dirname -ShowProgress
+}
+
+
 # filesInFolAsStream ;
 function aliasfilesInFolAsStream {
 	get-childitem | out-string -stream
@@ -89,10 +115,10 @@ function aliasFunctionEverything([string]$filter)
 set-alias -name code -value '& $env:code'
 
 set-alias -name everything -value aliasFunctionEverything
-					
+
 function aliasPshellHistoryPath {
 	(Get-PSReadlineOption).HistorySavePath
-}					
+}
 set-alias -name pshelHistorypath -value aliasPshellHistoryPath
 
 function aliasPastDo($searchstring) {
@@ -105,7 +131,7 @@ function aliasPastDoEdit($searchstring) {
 $path = aliasPshellHistoryPath; menu @( get-content $path | where{ $_ -match $searchstring }) | %{ Set-Clipboard -Value $_ }
 }
 
-set-alias -name pastDoEdit -value aliasPastDoEdit           
+set-alias -name pastDoEdit -value aliasPastDoEdit
 
 function aliasExecuteThis($searchstring) {
 menu @(everything "ext:exe $searchString") | %{& $_ }
