@@ -133,11 +133,11 @@ function unzipf ($file) {
 
 #------------------------------- SystemMigration end  -------------------------------
 
-#------------------------------- Styling begin --------------------------------------
+#------------------------------- Styling begin --------------------------------------					      
 #change selection to neongreen
 #https://stackoverflow.com/questions/44758698/change-powershell-psreadline-menucomplete-functions-colors
 $colors = @{
-   'Selection' = '$([char]0x1b)[38;2;0;0;0;48;2;178;255;102m'
+   "Selection" = "$([char]0x1b)[38;2;0;0;0;48;2;178;255;102m"
 }
 Set-PSReadLineOption -Colors $colors
 

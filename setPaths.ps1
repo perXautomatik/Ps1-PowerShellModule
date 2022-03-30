@@ -6,15 +6,16 @@
 #$env:Path += ";D:\SysAdmin\scripts\Connectors"
 #$env:Path += ";D:\SysAdmin\scripts\Office365"
 
-$historyPath = "C:\Users\Användaren\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt"
+$historyPath = "C:\Users\crbk01\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt"
 set-PSReadlineOption -HistorySavePath $historyPath
 echo "historyPath: $historyPath"
 
 $path = [Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')
 
 # vscode Portable Path
+$path = [Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')
 $newpath = 'D:\portapps\6, Text,programming, x Editing\PortableApps\vscode-portable\vscode-portable.exe'
-[Environment]::SetEnvironmentVariable('code', $newpath)
+[Environment]::SetEnvironmentVariable("code", $newpath)
 
 #sqlite dll
 $workpath = "C:\Users\crbk01\AppData\Local\GMap.NET\DllCache\SQLite_v103_NET4_x64\System.Data.SQLite.DLL"
