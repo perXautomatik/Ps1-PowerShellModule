@@ -217,9 +217,10 @@ function which($name) { Get-Command $name | Select-Object -ExpandProperty Defini
 #set-alias -Name cd -Value aliasChangeDirectory -Option AllScope
 #set-alias -Name gc -Value checkout
 #set-alias -Name gp -Value pull
-#set-alias -Name ls -Value aliasListDirectory
+set-alias -Name lsx -Value aliasListDirectory
 
 set-alias -name code -value '& $env:code'
+set-alias -Name filesinfolasstream -Value 'get-childitem | out-string -stream'
 set-alias -Name bcompare -Value aliasbc
 
 set-alias -name EveryGitRepo -Value aliasEFunc
@@ -238,15 +239,16 @@ set-alias -Name OpenAsADmin -Value aliasopenasadminf
 set-alias -Name open-current-folder -Value aliasOpenCurrentFolderF
 set-alias -name pastDo -value aliasPastDo
 set-alias -name pastDoEdit -value aliasPastDoEdit
-set-alias -name pshelHistorypath -value aliasPshellHistoryPath
+set-alias -name pshelHistorypath -value (Get-PSReadlineOption).HistorySavePath
 set-alias -Name reboot -Value aliasrb
 set-alias -Name browserflags -Value aliasviv
-set-alias -name print-path -value printpath
-set-alias -name reload-profile -value reloadProfile
+set-alias -Name df -Value get-volume
+set-alias -name ppath -value printpath
+set-alias -name reload -value reloadProfile
 set-alias -name unzip -value unzipf    
 set-alias -name uptime -value uptimef
 
-set-alias -Name getnic -Value Get-AllNic
+set-alias -Name getnic -Value Get-NetAdapter | Sort-Object -Property MacAddress # 1. 获取所有 Network Interface
 set-alias -Name ll -Value Get-ChildItem            
 set-alias -Name getip -Value Get-IPv4Routes
 set-alias -Name getip6 -Value Get-IPv6Routes      
