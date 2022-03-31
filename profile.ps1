@@ -3,135 +3,32 @@
 #######################################################
 
 
-# 1. 编译函数 make
-function aliasMakeThings { nmake.exe $args -nologo };
-
-
-# 3. 查看目录 ls & ll
-function aliasListDirectory { (Get-ChildItem).Name ; Write-Host("") };
-
-# 4. 打开当前工作目录 # 输入要打开的路径 # 用法示例：open C:\ # 默认路径：当前工作文件夹
-function aliasOpenCurrentFolderF { param ( $Path = '.' ) Invoke-Item $Path };
-
-
-
-#if no param, navigate to desktop # 5. 更改工作目录 # 输入要切换到的路径 # 用法示例：cd C:/ # 默认路径：D 盘的桌面
-function aliasChangeDirectory { param ( $Path = '%USERPROFILE%\Desktop\' ) Set-Location $Path };
-
-#doesn't psreadline module implement this already?
-function uptimef { Get-WmiObject win32_operatingsystem | select csname, @{LABEL='LastBootUpTime'; EXPRESSION={$_.ConverttoDateTime($_.lastbootuptime)}} }
-
-#reload-profile is an unapproved verb.
-function aliasreloadprofile { & $profile }
-
-#todo: breakout
-function find-file($name) {
+function find-file($name) { #todo: breakout
 	ls -recurse -filter "*${name}*" -ErrorAction SilentlyContinue | foreach {
 		$place_path = $_.directory
 		echo "${place_path}\${_}"
 	}
 }
-
-function print-path { ($Env:Path).Split(";") }
-
-#todo: breakout
-function unzip ($file) {
+function unzip ($file) { #todo: breakout
 	$dirname = (Get-Item $file).Basename
 	echo("Extracting", $file, "to", $dirname)
 	New-Item -Force -ItemType directory -Path $dirname
 	expand-archive $file -OutputPath $dirname -ShowProgress
 }
-
-
-# filesInFolAsStream ;
-function aliasfilesInFolAsStream { get-childitem | out-string -stream }
-
-
-#new ps OpenAsADmin
-function aliasopenasadminf { Start-Process powershell -Verb runAs }
-
-
-#todo: breakout
-#todo: rename
-Function aliasEFunc {Search-Everything -PathExclude 'C:\users\Crbk01\AppData\Local\Temp'-Filter '<wholefilename:child:.git file:>|<wholefilename:child:.git folder:>' -global |
- Where{ $_ -notmatch 
+Function aliasEFunc {Search-Everything -PathExclude 'C:\users\Crbk01\AppData\Local\Temp'-Filter '<wholefilename:child:.git file:>|<wholefilename:child:.git folder:>' -global | #todo: rename #todo: breakout
+Where{ $_ -notmatch 
 	'C..9dfe73ef|OneDrive|GitHubDesktop.app|Microsoft VS Code._.resources.app|Installer.resources.app.node_modules|Microsoft.E dge.User Data.*.Extensions|Program Files.*.(Esri|MapInfo|ArcGIS)|Recycle.Bin' 
 }}  ;
 
-
-#todo: breakout
-#todo: rename to more descriptive
-#todo: parameterize
-Function aliasEGSfunc {cd $_; Out-File -FilePath .\lazy.log -inputObject (git lazy 'AutoCommit' 2>&1 )} ;
-
-
-
-#todo: breakout
-Function aliasEGSRfunc
+Function aliasEGSRfunc #todo: breakout
 {
 	out-null -InputObject( git remote -v | Tee-Object -Variable proc ) ;
-	 %{$proc -split '\n'} | %{ $properties = $_ -split '[\t\s]';
-	  $remote = try{ New-Object PSObject -Property @{ name = $properties[0].Trim();
+	%{$proc -split '\n'} | %{ $properties = $_ -split '[\t\s]';
+	$remote = try{ New-Object PSObject -Property @{ name = $properties[0].Trim();
 	    url = $properties[1].Trim();  type = $properties[2].Trim() } } catch {'noRemote'} ;
-	     $remote | select-object -first 1 | select url}
-	  } ;
-
-
-
-function aliasFunctionEverything([string]$filter) {Search-Everything -filter $filter -global}
-
-function aliasPshellHistoryPath { (Get-PSReadlineOption).HistorySavePath }
-
-#search history of past expressions and invokes it, doesn't register the expression itself in history, but the pastDo expression.
-function aliasPastDo($searchstring) { $path = aliasPshellHistoryPath; menu @( get-content $path | where{ $_ -match $searchstring }) | %{Invoke-Expression $_ } }
-
-#search history of past expressions and adds to clipboard
-function aliasPastDoEdit($searchstring) { $path = aliasPshellHistoryPath; menu @( get-content $path | where{ $_ -match $searchstring }) | %{ Set-Clipboard -Value $_ }}
-
-
-#use everything to find executable for fast execution
-#todo: sort by rescent use
-#use whatpulse db first, then everything
-function aliasExecuteThis($searchstring) {
-menu @(everything "ext:exe $searchString") | %{& $_ }
-}
-
-
-function aliasMyAliases { Get-Alias -Definition alias* | select name }
-
-
-
-
-#Git Ad $leaf as submodule from $remote and branch $branch
-#todo: move to git aliases
-Function aliasEFuncGT([string]$leaf,[string]$remote,[string]$branch) { git submodule add -f --name $leaf -- $remote $branch ; git commit -am $leaf+$remote+$branch } ;
-
-#todo: move to git aliases
-Function aliasEGLp($path,$message) { cd $path ; git add .; git commit -m $message ; git push } ;
-
-
-function pull () { & get pull $args }
-function checkout () { & git checkout $args }
-
-#del alias:gc -Force
-#del alias:gp -Force
-
-#todo: replace hardcode with global variable pointing to path
-function aliasbc($REMOTE,$LOCAL,$BASE,$MERGED) { cmd /c "C:\Users\crbk01\Desktop\WhenOffline\BeondCompare4\BComp.exe" "$REMOTE" "$LOCAL" "$BASE" "$MERGED" }
-
-#todo: use standard browser instead of hardcoded
-function aliasviv { vivaldi "vivaldi://flags" }
-
-#reboot
-function aliasrb { shutdown /r }
-
-# Unixlike commands
-#######################################################
-
-function df { get-volume }
-
-function sed($file, $find, $replace){ (Get-Content $file).replace("$find", $replace) | Set-Content $file }
-
+		$remote | select-object -first 1 | select url}
+} ;
+	
 # todo: breake out to file
 function sed-recursive($filePattern, $find, $replace) {
 	$files = ls . "$filePattern" -rec
@@ -141,22 +38,7 @@ function sed-recursive($filePattern, $find, $replace) {
 		Set-Content $file.PSPath
 	}
 }
-
-function grep($regex, $dir) { if ( $dir ) { ls $dir | select-string $regex return } $input | select-string $regex }
-
-function grepv($regex) { $input | ? { !$_.Contains($regex) } }
-
-#should use more
-function which($name) { Get-Command $name | Select-Object -ExpandProperty Definition }
-
-function export($name, $value) { set-item -force -path "env:$name" -value $value; }
-
-function pkill($name) { ps $name -ErrorAction SilentlyContinue | kill }
-
-function pgrep($name) { ps $name }
-
-function touch($file) { "" | Out-File $file -Encoding ASCII }
-
+	
 #todo: breakout
 function sudo {
 	$file, [string]$arguments = $args;
@@ -217,7 +99,6 @@ function pstree {
 	}
 }
 
-
 #todo: breakout
 function Update-Packages {
 	# Python 直接执行
@@ -254,20 +135,79 @@ function Update-Packages {
 
 }
 
-
-#-------------------------------   Set Network BEGIN    -------------------------------
-# 1. 获取所有 Network Interface
-function Get-AllNic { Get-NetAdapter | Sort-Object -Property MacAddress }
+#del alias:gc -Force
+#del alias:gp -Force
 
 
-# 2. 获取 IPv4 关键路由
-function Get-IPv4Routes { Get-NetRoute -AddressFamily IPv4 | Where-Object -FilterScript {$_.NextHop -ne '0.0.0.0'} }
+function aliasbc($REMOTE,$LOCAL,$BASE,$MERGED) { cmd /c "C:\Users\crbk01\Desktop\WhenOffline\BeondCompare4\BComp.exe" "$REMOTE" "$LOCAL" "$BASE" "$MERGED" } #todo: replace hardcode with global variable pointing to path
 
+function aliasChangeDirectory { param ( $Path = '%USERPROFILE%\Desktop\' ) Set-Location $Path }; #if no param, navigate to desktop # 5. 更改工作目录 # 输入要切换到的路径 # 用法示例：cd C:/ # 默认路径：D 盘的桌面
 
-# 3. 获取 IPv6 关键路由
-function Get-IPv6Routes { Get-NetRoute -AddressFamily IPv6 | Where-Object -FilterScript {$_.NextHop -ne '::'} }
+Function aliasEFuncGT([string]$leaf,[string]$remote,[string]$branch) { git submodule add -f --name $leaf -- $remote $branch ; git commit -am $leaf+$remote+$branch } ; #todo: move to git aliases #Git Ad $leaf as submodule from $remote and branch $branch
 
-#-------------------------------    Set Network END     -------------------------------
+Function aliasEGLp($path,$message) { cd $path ; git add .; git commit -m $message ; git push } ; #todo: move to git aliases
+
+Function aliasEGSfunc {cd $_; Out-File -FilePath .\lazy.log -inputObject (git lazy 'AutoCommit' 2>&1 )} ; #todo: parameterize #todo: rename to more descriptive #todo: breakout
+
+function aliasExecuteThis($searchstring) { menu @(everything "ext:exe $searchString") | %{& $_ } } #use whatpulse db first, then everything #todo: sort by rescent use #use everything to find executable for fast execution
+
+function aliasfilesInFolAsStream { get-childitem | out-string -stream } # filesInFolAsStream ;
+
+function aliasFunctionEverything([string]$filter) {Search-Everything -filter $filter -global}
+
+function aliasListDirectory { (Get-ChildItem).Name ; Write-Host("") }; # 3. 查看目录 ls & ll
+
+function aliasMakeThings { nmake.exe $args -nologo }; # 1. 编译函数 make
+
+function aliasMyAliases { Get-Alias -Definition alias* | select name }
+
+function aliasopenasadminf { Start-Process powershell -Verb runAs } #new ps OpenAsADmin
+
+function aliasOpenCurrentFolderF { param ( $Path = '.' ) Invoke-Item $Path }; # 4. 打开当前工作目录 # 输入要打开的路径 # 用法示例：open C:\ # 默认路径：当前工作文件夹
+
+function aliasPastDo($searchstring) { $path = aliasPshellHistoryPath; menu @( get-content $path | where{ $_ -match $searchstring }) | %{Invoke-Expression $_ } } #search history of past expressions and invokes it, doesn't register the expression itself in history, but the pastDo expression.
+
+function aliasPastDoEdit($searchstring) { $path = aliasPshellHistoryPath; menu @( get-content $path | where{ $_ -match $searchstring }) | %{ Set-Clipboard -Value $_ }} #search history of past expressions and adds to clipboard
+
+function aliasPshellHistoryPath { (Get-PSReadlineOption).HistorySavePath }
+
+function aliasrb { shutdown /r } #reboot
+
+function aliasreloadprofile { & $profile } #reload-profile is an unapproved verb.
+
+function aliasviv { vivaldi "vivaldi://flags" } #todo: use standard browser instead of hardcoded
+
+function checkout () { & git checkout $args }
+
+function df { get-volume }
+
+function export($name, $value) { set-item -force -path "env:$name" -value $value; }
+
+function Get-AllNic { Get-NetAdapter | Sort-Object -Property MacAddress } # 1. 获取所有 Network Interface
+
+function Get-IPv4Routes { Get-NetRoute -AddressFamily IPv4 | Where-Object -FilterScript {$_.NextHop -ne '0.0.0.0'} } # 2. 获取 IPv4 关键路由
+
+function Get-IPv6Routes { Get-NetRoute -AddressFamily IPv6 | Where-Object -FilterScript {$_.NextHop -ne '::'} } # 3. 获取 IPv6 关键路由
+
+function grep($regex, $dir) { if ( $dir ) { ls $dir | select-string $regex return } $input | select-string $regex }
+
+function grepv($regex) { $input | ? { !$_.Contains($regex) } }
+
+function pgrep($name) { Get-Process $name }
+
+function pkill($name) { Get-Process $name -ErrorAction SilentlyContinue | kill }
+
+function print-path { ($Env:Path).Split(";") }
+
+function pull () { & get pull $args }
+
+function sed($file, $find, $replace){ (Get-Content $file).replace("$find", $replace) | Set-Content $file }
+
+function touch($file) { "" | Out-File $file -Encoding ASCII }
+
+function uptimef { Get-WmiObject win32_operatingsystem | select csname, @{LABEL='LastBootUpTime'; EXPRESSION={$_.ConverttoDateTime($_.lastbootuptime)}} } #doesn't psreadline module implement this already?
+
+function which($name) { Get-Command $name | Select-Object -ExpandProperty Definition } #should use more
 
 #-------------------------------    Functions END     -------------------------------
 
