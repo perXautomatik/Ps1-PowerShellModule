@@ -1,5 +1,8 @@
-$dnsservers = "192.168.1.100","192.168.1.1"
-$computers = Get-Content ComputerList.txt
+param (
+	$dnsservers = "192.168.1.100","192.168.1.1",
+	$computers = Get-Content ComputerList.txt   
+)       
+
 foreach ($comp in $computers)
 {
 
