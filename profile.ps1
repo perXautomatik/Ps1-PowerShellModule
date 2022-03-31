@@ -1,29 +1,22 @@
+#-------------------------------    Functions BEGIN   -------------------------------
 
-echo "profile loaded"
-#-------------------------------   Set alias BEGIN    -------------------------------
-set-alias -name reload-profile -value reloadProfile
-set-alias -name uptime -value uptimef
-set-alias -name print-path -value printpath
-
-set-alias -name unzip -value unzipf
+#######################################################
 
 
 # 1. 编译函数 make
 function aliasMakeThings {
 	nmake.exe $args -nologo
 };
-set-alias -Name make -Value aliasMakeThings
+
 
 # 2. 更新系统 os-update
-set-alias -Name os-update -Value Update-Packages
 
 # 3. 查看目录 ls & ll
 function aliasListDirectory {
 	(Get-ChildItem).Name
 	Write-Host("")
 };
-#set-alias -Name ls -Value aliasListDirectory
-set-alias -Name ll -Value Get-ChildItem
+
 
 # 4. 打开当前工作目录
 function aliasOpenCurrentFolderF {
@@ -36,7 +29,7 @@ function aliasOpenCurrentFolderF {
 	)
 	Invoke-Item $Path
 };
-set-alias -Name open-current-folder -Value aliasOpenCurrentFolderF
+
 
 # 5. 更改工作目录
 function aliasChangeDirectory {
@@ -48,9 +41,6 @@ function aliasChangeDirectory {
 	)
 	Set-Location $Path
 };
-
-#######################################################
-#set-alias -Name cd -Value aliasChangeDirectory -Option AllScope
 
 function uptime {
 	Get-WmiObject win32_operatingsystem | select csname, @{LABEL='LastBootUpTime';
@@ -84,20 +74,21 @@ function unzip ($file) {
 function aliasfilesInFolAsStream {
 	get-childitem | out-string -stream
 }
-set-alias -Name filesinfolasstream -Value aliasfilesInFolAsStream
+
 
 #new ps OpenAsADmin
 function aliasopenasadminf {
 	Start-Process powershell -Verb runAs
 }
 
-set-alias -Name OpenAsADmin -Value aliasopenasadminf
 
 Function aliasEFunc {Search-Everything -PathExclude 'C:\users\Crbk01\AppData\Local\Temp'-Filter '<wholefilename:child:.git file:>|<wholefilename:child:.git folder:>' -global | Where{ $_ -notmatch 'C..9dfe73ef|OneDrive|GitHubDesktop.app|Microsoft VS Code._.resources.app|Installer.resources.app.node_modules|Microsoft.E dge.User Data.*.Extensions|Program Files.*.(Esri|MapInfo|ArcGIS)|Recycle.Bin' }}  ;
-set-alias -name EveryGitRepo -Value aliasEFunc
+
+
 
 Function aliasEGSfunc {cd $_; Out-File -FilePath .\lazy.log -inputObject (git lazy 'AutoCommit' 2>&1 )} ;
-set-alias -name gitSilently -Value aliasEGSfunc
+
+
 
 Function aliasEGSRfunc
 {
@@ -107,44 +98,33 @@ Function aliasEGSRfunc
 	    url = $properties[1].Trim();  type = $properties[2].Trim() } } catch {'noRemote'} ;
 	     $remote | select-object -first 1 | select url}
 	  } ;
-set-alias -name gitSingleRemote -Value aliasEGSRfunc
+
+
 
 function aliasFunctionEverything([string]$filter)
 	{Search-Everything -filter $filter -global}
 
-set-alias -name code -value '& $env:code'
-
-set-alias -name everything -value aliasFunctionEverything
-
 function aliasPshellHistoryPath {
 	(Get-PSReadlineOption).HistorySavePath
 }
-set-alias -name pshelHistorypath -value aliasPshellHistoryPath
 
 function aliasPastDo($searchstring) {
 $path = aliasPshellHistoryPath; menu @( get-content $path | where{ $_ -match $searchstring }) | %{Invoke-Expression $_ }
 }
 
-set-alias -name pastDo -value aliasPastDo
-
 function aliasPastDoEdit($searchstring) {
 $path = aliasPshellHistoryPath; menu @( get-content $path | where{ $_ -match $searchstring }) | %{ Set-Clipboard -Value $_ }
 }
 
-set-alias -name pastDoEdit -value aliasPastDoEdit
 
 function aliasExecuteThis($searchstring) {
 menu @(everything "ext:exe $searchString") | %{& $_ }
 }
 
-set-alias -name executeThis -value aliasExecuteThis
-
 
 function aliasMyAliases {
 Get-Alias -Definition alias* | select name
 }
-
-set-alias -name MyAliases -value aliasMyAliases
 
 
 
@@ -154,10 +134,9 @@ Function aliasEFuncGT([string]$leaf,[string]$remote,[string]$branch)
 {
  git submodule add -f --name $leaf -- $remote $branch ; git commit -am $leaf+$remote+$branch
  } ;
-set-alias -name GitAdEPathAsSNB -value aliasEFuncGT
+
 
 Function aliasEGLp($path,$message) { cd $path ; git add .; git commit -m $message ; git push } ;
-set-alias -name GitUp -value aliasEGLp
 
 
 function pull () { & get pull $args }
@@ -166,28 +145,18 @@ function checkout () { & git checkout $args }
 #del alias:gc -Force
 #del alias:gp -Force
 
-#set-alias -Name gc -Value checkout
-#set-alias -Name gp -Value pull
-
-
 function aliasbc($REMOTE,$LOCAL,$BASE,$MERGED) {
 cmd /c "C:\Users\crbk01\Desktop\WhenOffline\BeondCompare4\BComp.exe" "$REMOTE" "$LOCAL" "$BASE" "$MERGED"
 }
-set-alias -Name bcompare -Value aliasbc
 
 function aliasviv {
 vivaldi "vivaldi://flags"
 }
-set-alias -Name browserflags -Value aliasviv
+
 
 function aliasrb {
 shutdown /r
 }
-set-alias -Name reboot -Value aliasrb
-
-#-------------------------------    Set alias END     -------------------------------
-
-
 
 # Unixlike commands
 #######################################################
@@ -250,8 +219,9 @@ function sudo {
 	[System.Diagnostics.Process]::Start($psi) >> $null
 }
 
-# https://gist.github.com/aroben/5542538
+
 function pstree {
+	# https://gist.github.com/aroben/5542538
 	$ProcessesById = @{}
 	foreach ($Process in (Get-WMIObject -Class Win32_Process)) {
 		$ProcessesById[$Process.ProcessId] = $Process
@@ -298,10 +268,8 @@ function pstree {
 	}
 }
 
-
-#-------------------------------    Functions BEGIN   -------------------------------
 # Python 直接执行
-$env:PATHEXT += ";.py"
+#$env:PATHEXT += ";.py"
 
 # 更新系统组件
 function Update-Packages {
@@ -335,7 +303,6 @@ function Update-Packages {
 	winget upgrade --all
 
 }
-#-------------------------------    Functions END     -------------------------------
 
 
 #-------------------------------   Set Network BEGIN    -------------------------------
@@ -343,17 +310,70 @@ function Update-Packages {
 function Get-AllNic {
 	Get-NetAdapter | Sort-Object -Property MacAddress
 }
-set-alias -Name getnic -Value Get-AllNic
+
 
 # 2. 获取 IPv4 关键路由
 function Get-IPv4Routes {
 	Get-NetRoute -AddressFamily IPv4 | Where-Object -FilterScript {$_.NextHop -ne '0.0.0.0'}
 }
-set-alias -Name getip -Value Get-IPv4Routes
+
 
 # 3. 获取 IPv6 关键路由
 function Get-IPv6Routes {
 	Get-NetRoute -AddressFamily IPv6 | Where-Object -FilterScript {$_.NextHop -ne '::'}
 }
-set-alias -Name getip6 -Value Get-IPv6Routes
+
 #-------------------------------    Set Network END     -------------------------------
+
+#-------------------------------    Functions END     -------------------------------
+
+
+#-------------------------------   Set alias BEGIN    -------------------------------
+set-alias -name reload-profile -value reloadProfile
+set-alias -name uptime -value uptimef
+set-alias -name print-path -value printpath
+
+set-alias -name unzip -value unzipf    
+
+set-alias -Name getip6 -Value Get-IPv6Routes      
+set-alias -Name getip -Value Get-IPv4Routes
+set-alias -Name getnic -Value Get-AllNic
+set-alias -Name reboot -Value aliasrb
+set-alias -Name browserflags -Value aliasviv
+set-alias -Name bcompare -Value aliasbc
+
+#set-alias -Name gc -Value checkout
+#set-alias -Name gp -Value pull
+set-alias -name GitUp -value aliasEGLp
+set-alias -name GitAdEPathAsSNB -value aliasEFuncGT
+
+set-alias -name MyAliases -value aliasMyAliases
+
+set-alias -name executeThis -value aliasExecuteThis
+
+set-alias -name pastDoEdit -value aliasPastDoEdit
+
+set-alias -name pastDo -value aliasPastDo
+set-alias -name pshelHistorypath -value aliasPshellHistoryPath
+
+set-alias -name code -value '& $env:code'
+set-alias -name gitSingleRemote -Value aliasEGSRfunc
+set-alias -name gitSilently -Value aliasEGSfunc
+set-alias -name EveryGitRepo -Value aliasEFunc
+
+set-alias -Name OpenAsADmin -Value aliasopenasadminf
+set-alias -Name filesinfolasstream -Value aliasfilesInFolAsStream
+#set-alias -Name cd -Value aliasChangeDirectory -Option AllScope
+
+set-alias -Name open-current-folder -Value aliasOpenCurrentFolderF
+#set-alias -Name ls -Value aliasListDirectory
+set-alias -Name ll -Value Get-ChildItem            
+set-alias -Name make -Value aliasMakeThings
+set-alias -Name os-update -Value Update-Packages
+
+set-alias -name everything -value aliasFunctionEverything
+
+echo "Alias set"
+#-------------------------------    Set alias END     -------------------------------
+
+
