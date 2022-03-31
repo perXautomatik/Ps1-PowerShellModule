@@ -10,12 +10,15 @@ function remove-TempfilesNfolders { foreach ($folder in get-tempfilesNfolders) {
 
 function clear-Days_Back { param ( $path = "C:\Support\SQLBac\" ,$Daysback = "0" ) $CurrentDate = Get-Date $DatetoDelete = $CurrentDate.AddDays($Daysback) Get-ChildItem $path | Where-Object { $_.LastWriteTime -lt $DatetoDelete } | Remove-Item }
 
+function new-SymbolicLink { param ( $where = 'H:\mina grejer\Till Github' ,$from = 'H:\mina grejer\Project shelf\Till Github' ) New-Item -Path $where -ItemType SymbolicLink -Value $from }
 function ConvertFrom-Bytes { param ( [string]$bytes, [string]$savepath ) $dir = Split-Path $savepath if (!(Test-Path $dir)) { md $dir | Out-Null } [convert]::FromBase64String($bytes) | Set-Content $savepath -Encoding Byte }
+function Export-Regestrykey { param ( $reg = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\' ,$outFile = 'H:\hkcu-regbackup.txt' ) get-childitem -path $reg | out-file $outFile }
+function start-cygwin { param ( $cygwinpath = "E:\PortableApps\4, windows enhance\PortableApps\cygwin64\" ) ."$cygwinpath\Cygwin.bat" }
 
-
+function read-headOfFile { param ( $linr = 10, $file ) gc -Path $file  -TotalCount $linr }
 function read-json { param( [Parameter(Mandatory=$true,ValueFromPipeline=$true)][PSCustomObject] $input ) $json = [ordered]@{}; ($input).PSObject.Properties | % { $json[$_.Name] = $_.Value } $json.SyncRoot }
 
-
+function invoke-gitFetchOrig { git fetch origin }
 function ConvertTo-Bytes ( [string]$file ) { if (!$file -or !(Test-Path $file)) { throw "file not found: '$file'" } [convert]::ToBase64String((Get-Content $file -Encoding Byte)) }
 function set-FileEncodingUtf8 ( [string]$file ) { if (!$file -or !(Test-Path $file)) { throw "file not found: '$file'" } sc $file -encoding utf8 -value(gc $file) }
 
