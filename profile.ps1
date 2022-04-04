@@ -118,40 +118,40 @@ function aliasfifs { get-childitem | out-string -stream }
 #set-alias -Name gc -Value checkout
 #set-alias -Name gp -Value pull
 
-set-alias -Name lsx -Value get-Childnames
+set-alias -Name lsx -Value						 	 get-Childnames
 
-set-alias -name code -value aliasCode
-set-alias -Name filesinfolasstream -Value aliasfifs
-set-alias -Name bcompare -Value start-bc 
+set-alias -name code -value						 	 aliasCode
+set-alias -Name filesinfolasstream -Value			 aliasfifs
+set-alias -Name bcompare -Value						 start-bc 
 
-set-alias -name GitAdEPathAsSNB -value invoke-GitSubmoduleAdd
-set-alias -name GitUp -value invoke-GitLazy
-set-alias -name gitSilently -Value invoke-GitLazySilently
-set-alias -name gitSingleRemote -Value invoke-gitFetchOrig
-set-alias -name executeThis -value invoke-FuzzyWithEverything
+set-alias -name GitAdEPathAsSNB -value				 invoke-GitSubmoduleAdd
+set-alias -name GitUp -value						 invoke-GitLazy
+set-alias -name gitSilently -Value					 invoke-GitLazySilently
+set-alias -name gitSingleRemote -Value				 invoke-gitFetchOrig
+set-alias -name executeThis -value					 invoke-FuzzyWithEverything
 
-set-alias -name filesinfolasstream -Value read-pathsAsStream
-set-alias -name everything -value invoke-Everything
-set-alias -Name make -Value invoke-Nmake
-set-alias -name MyAliases -value read-aliases
-set-alias -Name OpenAsADmin -Value invoke-powershellAsAdmin
-set-alias -Name home -Value start-explorer
-set-alias -name pastDo -value find-historyInvoke
-set-alias -name pastDoEdit -value find-historyAppendClipboard
-set-alias -name HistoryPath -value (Get-PSReadlineOption).HistorySavePath
-set-alias -Name reboot -Value exit-Nrenter
-set-alias -Name browserflags -Value aliasviv
-set-alias -Name df -Value get-volume
-set-alias -name printpaths -value read-EnvPaths
-set-alias -name reload -value initialize-profile
-set-alias -name unzip -value unzipf    
-set-alias -name uptime -value read-uptime
+set-alias -name filesinfolasstream -Value			 read-pathsAsStream
+set-alias -name everything -value					 invoke-Everything
+set-alias -Name make -Value						 	 invoke-Nmake
+set-alias -name MyAliases -value					 read-aliases
+set-alias -Name OpenAsADmin -Value					 invoke-powershellAsAdmin
+set-alias -Name home -Value						 	 start-explorer
+set-alias -name pastDo -value						 find-historyInvoke
+set-alias -name pastDoEdit -value					 find-historyAppendClipboard
+set-alias -name HistoryPath -value					 (Get-PSReadlineOption).HistorySavePath
+set-alias -Name reboot -Value						 exit-Nrenter
+set-alias -Name browserflags -Value					 aliasviv
+set-alias -Name df -Value						 	 get-volume
+set-alias -name printpaths -value					 read-EnvPaths
+set-alias -name reload -value						 initialize-profile
+set-alias -name unzip -value						 unzipf    
+set-alias -name uptime -value						 read-uptime
 
-set-alias -Name getnic -Value Get-NetAdapter | Sort-Object -Property MacAddress # 1. 获取所有 Network Interface
-set-alias -Name ll -Value Get-ChildItem            
-set-alias -Name getip -Value Get-IPv4Routes
-set-alias -Name getip6 -Value Get-IPv6Routes      
-set-alias -Name os-update -Value Update-Packages
+set-alias -Name getnic -Value						 Get-NetAdapter | Sort-Object -Property MacAddress # 1. 获取所有 Network Interface
+set-alias -Name ll -Value						 	 Get-ChildItem            
+set-alias -Name getip -Value						 Get-IPv4Routes
+set-alias -Name getip6 -Value						 Get-IPv6Routes      
+set-alias -Name os-update -Value					Update-Packages
 
 
 echo "Alias set"
