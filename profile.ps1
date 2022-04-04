@@ -152,9 +152,8 @@ set-alias -Name ll -Value						 	 Get-ChildItem
 set-alias -Name getip -Value						 Get-IPv4Routes
 set-alias -Name getip6 -Value						 Get-IPv6Routes      
 set-alias -Name os-update -Value					Update-Packages
-
-
-echo "Alias set"
+set-alias -name get-version -value '$PSVersionTable'
+	    
 #-------------------------------    Set alias END     -------------------------------
 
 
