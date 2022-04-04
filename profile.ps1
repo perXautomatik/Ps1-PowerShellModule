@@ -108,6 +108,7 @@ function which($name) { Get-Command $name | Select-Object -ExpandProperty Defini
 function aliasCode { & $env:code }
 
 function aliasfifs { get-childitem | out-string -stream }
+function invoke-gitRemote { param ($subCommand = 'get-url',$name = "origin" ) git remote $subCommand $name }
 
 #-------------------------------    Functions END     -------------------------------
 
@@ -152,7 +153,7 @@ set-alias -Name ll -Value						 	 Get-ChildItem
 set-alias -Name getip -Value						 Get-IPv4Routes
 set-alias -Name getip6 -Value						 Get-IPv6Routes      
 set-alias -Name os-update -Value					Update-Packages
-set-alias -name get-version -value '$PSVersionTable'
+set-alias -name remote -Value 						invoke-gitRemote
 	    
 #-------------------------------    Set alias END     -------------------------------
 
