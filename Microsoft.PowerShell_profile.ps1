@@ -24,7 +24,7 @@ $pos = join-path -Path $profileFolder -ChildPath 'importModules.ps1'
 $PSDefaultParameterValues["Out-File:Encoding"]="utf8"
 
 # Show selection menu for tab
-Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
+#Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
 
 #ps ExecutionPolicy;
 #Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
@@ -61,20 +61,20 @@ Import-Module  $paths
 #Set-PSReadLineOption -PredictionSource History
 
 # 每次回溯输入历史，光标定位于输入内容末尾
-Set-PSReadLineOption -HistorySearchCursorMovesToEnd
+#Set-PSReadLineOption -HistorySearchCursorMovesToEnd
 
 # 设置 Tab 为菜单补全和 Intellisense
-Set-PSReadLineKeyHandler -Key "Tab" -Function MenuComplete
+#Set-PSReadLineKeyHandler -Key "Tab" -Function MenuComplete
 
 # 设置 Ctrl+d 为退出 PowerShell
-Set-PSReadlineKeyHandler -Key "Ctrl+d" -Function ViExit
+#Set-PSReadlineKeyHandler -Key "Ctrl+d" -Function ViExit
 
 # 设置 Ctrl+z 为撤销
-Set-PSReadLineKeyHandler -Key "Ctrl+z" -Function Undo
+#Set-PSReadLineKeyHandler -Key "Ctrl+z" -Function Undo
 
 # 设置向上键为后向搜索历史记录 # Autocompletion for arrow keys @ https://dev.to/ofhouse/add-a-bash-like-autocomplete-to-your-powershell-4257
-Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
-Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+#Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+#Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 #-------------------------------  Set Hot-keys END    -------------------------------
 # Helper Functions
 #######################################################
@@ -139,7 +139,7 @@ function unzipf ($file) {
 $colors = @{
    'Selection' = '$([char]0x1b)[38;2;0;0;0;48;2;178;255;102m'
 }
-Set-PSReadLineOption -Colors $colors
+#Set-PSReadLineOption -Colors $colors
 
 # Style default PowerShell Console
 $shell = $Host.UI.RawUI
@@ -151,3 +151,13 @@ $shell.ForegroundColor = "White"
 
 # Load custom theme for Windows Terminal
 #Set-Theme LazyAdmin
+
+# Import the Chocolatey Profile that contains the necessary code to enable
+# tab-completions to function for `choco`.
+# Be aware that if you are missing these lines from your profile, tab completion
+# for `choco` will not function.
+# See https://ch0.co/tab-completion for details.
+$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+if (Test-Path($ChocolateyProfile)) {
+  Import-Module "$ChocolateyProfile"
+}
