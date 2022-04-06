@@ -1,1 +1,0 @@
-﻿cd "D:\Project Shelf\MapBasic" ; Get-ChildItem -Recurse -File | group Extension -NoElement  | sort Count -Descending | select -Property name

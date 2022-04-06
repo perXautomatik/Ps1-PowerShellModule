@@ -1,7 +1,6 @@
-﻿
+﻿param ( $from = "E:\Programming(projects)\programming and lessons\schoolProjects" )
 
-
-    $dir = dir "E:\Programming(projects)\programming and lessons\schoolProjects" | ?{$_.PSISContainer}
+    $dir = dir $from | ?{$_.PSISContainer}
 
 foreach ($oldName in $dir){
     $oldName = $oldName.FullName
