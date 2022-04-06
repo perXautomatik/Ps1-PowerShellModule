@@ -7,7 +7,11 @@
     if ( $PSVersionTable.PSVersion.Major -lt 7 ) {
     function Install-PowerShellGet { Start-Process "$(Get-HostExecutable)" -ArgumentList "-noProfile -noLogo -Command Install-PackageProvider -Name NuGet -Force; Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck; pause" -verb "RunAs"}
     }
-       
+
+function Test-ModuleExists {
+        Param ($name)
+        return($null -ne (Get-Module -ListAvailable -Name $name))
+}
 #src: https://devblogs.microsoft.com/scripting/use-a-powershell-function-to-see-if-a-command-exists/ 
 function Test-CommandExists {
     Param ($command)
@@ -38,7 +42,7 @@ function TryImport-Module {
     $oldErrorActionPreference = $ErrorActionPreference
     $ErrorActionPreference = 'stop'
     try { Import-Module $args}
-    catch { }
+    catch { "unable to load $args" }
     finally { $ErrorActionPreference=$oldErrorActionPreference }
 }
 function Install-MyModules {
@@ -77,6 +81,7 @@ if (!( ""-eq "${env:ChocolateyInstall}"  ))  {
 
 
 function Import-MyModules {
+    TryImport-Module PowerShellGet
     TryImport-Module PSProfiler
     TryImport-Module hashdata
     TryImport-Module WFTools
@@ -89,7 +94,7 @@ function Import-MyModules {
     # 设置 PowerShell 主题
    # 引入 ps-read-line # useful history related actions      
    # example: https://github.com/PowerShell/PSReadLine/blob/master/PSReadLine/SamplePSReadLineProfile.ps1
-   if ( ($host.Name -eq 'ConsoleHost') -and ($null -ne (Get-Module -ListAvailable -Name PSReadLine)) ) {
+   if ( ($host.Name -eq 'ConsoleHost') -and (Test-ModuleExists 'PSReadLine' )) {
  	    TryImport-Module PSReadLine
 
 	    #-------------------------------  Set Hot-keys BEGIN  -------------------------------
@@ -120,7 +125,7 @@ function Import-MyModules {
 	        Set-PSReadLineOption -predictionsource history -ea SilentlyContinue
 	    }
 
-	    if ( $(Get-Module PSFzf) -ne $null ) {
+	    if ( $null -ne $(Get-Module PSFzf)  ) {
 	        #Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
 	        #$FZF_COMPLETION_TRIGGER='...'
 	        Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
@@ -135,4 +140,4 @@ function Import-MyModules {
 # Set-PoshPrompt ys
 #Set-PoshPrompt paradox
 Add-Type -Path "C:\Users\crbk01\AppData\Local\GMap.NET\DllCache\SQLite_v103_NET4_x64\System.Data.SQLite.DLL"
-echo "modules imported"
+Import-MyModules; echo "modules imported"

@@ -256,6 +256,7 @@ if ( $havePSReadline ) {
 # Helper Functions
 #######################################################
 
+if ( -Not (Test-CommandExists 'sh') ){ Set-Alias sh   git-sh -Option AllScope }
 function uptimef {
 	Get-WmiObject win32_operatingsystem | select csname, @{LABEL='LastBootUpTime';
 	EXPRESSION={$_.ConverttoDateTime($_.lastbootuptime)}}
@@ -422,9 +423,7 @@ function start-BrowserFlags { vivaldi "vivaldi://flags" } #todo: use standard br
 function string { process { $_ | Out-String -Stream } }
 function touch($file) { "" | Out-File $file -Encoding ASCII }
 function which($name) { Get-Command $name | Select-Object -ExpandProperty Definition } #should use more
-function get-mac {
-        Get-NetAdapter | Sort-Object -Property MacAddress
-}
+function get-mac { Get-NetAdapter | Sort-Object -Property MacAddress }
 Remove-Item alias:ls -ea SilentlyContinue ; function ls { Get-Childitem} # ls -al is musclememory by now so ignore all args for this "alias"
 
 #-------------------------------    Functions END     -------------------------------
