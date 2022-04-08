@@ -3,8 +3,8 @@
 #answered Jun 29 '11 at 20:34 @ https://stackoverflow.com/questions/6526441/comparing-folders-and-content-with-powershell
 
 
-$Folder1 = "E:\ToDatabase\Sqlite\Google\Chrome Beta\User Data"
-$Folder2 = "E:\ToDatabase\Sqlite\Google\ChromeDevProjects'\User Data"
+$Folder1 = $param[0]
+$Folder2 = $param[1]
 $Folder1 = $Folder1 | Get-ChildItem -Recurse 
 $Folder2 = $Folder2 | Get-ChildItem -Recurse
 Compare-Object  $Folder1 $Folder2 -verbos
