@@ -11,6 +11,11 @@
 	loss of business information, or other pecuniary loss) arising out of the use 
 	of or inability to use the sample scripts or documentation, even If Microsoft 
 	has been advised of the possibility of such damages 
+
+	0. Prepare the folder path which contains all excel files
+	$FolderPath = "C:\Users\crbk01\Desktop\Solen till vision\skuggregistret\skuggregister2"
+
+	Convert-CsvInBatch -Folder $FolderPath
 #>
 
 $ErrorActionPreference = 'Stop'
@@ -42,8 +47,3 @@ Function Convert-CsvInBatch
 	[System.Runtime.Interopservices.Marshal]::ReleaseComObject($excelApp) | Out-Null
 }
 
-#
-# 0. Prepare the folder path which contains all excel files
-$FolderPath = "C:\Users\crbk01\Desktop\Solen till vision\skuggregistret\skuggregister2"
-
-Convert-CsvInBatch -Folder $FolderPath

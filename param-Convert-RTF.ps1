@@ -11,7 +11,7 @@ $objWord = New-Object -comobject Word.Application
 $objWord.Visible = $True  
 $objDoc = $objWord.Documents.Add() 
  
-$colFiles = gci("C:\Users\crbk01\Desktop\förvaltningsstödshjälp\*.rtf") 
+$colFiles = gci($param[0]) 
  
 foreach ($objFile in $colFiles) 
 { 
