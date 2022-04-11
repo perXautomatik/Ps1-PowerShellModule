@@ -8,6 +8,15 @@
 # ref: Write-* https://stackoverflow.com/a/38527767
 # Write-Host wrapper for Write-Information -InformationAction Continue
 # define these environment variables if not set already and also provide them as PSVariables
+#src: https://stackoverflow.com/a/34098997/7595318
+function Test-IsInteractive {
+    # Test each Arg for match of abbreviated '-NonInteractive' command.
+    $NonInteractiveFlag = [Environment]::GetCommandLineArgs() | Where-Object{ $_ -like '-NonInteractive' }
+    if ( (-not [Environment]::UserInteractive) -or ( $NonInteractiveFlag -ne $null ) ) {
+        return $false
+    }
+    return $true
+}
 
 if ( ( $null -eq $PSVersionTable.PSEdition) -or ($PSVersionTable.PSEdition -eq "Desktop") ) { $PSVersionTable.PSEdition = "Desktop" ;$IsWindows = $true }
 
@@ -428,6 +437,9 @@ Remove-Item alias:ls -ea SilentlyContinue ; function ls { Get-Childitem} # ls -a
 
 #-------------------------------    Functions END     -------------------------------
 
+
+if ( Test-IsInteractive ) {
+# Clear-Host # remove advertisements (preferably use -noLogo)
 #-------------------------------   Set alias BEGIN    -------------------------------
 
 
@@ -506,6 +518,7 @@ set-alias remote 					            	 invoke-gitRemote  -Option AllScope
 
 #-------------------------------    Set alias END     -------------------------------
 
+} # is interactive end
 Write-Host "PSVersion: $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor).$($PSVersionTable.PSVersion.Patch)"
 Write-Host "PSEdition: $($PSVersionTable.PSEdition)"
 Write-Host "Profile:   $PSCommandPath"
